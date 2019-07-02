@@ -1,0 +1,90 @@
+﻿{
+    "ReRoutes": [
+        //获取token地址
+        {
+            "DownstreamPathTemplate": "/connect/token",
+            "UpstreamPathTemplate": "/token",
+            "UpstreamHttpMethod": [
+                "Post"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UseServiceDiscovery": false
+        },
+        {
+            "DownstreamPathTemplate": "/connect/userinfo",
+            "UpstreamPathTemplate": "/userinfo",
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UseServiceDiscovery": false
+        },
+        {
+            "DownstreamPathTemplate": "/api/ids4/token",
+            "UpstreamPathTemplate": "/ids4/token",
+            "UpstreamHttpMethod": [
+                "Post"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "minilobo.iapi.xlobo.com",
+                    "Port": 5001
+                }
+            ],
+            "UseServiceDiscovery": false
+        },
+        //下游values api + 认证 示例
+        {
+            "DownstreamPathTemplate": "/api/values",
+            "UpstreamPathTemplate": "/values",
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "minilobo.iapi.xlobo.com",
+                    "Port": 5001
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "AuthProviderKey",
+                "AllowedScopes": []
+            },
+            "UseServiceDiscovery": false
+        },
+        //下游labels api 不认证 示例
+        {
+            "DownstreamPathTemplate": "/api/labels",
+            "UpstreamPathTemplate": "/labels",
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "minilobo.iapi.xlobo.com",
+                    "Port": 5001
+                }
+            ],
+            "UseServiceDiscovery": false
+        }
+    ],
+    "GlobalConfiguration": {
+        "RequestIdKey": "OcRequestId"
+        //"ServiceDiscoveryProvider": { "Type": "Eureka" } //指定服务发现的提供方为Eureka
+    }
+}

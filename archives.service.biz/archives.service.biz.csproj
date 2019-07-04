@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="ifs\" />
+    <Folder Include="impl\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\archives.service.dal\archives.service.dal.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="impl\ArchivesInfoBiz.cs" />
+  </ItemGroup>
+</Project>

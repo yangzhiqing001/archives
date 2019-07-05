@@ -11,6 +11,8 @@ namespace archives.service.dal
         {
         }
         public DbSet<ArchivesInfo> ArchivesInfo { get; set; }
+
+        public DbSet<ArchivesDetails> ArchivesDetails { get; set; }
     }
 
 }

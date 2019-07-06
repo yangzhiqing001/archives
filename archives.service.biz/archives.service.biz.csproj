@@ -7,6 +7,8 @@
   <ItemGroup>
     <Folder Include="ifs\" />
     <Folder Include="impl\" />
+    <Folder Include="web\" />
+    <Folder Include="exp\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\archives.service.dal\archives.service.dal.csproj" />

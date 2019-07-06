@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace archives.service.dal.Entity
@@ -8,12 +9,14 @@ namespace archives.service.dal.Entity
     /// <summary>
     /// 案卷内文件
     /// </summary>
-    public class ArchivesDetails
+    public class ArchivesDetails : BaseEntity
     {
+        [Key, Required]
+        public int Id { get; set; }
         /// <summary>
         /// 档号
         /// </summary>
-        [Key, Required]
+        
         public string ArchivesId { get; set; }
 
         /// <summary>
@@ -36,10 +39,10 @@ namespace archives.service.dal.Entity
         /// </summary>
         public string Title { get; set; }
 
-        /// <summary>
-        /// 项目名称
-        /// </summary>
-        public string ProjectName { get; set; }
+        ///// <summary>
+        ///// 项目名称
+        ///// </summary>
+        //public string ProjectName { get; set; }
 
         /// <summary>
         /// 责任者
@@ -54,11 +57,12 @@ namespace archives.service.dal.Entity
         /// <summary>
         /// 页数
         /// </summary>
-        public int PageCount { get; set; }
+        public int Pages { get; set; }
 
         /// <summary>
         /// 保管期限（是否永久)
         /// </summary>
+        [Column(TypeName = "bit")]
         public bool IsPermanent { get; set; }
 
         /// <summary>
@@ -81,14 +85,16 @@ namespace archives.service.dal.Entity
         /// </summary>
         public string Remark { get; set; }
 
-        /// <summary>
-        /// 目录号
-        /// </summary>
-        public int CatalogNumber { get; set; }
+        ///// <summary>
+        ///// 目录号
+        ///// </summary>
+        //public int CatalogNumber { get; set; }
 
         /// <summary>
         /// 提要
         /// </summary>
         public string Summary { get; set; }
+
+        
     }
 }

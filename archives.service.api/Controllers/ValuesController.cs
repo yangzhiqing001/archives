@@ -22,9 +22,9 @@ namespace archives.service.api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            var list = archivesInfoService.GetList();
+            //var list = archivesInfoService.GetList();
             
-            return new string[] { "value1", "value2", list.Count.ToString(), list.Any() ? list[0].ProjectName : string.Empty };
+            return new string[] { "value1", "value2" };
         }
 
         // GET api/values/5

@@ -7,7 +7,7 @@ namespace archives.service.dal.Entity
     /// <summary>
     /// 案卷
     /// </summary>
-    public class ArchivesInfo
+    public class ArchivesInfo : BaseEntity
     {
         /// <summary>
         /// 档号
@@ -58,6 +58,7 @@ namespace archives.service.dal.Entity
         /// <summary>
         /// 保管期限（是否永久)
         /// </summary>
+        [Column(TypeName = "bit")]
         public bool IsPermanent { get; set; }
 
         /// <summary>

@@ -3,7 +3,7 @@ namespace archives.service.biz.web
 {
     public class CommonResponse<T> where T : class
     {
-		public string ResponseTime { get; } = DateTime.Now.ToString();
+		public string ResponseTime { get; } = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
         public T Data { get; set; }
 

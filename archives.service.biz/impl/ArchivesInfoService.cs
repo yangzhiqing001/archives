@@ -31,10 +31,11 @@ namespace archives.service.biz.impl
                 }
                 var list = await query.Skip(request.PageNumber * request.PageSize)
                     .Take(request.PageSize)
-                    .OrderBy(c => c.ArchivesId)
+                    .OrderBy(c => c.ArchivesNumber)
                     .Select(c => new ArchivesSearchResult
                     {
-                        ArchivesId = c.ArchivesId,
+                        Id = c.Id,
+                        ArchivesNumber = c.ArchivesNumber,
                         CategoryId = c.CategoryId,
                         FileNumber = c.FileNumber,
                         ProjectName = c.ProjectName,
@@ -56,20 +57,16 @@ namespace archives.service.biz.impl
             return response;
         }
 
-        public async Task<CommonResponse<ArchivesDteailResult>> GetArchives(string archivesId)
+        public async Task<CommonResponse<ArchivesInfo>> GetArchives(int id)
         {
-            var response = new CommonResponse<ArchivesDteailResult>();
+            var response = new CommonResponse<ArchivesInfo>();
             try
             {
-                var archives = await _db.ArchivesInfo.FirstOrDefaultAsync(c => c.ArchivesId == archivesId && !c.Deleted);
+                var archives = await _db.ArchivesInfo.FirstOrDefaultAsync(c => c.Id == id && !c.Deleted);
                 if (archives == null)
                     throw new BizException("档案不存在或已删除");
-                var archivesDetails = await _db.ArchivesDetails.Where(c => c.ArchivesId == archivesId && !c.Deleted).ToListAsync();
-                response.Data = new ArchivesDteailResult
-                {
-                    ArchivesInfo = archives,
-                    ArchivesDetails = archivesDetails
-                };
+                //var archivesDetails = await _db.ArchivesDetails.Where(c => c.ArchivesId == archivesId && !c.Deleted).ToListAsync();
+                response.Data = archives;
                 response.Success = true;
             }
             catch (BizException ex)

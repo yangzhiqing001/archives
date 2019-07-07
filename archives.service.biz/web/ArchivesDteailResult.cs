@@ -8,6 +8,5 @@ namespace archives.service.biz.web
     {
         public ArchivesInfo ArchivesInfo { get; set; }
 
-        public List<ArchivesDetails> ArchivesDetails { get; set; }
     }
 }

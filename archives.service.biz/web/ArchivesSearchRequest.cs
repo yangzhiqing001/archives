@@ -8,10 +8,11 @@ namespace archives.service.biz.web
 
     public class ArchivesSearchResult
 	{
+        public int Id { get; set; }
 		/// <summary>
 		/// 档号
 		/// </summary>
-		public string ArchivesId { get; set; }
+		public string ArchivesNumber { get; set; }
 
 		/// <summary>
 		/// 分类号

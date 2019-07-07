@@ -1,19 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace archives.service.dal.Entity
 {
     /// <summary>
-    /// 案卷
+    /// 案卷内文件
     /// </summary>
     public class ArchivesInfo : BaseEntity
     {
+        [Key, Required]
+        public int Id { get; set; }
         /// <summary>
         /// 档号
         /// </summary>
-        [Key, Required]
-        public string ArchivesId { get; set; }
+        
+        public string ArchivesNumber { get; set; }
 
         /// <summary>
         /// 分类号
@@ -26,6 +30,11 @@ namespace archives.service.dal.Entity
         public int FileNumber { get; set; }
 
         /// <summary>
+        /// 卷内序号
+        /// </summary>
+        public int OrderNumber { get; set; }
+
+        /// <summary>
         /// 题名
         /// </summary>
         public string Title { get; set; }
@@ -34,26 +43,21 @@ namespace archives.service.dal.Entity
         /// 项目名称
         /// </summary>
         public string ProjectName { get; set; }
-        
-        /// <summary>
-        /// 总页数
-        /// </summary>
-        public int TotalPages { get; set; }
-        
-        /// <summary>
-        /// 总件数
-        /// </summary>
-        public int TotalNumber { get; set; }
 
         /// <summary>
-        /// 起日期
+        /// 责任者
         /// </summary>
-        public DateTime StartDate { get; set; }
+        public string ResponsibleObject { get; set; }
 
         /// <summary>
-        /// 止日期
+        /// 成文日期
         /// </summary>
-        public DateTime EndDate { get; set; }
+        public DateTime WrittenDate { get; set; }
+
+        /// <summary>
+        /// 页数
+        /// </summary>
+        public int Pages { get; set; }
 
         /// <summary>
         /// 保管期限（是否永久)
@@ -65,6 +69,11 @@ namespace archives.service.dal.Entity
         /// 密级
         /// </summary>
         public string SecretLevel { get; set; }
+
+        /// <summary>
+        /// 归档部门
+        /// </summary>
+        public string ArchivingDepartment { get; set; }
 
         /// <summary>
         /// 归档日期
@@ -85,5 +94,7 @@ namespace archives.service.dal.Entity
         /// 提要
         /// </summary>
         public string Summary { get; set; }
+
+        
     }
 }

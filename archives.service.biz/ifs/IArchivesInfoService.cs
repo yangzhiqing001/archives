@@ -10,6 +10,6 @@ namespace archives.service.biz.ifs
     {
         Task<CommonSearchResponse<List<ArchivesSearchResult>>> SearchArchives(ArchivesSearchRequest request);
 
-        Task<CommonResponse<ArchivesDteailResult>> GetArchives(string archivesId);
+        Task<CommonResponse<ArchivesInfo>> GetArchives(int id);
     }
 }

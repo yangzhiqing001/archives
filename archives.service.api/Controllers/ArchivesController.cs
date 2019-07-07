@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using archives.service.biz.ifs;
 using archives.service.biz.web;
+using archives.service.dal.Entity;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -26,7 +27,7 @@ namespace archives.service.api.Controllers
         }
 
         [HttpGet]
-        public async Task<CommonResponse<ArchivesDteailResult>> GetArchives([FromQuery]string archivesId)
+        public async Task<CommonResponse<ArchivesInfo>> GetArchives([FromQuery]int archivesId)
         {
             return await _archivesService.GetArchives(archivesId);
         }

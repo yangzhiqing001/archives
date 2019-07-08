@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace archives.service.api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
@@ -20,36 +20,19 @@ namespace archives.service.api.Controllers
 
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<string>> Test1()
         {
             //var list = archivesInfoService.GetList();
             
-            return new string[] { "value1", "value2" };
+            return new string[] { "Test1", "Test1" };
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Test2()
         {
-            return "value";
-        }
+            //var list = archivesInfoService.GetList();
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return new string[] { "Test2", "Test2" };
         }
     }
 }

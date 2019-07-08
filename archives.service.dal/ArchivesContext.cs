@@ -12,7 +12,13 @@ namespace archives.service.dal
         }
         public DbSet<ArchivesInfo> ArchivesInfo { get; set; }
 
-        //public DbSet<ArchivesDetails> ArchivesDetails { get; set; }
+        public DbSet<BorrowRegister> BorrowRegister { get; set; }
+
+        public DbSet<BorrowRegisterDetail> BorrowRegisterDetail { get; set; }
+
+        public DbSet<OperationLog> OperationLog { get; set; }
+
+
     }
 
 }

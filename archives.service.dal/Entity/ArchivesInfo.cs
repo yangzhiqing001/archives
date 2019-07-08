@@ -11,7 +11,7 @@ namespace archives.service.dal.Entity
     /// </summary>
     public class ArchivesInfo : BaseEntity
     {
-        [Key, Required]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         /// <summary>
         /// 档号

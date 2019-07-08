@@ -95,6 +95,25 @@ namespace archives.service.dal.Entity
         /// </summary>
         public string Summary { get; set; }
 
-        
+        /// <summary>
+        /// 保管期限（是否永久)
+        /// </summary>
+        public ArchivesStatus Status { get; set; }
+    }
+
+    public enum ArchivesStatus
+    {
+        /// <summary>
+        /// 0 初使化（可删除）
+        /// </summary>
+        Init = 0,
+        /// <summary>
+        /// 1 正常可借阅状态
+        /// </summary>
+        Normal = 1,
+        /// <summary>
+        /// 已借阅
+        /// </summary>
+        Borrowed = 2,
     }
 }

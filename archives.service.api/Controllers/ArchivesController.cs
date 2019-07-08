@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace archives.service.api.Controllers
 {
     [Route("api/[controller]/[action]")]
-    public class ArchivesController : Controller
+    public class ArchivesController : ControllerBase
     {
         private readonly IArchivesInfoService _archivesService;
         public ArchivesController(IArchivesInfoService archivesService)

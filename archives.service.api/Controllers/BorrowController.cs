@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace archives.service.api.Controllers
 {
     [Route("api/[controller]/[action]")]
-    public class BorrowController : Controller
+    public class BorrowController : ControllerBase
     {
         
     }

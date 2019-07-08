@@ -34,6 +34,23 @@ namespace archives.service.dal.Entity
         /// <summary>
         /// 状态 1已登记 2已归还
         /// </summary>
-        public int Status { get; set; }
+        public BorrowRegisterStatus Status { get; set; }
+    }
+
+    public enum BorrowRegisterStatus
+    {
+        /// <summary>
+        /// 已登记
+        /// </summary>
+        Registered = 1,
+
+        /// <summary>
+        /// 已归还
+        /// </summary>
+        Returned = 2,
+        /// <summary>
+        /// 逾期
+        /// </summary>
+        Overdue = 3,
     }
 }

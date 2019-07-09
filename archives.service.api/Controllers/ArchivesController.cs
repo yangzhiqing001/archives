@@ -20,16 +20,29 @@ namespace archives.service.api.Controllers
             _archivesService = archivesService;
         }
 
+        /// <summary>
+        /// 档案查询
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<CommonSearchResponse<List<ArchivesSearchResult>>> SearchArchives([FromQuery]ArchivesSearchRequest request)
         {
             return await _archivesService.SearchArchives(request);
         }
 
+        /// <summary>
+        /// 获取单个档案详情
+        /// </summary>
+        /// <param name="archivesId"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<CommonResponse<ArchivesInfo>> GetArchives([FromQuery]int archivesId)
         {
             return await _archivesService.GetArchives(archivesId);
         }
+
+        //[HttpGet]
+        //public async Task<CommonResponse<>>
     }
 }

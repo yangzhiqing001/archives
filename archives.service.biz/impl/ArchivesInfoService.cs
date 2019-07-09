@@ -27,7 +27,7 @@ namespace archives.service.biz.impl
                 var query = _db.ArchivesInfo.Where(c => !c.Deleted);
                 if (!string.IsNullOrEmpty(request.Keyword))
                 {
-                    query = query.Where(c => c.Title.Contains(request.Keyword.Trim()));
+                    query = query.Where(c => c.Title.Contains(request.Keyword.Trim()) || c.ProjectName.Contains(request.Keyword.Trim()));
                 }
                 var list = await query.Skip(request.PageNumber * request.PageSize)
                     .Take(request.PageSize)

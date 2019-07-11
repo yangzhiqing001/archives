@@ -18,7 +18,7 @@ namespace archives.service.dal
 
         public DbSet<OperationLog> OperationLog { get; set; }
 
-
+        public DbSet<FileStorage> FileStorage { get; set; }
     }
 
 }

@@ -24,10 +24,10 @@
             ],
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
-              {
-                "Host": "localhost",
-                "Port": 5002
-              }
+                {
+                    "Host": "localhost",
+                    "Port": 5002
+                }
             ],
             "UseServiceDiscovery": false
         },
@@ -39,49 +39,65 @@
             ],
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
-              {
-                "Host": "localhost",
-                "Port": 5002
-              }
+                {
+                    "Host": "localhost",
+                    "Port": 5002
+                }
             ],
             "UseServiceDiscovery": false
         },
         //下游values api + 认证 示例
-      {
-        "DownstreamPathTemplate": "/api/values/test1",
-        "UpstreamPathTemplate": "/values/test1",
-        "UpstreamHttpMethod": [
-          "Get"
-        ],
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": 5003
-          }
-        ],
-        "AuthenticationOptions": {
-          "AuthenticationProviderKey": "AuthProviderKey",
-          "AllowedScopes": []
+        {
+            "DownstreamPathTemplate": "/api/values/test1",
+            "UpstreamPathTemplate": "/values/test1",
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "AuthProviderKey",
+                "AllowedScopes": []
+            },
+            "UseServiceDiscovery": false
         },
-        "UseServiceDiscovery": false
-      },
         //下游labels api 不认证 示例
-      {
-        "DownstreamPathTemplate": "/api/values/test2",
-        "UpstreamPathTemplate": "/test2",
-        "UpstreamHttpMethod": [
-          "Get"
-        ],
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": 5003
-          }
-        ],
-        "UseServiceDiscovery": false
-      }
+        {
+            "DownstreamPathTemplate": "/api/values/test2",
+            "UpstreamPathTemplate": "/test2",
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "UseServiceDiscovery": false
+        },
+        //下游labels api 不认证 示例
+        {
+            "DownstreamPathTemplate": "/api/files/download",
+            "UpstreamPathTemplate": "/files/download",
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "UseServiceDiscovery": false
+        }
     ],
     "GlobalConfiguration": {
         "RequestIdKey": "OcRequestId"

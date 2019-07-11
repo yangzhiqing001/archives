@@ -10,6 +10,8 @@ namespace archives.service.biz
         public static void AddBizService(this IServiceCollection services)
         {
             services.AddScoped<IArchivesInfoService, ArchivesInfoService>();
+            services.AddScoped<IBorrowRegisterService, BorrowRegisterService>();
+            services.AddScoped<IFileStorageService, FileStorageService>();
         }
     }
 }

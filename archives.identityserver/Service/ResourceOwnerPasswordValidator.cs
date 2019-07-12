@@ -18,7 +18,6 @@ namespace archives.identityserver.Service
             {
                 context.Result = PasswordValidation.GetResult(context.Request.Raw);
             });
-
         }
     }
 }

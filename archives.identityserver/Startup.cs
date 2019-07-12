@@ -24,7 +24,7 @@ namespace archives.identityserver
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        public void ConfigureServices(IServiceCollection services)
         {
             var ids = Configuration.GetSection("IdentityServerConfig").Get<IdentityServerConfig>();
             services.AddIdentityServer()
@@ -37,9 +37,11 @@ namespace archives.identityserver
                 .AddInMemoryApiResources(new List<ApiResource>
                 {
                     new ApiResource("api", "My API"),
+                    new ApiResource("anonymous", "My API"),
+                    new ApiResource("login", "My API"),
                 })
                 .AddInMemoryClients(ids.Clients.ToIdentityModel())
-                .AddExtensionGrantValidator<CustomGrantValidator>()
+                //.AddExtensionGrantValidator<CustomGrantValidator>()
                 .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
                 .AddProfileService<ProfileService>();
         }
@@ -65,8 +67,6 @@ namespace archives.identityserver
                     await context.Response.WriteAsync(context.Connection.LocalIpAddress.ToString());
                 });
             });
-
-
 
             //app.UseSwaggerPage(SwaggerName);
 

@@ -3,6 +3,7 @@ namespace archives.identityserver.Config
 {
     public class ClientConfig
     {
+        public string Scope { get; set; }
         public string ClientId { get; set; }
 
         public string GrantType { get; set; }

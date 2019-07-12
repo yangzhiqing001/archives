@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using archives.service.biz.ifs;
+using archives.service.biz.web;
 using archives.service.dal;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,19 +21,39 @@ namespace archives.service.api.Controllers
 
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Test1()
+        public ActionResult<CommonResponse<IEnumerable<string>>> Test1()
         {
             //var list = archivesInfoService.GetList();
-            
-            return new string[] { "Test1", "Test1" };
+            var response = new CommonResponse<IEnumerable<string>>
+            {
+                Data = new string[] { "Test1", "anonymous" },
+                Success = true
+            };
+            return response;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Test2()
+        public ActionResult<CommonResponse<IEnumerable<string>>> Test2()
         {
             //var list = archivesInfoService.GetList();
+            var response = new CommonResponse<IEnumerable<string>>
+            {
+                Data = new string[] { "Test2", "login" },
+                Success = true
+            };
+            return response;
+        }
 
-            return new string[] { "Test2", "Test2" };
+        [HttpGet]
+        public ActionResult<CommonResponse<IEnumerable<string>>> Test3()
+        {
+            //var list = archivesInfoService.GetList();
+            var response = new CommonResponse<IEnumerable<string>>
+            {
+                Data = new string[] { "Test3", "allow" },
+                Success = true
+            };
+            return response;
         }
     }
 }

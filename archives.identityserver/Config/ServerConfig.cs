@@ -48,7 +48,7 @@ namespace archives.identityserver.Config
                 // resource owner password grant client
                 new Client
                 {
-                    ClientId = "test2",
+                    ClientId = "archivesClient",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     ClientSecrets =
                     {

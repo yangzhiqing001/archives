@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Config\ServerConfig.cs" />
+    <Compile Remove="Service\CustomGrantValidator.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="IdentityServer4" Version="2.4.0" />

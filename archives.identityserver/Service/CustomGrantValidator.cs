@@ -7,12 +7,10 @@ using IdentityServer4.Validation;
 namespace archives.identityserver.Service
 {
     public class CustomGrantValidator : IExtensionGrantValidator
-    {
-        private readonly ITokenValidator _validator;
-        
+    {        
         public CustomGrantValidator(ITokenValidator validator)
         {
-            _validator = validator;
+
         }
         public string GrantType => ServerConfig.CustomGrantType;
 

@@ -27,8 +27,8 @@ namespace archives.identityserver.Service
                     },
                     customResponse: new System.Collections.Generic.Dictionary<string, object>
                     {
-                        { "Success", true },
-                        { "Message", "管理员登录" }
+                        { "success", true },
+                        { "message", "管理员登录" }
                     }
                 );
             }
@@ -36,8 +36,8 @@ namespace archives.identityserver.Service
             {
                 var error = new System.Collections.Generic.Dictionary<string, object>
                 {
-                    { "Success", false },
-                    { "Message", "账号密码出错" }
+                    { "success", false },
+                    { "message", "账号密码出错" }
                 };
                 return new GrantValidationResult(TokenRequestErrors.InvalidGrant, "invalid custom credential", error);
             }

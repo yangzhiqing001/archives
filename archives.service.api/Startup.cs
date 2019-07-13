@@ -1,4 +1,6 @@
-﻿using archives.service.api.Models;
+﻿using System;
+using System.IO;
+using archives.service.api.Models;
 using archives.service.biz;
 using archives.service.dal;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +34,24 @@ namespace archives.service.api
                 });
             services.AddDbContext<ArchivesContext>(d => d.UseMySQL(Configuration.GetConnectionString("Default")));
             services.AddBizService();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
+                {
+                    Title = "archives api",
+                    Version = "v1",
+                    Description = "",
+                });
+
+                var basePath = AppContext.BaseDirectory;
+                var files = Directory.GetFiles(basePath, "*.xml");
+                foreach (var filePath in files)
+                {
+                    c.IncludeXmlComments(filePath);
+                }
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +70,11 @@ namespace archives.service.api
             //app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "archives api");
+            });
         }
     }
 }

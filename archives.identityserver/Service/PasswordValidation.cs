@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Security.Claims;
 using archives.identityserver.Config;
+using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
 
@@ -17,7 +19,12 @@ namespace archives.identityserver.Service
                 return new GrantValidationResult(
                     subject: userName,
                     authenticationMethod: "password",
-                    claims: ClaimResult.GetUserClaims(1, userName ?? string.Empty),
+                    claims: new Claim[]
+                    {
+                        new Claim(JwtClaimTypes.Id, "1"),
+                        new Claim(JwtClaimTypes.Name, userName),
+                        new Claim(JwtClaimTypes.Role, "admin")
+                    },
                     customResponse: new System.Collections.Generic.Dictionary<string, object>
                     {
                         { "Success", true },

@@ -22,7 +22,7 @@ namespace archives.identityserver.Config
                 ClientId = c.ClientId,
                 AllowedGrantTypes = new[] { c.GrantType },
                 ClientSecrets = { new Secret(c.Secret.Sha256()) },
-                AllowedScopes = { c.Scope, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile },
+                AllowedScopes = { "api", IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile },
                 IdentityTokenLifetime = c.IdentityTokenLifetime,
                 AccessTokenLifetime = c.AccessTokenLifetime
             });

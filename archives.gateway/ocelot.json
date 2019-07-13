@@ -1,124 +1,127 @@
 ﻿{
-  "ReRoutes": [
-    //获取token地址
-    {
-      "DownstreamPathTemplate": "/connect/token",
-      "UpstreamPathTemplate": "/token",
-      "UpstreamHttpMethod": [
-        "Post"
-      ],
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+    "ReRoutes": [
+        //获取token地址
         {
-          "Host": "localhost",
-          "Port": 5002
-        }
-      ],
-      "UseServiceDiscovery": false
-    },
-    {
-      "DownstreamPathTemplate": "/connect/userinfo",
-      "UpstreamPathTemplate": "/userinfo",
-      "UpstreamHttpMethod": [
-        "Get"
-      ],
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+            "DownstreamPathTemplate": "/connect/token",
+            "UpstreamPathTemplate": "/token",
+            "UpstreamHttpMethod": [
+                "Post"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5002
+                }
+            ],
+            "UseServiceDiscovery": false
+        },
         {
-          "Host": "localhost",
-          "Port": 5002
-        }
-      ],
-      "UseServiceDiscovery": false
-    },
-    {
-      "DownstreamPathTemplate": "/api/ids4/token",
-      "UpstreamPathTemplate": "/ids4/token",
-      "UpstreamHttpMethod": [
-        "Post"
-      ],
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+            "DownstreamPathTemplate": "/connect/userinfo",
+            "UpstreamPathTemplate": "/userinfo",
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5002
+                }
+            ],
+            "UseServiceDiscovery": false
+        },
         {
-          "Host": "localhost",
-          "Port": 5002
-        }
-      ],
-      "UseServiceDiscovery": false
-    },
-    //下游api + 示例 anonymous 登录访问
-    {
-      "DownstreamPathTemplate": "/api/values/test1",
-      "UpstreamPathTemplate": "/values/test1",
-      "UpstreamHttpMethod": [
-        "Get"
-      ],
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+            "DownstreamPathTemplate": "/api/ids4/token",
+            "UpstreamPathTemplate": "/ids4/token",
+            "UpstreamHttpMethod": [
+                "Post"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5002
+                }
+            ],
+            "UseServiceDiscovery": false
+        },
+        //下游api + 示例 anonymous 登录访问
         {
-          "Host": "localhost",
-          "Port": 5003
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "AuthProviderKey",
-        "AllowedScopes": [ "anonymous" ]
-      },
-      "UseServiceDiscovery": false
-    },
-    //下游api 示例 login 管理员登录访问
-    {
-      "DownstreamPathTemplate": "/api/values/test2",
-      "UpstreamPathTemplate": "/values/test2",
-      "UpstreamHttpMethod": [
-        "Get"
-      ],
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+            "DownstreamPathTemplate": "/api/values/test1",
+            "UpstreamPathTemplate": "/values/test1",
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "AuthProviderKey",
+                "AllowedScopes": []
+            },
+            "UseServiceDiscovery": false
+        },
+        //下游api 示例 login 管理员登录访问
         {
-          "Host": "localhost",
-          "Port": 5003
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "AuthProviderKey",
-        "AllowedScopes": [ "login" ]
-      },
-      "UseServiceDiscovery": false
-    },
+            "DownstreamPathTemplate": "/api/values/test2",
+            "UpstreamPathTemplate": "/values/test2",
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "AuthProviderKey",
+                "AllowedScopes": []
+            },
+            "RouteClaimsRequirement": {
+                "role": "admin"
+            },
+            "UseServiceDiscovery": false
+        },
 
-    //下游api + 示例 所有人可访问
-    {
-      "DownstreamPathTemplate": "/api/values/test3",
-      "UpstreamPathTemplate": "/values/test3",
-      "UpstreamHttpMethod": [
-        "Get"
-      ],
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+        //下游api + 示例 所有人可访问
         {
-          "Host": "localhost",
-          "Port": 5003
-        }
-      ],
-      "UseServiceDiscovery": false
-    },
-    {
-      "DownstreamPathTemplate": "/api/files/download",
-      "UpstreamPathTemplate": "/files/download",
-      "UpstreamHttpMethod": [
-        "Get"
-      ],
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+            "DownstreamPathTemplate": "/api/values/test3",
+            "UpstreamPathTemplate": "/values/test3",
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "UseServiceDiscovery": false
+        },
         {
-          "Host": "localhost",
-          "Port": 5003
+            "DownstreamPathTemplate": "/api/files/download",
+            "UpstreamPathTemplate": "/files/download",
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "UseServiceDiscovery": false
         }
-      ],
-      "UseServiceDiscovery": false
-    }
-  ],
+    ],
     "GlobalConfiguration": {
         "RequestIdKey": "OcRequestId"
         //"ServiceDiscoveryProvider": { "Type": "Eureka" } //指定服务发现的提供方为Eureka

@@ -67,6 +67,8 @@ namespace archives.gateway
                 });
             });
 
+
+            app.UseErrorHandling();
             app.UseOcelot().Wait();
 
             app.Run(async (context) =>

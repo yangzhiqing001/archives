@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using archives.service.biz.ifs;
 using archives.service.biz.web;
 using archives.service.dal;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace archives.service.api.Controllers
@@ -33,6 +34,7 @@ namespace archives.service.api.Controllers
         }
 
         [HttpGet]
+        //[Authorize(Roles = "admin")]
         public ActionResult<CommonResponse<IEnumerable<string>>> Test2()
         {
             //var list = archivesInfoService.GetList();

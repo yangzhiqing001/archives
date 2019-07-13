@@ -36,9 +36,7 @@ namespace archives.identityserver
                 })
                 .AddInMemoryApiResources(new List<ApiResource>
                 {
-                    new ApiResource("api", "My API"),
-                    new ApiResource("anonymous", "My API"),
-                    new ApiResource("login", "My API"),
+                    new ApiResource("api", "Arichives API", new List<string> {"role"})
                 })
                 .AddInMemoryClients(ids.Clients.ToIdentityModel())
                 //.AddExtensionGrantValidator<CustomGrantValidator>()
@@ -54,14 +52,16 @@ namespace archives.identityserver
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Map("/warmup", (t) => {
+            app.Map("/warmup", (t) =>
+            {
                 t.Run(async context =>
                 {
                     await context.Response.WriteAsync("ok");
                 });
             });
 
-            app.Map("/serverip", (t) => {
+            app.Map("/serverip", (t) =>
+            {
                 t.Run(async context =>
                 {
                     await context.Response.WriteAsync(context.Connection.LocalIpAddress.ToString());

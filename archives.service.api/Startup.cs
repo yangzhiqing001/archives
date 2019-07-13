@@ -47,7 +47,8 @@ namespace archives.service.api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

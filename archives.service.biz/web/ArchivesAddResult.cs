@@ -1,22 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-
-namespace archives.service.dal.Entity
+namespace archives.service.biz.web
 {
-    /// <summary>
-    /// 案卷内文件
-    /// </summary>
-    public class ArchivesInfo : BaseEntity
+    public class ArchivesAddResult
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+    }
+    public class ArchivesAddRequest
+    {
         /// <summary>
         /// 档号
         /// </summary>
-        
+
         public string ArchivesNumber { get; set; }
 
         /// <summary>
@@ -93,26 +87,5 @@ namespace archives.service.dal.Entity
         /// 提要
         /// </summary>
         public string Summary { get; set; }
-
-        /// <summary>
-        /// 0 初使化（可删除） 1 正常可借阅状态 2 已借阅 (前端可根据状态值显示操作按钮)
-        /// </summary>
-        public ArchivesStatus Status { get; set; }
-    }
-
-    public enum ArchivesStatus
-    {
-        /// <summary>
-        /// 0 初使化（可删除）
-        /// </summary>
-        Init = 0,
-        /// <summary>
-        /// 1 正常可借阅状态
-        /// </summary>
-        Normal = 1,
-        /// <summary>
-        /// 2 已借阅
-        /// </summary>
-        Borrowed = 2,
     }
 }

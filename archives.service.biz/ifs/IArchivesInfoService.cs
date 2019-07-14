@@ -13,5 +13,11 @@ namespace archives.service.biz.ifs
         Task<CommonResponse<ArchivesInfo>> GetArchives(int id);
 
         Task<List<string>> QueryAllProject();
+
+        Task<CommonResponse<ArchivesEditResult>> Edit(ArchivesEditRequest archives);
+
+        Task<CommonResponse<ArchivesAddResult>> Add(ArchivesAddRequest request);
+
+        Task<CommonResponse<ArchivesDeleteResult>> Delete(ArchivesDeleteRequest request);
     }
 }

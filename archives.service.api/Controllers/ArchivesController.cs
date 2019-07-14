@@ -57,5 +57,23 @@ namespace archives.service.api.Controllers
             }
             return response;
         }
+
+        [HttpPost]
+        public async Task<CommonResponse<ArchivesEditResult>> EditArchives(ArchivesEditRequest request)
+        {
+            return await _archivesService.Edit(request);
+        }
+
+        [HttpPost]
+        public async Task<CommonResponse<ArchivesAddResult>> AddArchives(ArchivesAddRequest request)
+        {
+            return await _archivesService.Add(request);
+        }
+
+        [HttpPost]
+        public async Task<CommonResponse<ArchivesDeleteResult>> DeleteArchives(ArchivesDeleteRequest request)
+        {
+            return await _archivesService.Delete(request);
+        }
     }
 }

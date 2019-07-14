@@ -27,12 +27,12 @@ namespace archives.service.biz.web
 		/// <summary>
 		/// 分类号
 		/// </summary>
-		public int CategoryId { get; set; }
+		public string CategoryId { get; set; }
 
 		/// <summary>
 		/// 案卷号
 		/// </summary>
-		public int FileNumber { get; set; }
+		public string FileNumber { get; set; }
 
 		/// <summary>
 		/// 题名

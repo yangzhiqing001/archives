@@ -42,7 +42,20 @@ namespace archives.service.api.Controllers
             return await _archivesService.GetArchives(archivesId);
         }
 
-        //[HttpGet]
-        //public async Task<CommonResponse<>>
+        [HttpGet]
+        public async Task<CommonResponse<List<string>>> QueryAllProjectName()
+        {
+            var response = new CommonResponse<List<string>>();
+            try
+            {
+                response.Data = await _archivesService.QueryAllProject();
+                response.Success = true;
+            }
+            catch
+            {
+                response.Message = "获取项目名称发生异常";
+            }
+            return response;
+        }
     }
 }

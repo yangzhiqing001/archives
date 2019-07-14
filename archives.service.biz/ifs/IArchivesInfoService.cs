@@ -11,5 +11,7 @@ namespace archives.service.biz.ifs
         Task<CommonSearchResponse<List<ArchivesSearchResult>>> SearchArchives(ArchivesSearchRequest request);
 
         Task<CommonResponse<ArchivesInfo>> GetArchives(int id);
+
+        Task<List<string>> QueryAllProject();
     }
 }

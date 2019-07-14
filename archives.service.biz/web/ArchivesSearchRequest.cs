@@ -4,6 +4,16 @@ namespace archives.service.biz.web
     public class ArchivesSearchRequest : BaseRequest
 	{
         public string Keyword { get; set; }
+
+        /// <summary>
+        /// 标签，（目前用在projectname上）
+        /// </summary>
+        public string Label { get; set; }
+
+        /// <summary>
+        /// 是否显示已借出（可为空）
+        /// </summary>
+        public bool? ShowBorrowed { get; set; }
     }
 
     public class ArchivesSearchResult

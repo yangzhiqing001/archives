@@ -259,6 +259,26 @@
             },
             "UseServiceDiscovery": false
         },
+        //获取所有档案项目名
+        {
+            "DownstreamPathTemplate": "api/archives/queryAllProjectname",
+            "UpstreamPathTemplate": "/archives/queryAllProjectname",
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "AuthProviderKey",
+                "AllowedScopes": []
+            },
+            "UseServiceDiscovery": false
+        },
         {
             //下载图片接品
             "DownstreamPathTemplate": "/api/files/download",

@@ -29,6 +29,19 @@ namespace archives.service.biz.impl
                 {
                     query = query.Where(c => c.Title.Contains(request.Keyword.Trim()) || c.ProjectName.Contains(request.Keyword.Trim()));
                 }
+                if (!string.IsNullOrEmpty(request.Label))
+                {
+                    var projectNames = request.Label.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    query = query.Where(c => projectNames.Contains(c.ProjectName));
+                }
+                if (request.ShowBorrowed.HasValue)
+                {
+                    if (!request.ShowBorrowed.Value)
+                    {
+                        query = query.Where(c => c.Status != ArchivesStatus.Borrowed);
+                    }
+                    
+                }
                 var list = await query.Skip(request.PageNumber * request.PageSize)
                     .Take(request.PageSize)
                     .OrderBy(c => c.ArchivesNumber)
@@ -79,6 +92,12 @@ namespace archives.service.biz.impl
                 //写日志可以用log4netcore
             }
             return response;
+        }
+
+        public async Task<List<string>> QueryAllProject()
+        {
+            var list = await _db.ArchivesInfo.Where(c => !c.Deleted).OrderByDescending(c => c.Id).Select(c => c.ProjectName).Distinct().ToListAsync();
+            return list;
         }
     }
 }

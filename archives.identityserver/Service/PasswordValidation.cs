@@ -28,7 +28,10 @@ namespace archives.identityserver.Service
                     customResponse: new System.Collections.Generic.Dictionary<string, object>
                     {
                         { "success", true },
-                        { "message", "管理员登录" }
+                        { "message", "管理员登录" },
+                        { "ResponseTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") },
+                        { "ErrorCode", 0 },
+
                     }
                 );
             }

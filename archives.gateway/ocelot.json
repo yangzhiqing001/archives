@@ -171,6 +171,9 @@
                 "AuthenticationProviderKey": "AuthProviderKey",
                 "AllowedScopes": []
             },
+            "RouteClaimsRequirement": {
+                "role": "admin"
+            },
             "UseServiceDiscovery": false
         },
         {

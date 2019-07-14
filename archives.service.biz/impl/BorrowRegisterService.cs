@@ -52,7 +52,10 @@ namespace archives.service.biz.impl
                 SignPhoto = request.SignPhoto,
                 Status = BorrowRegisterStatus.Registered,
                 Company = request.Compnay,
-                Department = request.Department
+                Department = request.Department,
+                CreateTime = DateTime.Now,
+                Deleted = false,
+                UpdateTime = DateTime.Now
             };
 
             using (var trans = await _db.Database.BeginTransactionAsync())
@@ -71,7 +74,7 @@ namespace archives.service.biz.impl
                     {
                         throw new BizException($"请求档案：{string.Join(",", borrowedArchives.Select(c => c.ArchivesNumber))} 当前状态为已借阅");
                     }
-                                        
+
                     await _db.BorrowRegister.AddAsync(regEntity);
                     await _db.SaveChangesAsync();
 
@@ -116,7 +119,7 @@ namespace archives.service.biz.impl
                 }
                 var list = await query.Skip(request.PageNumber * request.PageSize)
                         .Take(request.PageSize)
-                        .OrderBy(c => c.Id).ToListAsync();
+                        .OrderBy(c => c.Status).ThenBy(c => c.Id).ToListAsync();
 
                 response.Data = list;
                 response.Success = true;
@@ -298,15 +301,15 @@ namespace archives.service.biz.impl
                 catch (BizException ex)
                 {
                     trans.Rollback();
-                    response.Message = ex.Message;                    
+                    response.Message = ex.Message;
                 }
                 catch
                 {
                     trans.Rollback();
                     response.Message = "提交续借发生异常";
-                }                
+                }
             }
-                        
+
             return response;
         }
     }

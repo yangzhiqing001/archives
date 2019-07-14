@@ -59,19 +59,19 @@ namespace archives.service.api.Controllers
         }
 
         [HttpPost]
-        public async Task<CommonResponse<ArchivesEditResult>> EditArchives(ArchivesEditRequest request)
+        public async Task<CommonResponse<ArchivesEditResult>> EditArchives([FromBody]ArchivesEditRequest request)
         {
             return await _archivesService.Edit(request);
         }
 
         [HttpPost]
-        public async Task<CommonResponse<ArchivesAddResult>> AddArchives(ArchivesAddRequest request)
+        public async Task<CommonResponse<ArchivesAddResult>> AddArchives([FromBody]ArchivesAddRequest request)
         {
             return await _archivesService.Add(request);
         }
 
         [HttpPost]
-        public async Task<CommonResponse<ArchivesDeleteResult>> DeleteArchives(ArchivesDeleteRequest request)
+        public async Task<CommonResponse<ArchivesDeleteResult>> DeleteArchives([FromBody]ArchivesDeleteRequest request)
         {
             return await _archivesService.Delete(request);
         }

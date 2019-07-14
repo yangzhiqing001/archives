@@ -29,7 +29,7 @@ namespace archives.service.api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<CommonResponse<BorrowRegisterResult>> Register(BorrowRegisterRequest request)
+        public async Task<CommonResponse<BorrowRegisterResult>> Register([FromBody]BorrowRegisterRequest request)
         {
             return await _borrowRegisterService.BorrowRegister(request);
         }
@@ -62,7 +62,7 @@ namespace archives.service.api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<CommonResponse<string>> RenewBorrow(RenewBorrowRequest request)
+        public async Task<CommonResponse<string>> RenewBorrow([FromBody]RenewBorrowRequest request)
         {
             return await _borrowRegisterService.RenewBorrow(request);
         }
@@ -73,7 +73,7 @@ namespace archives.service.api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<CommonResponse<string>> ReturnBorrow(ReturnBorrowRequest request)
+        public async Task<CommonResponse<string>> ReturnBorrow([FromBody]ReturnBorrowRequest request)
         {
             return await _borrowRegisterService.ReturnArchives(request);
         }
@@ -84,7 +84,7 @@ namespace archives.service.api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<CommonResponse<string>> ConfirmBorrowed(ConfirmBorrowedRequest request)
+        public async Task<CommonResponse<string>> ConfirmBorrowed([FromBody]ConfirmBorrowedRequest request)
         {
             return await _borrowRegisterService.ConfirmBorrowed(request);
         }

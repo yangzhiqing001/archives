@@ -52,7 +52,8 @@ namespace archives.service.biz.impl
                         CategoryId = c.CategoryId,
                         FileNumber = c.FileNumber,
                         ProjectName = c.ProjectName,
-                        Title = c.Title
+                        Title = c.Title,
+                        OrderNumber = c.OrderNumber,
                     }).ToListAsync();
 
                 var total = await query.CountAsync();

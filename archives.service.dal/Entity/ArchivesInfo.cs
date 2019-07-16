@@ -11,6 +11,9 @@ namespace archives.service.dal.Entity
     /// </summary>
     public class ArchivesInfo : BaseEntity
     {
+        /// <summary>
+        /// ID 维一值
+        /// </summary>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         /// <summary>
@@ -100,6 +103,9 @@ namespace archives.service.dal.Entity
         public ArchivesStatus Status { get; set; }
     }
 
+    /// <summary>
+    /// 档案状态
+    /// </summary>
     public enum ArchivesStatus
     {
         /// <summary>

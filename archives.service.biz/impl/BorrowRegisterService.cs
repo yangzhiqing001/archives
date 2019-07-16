@@ -51,7 +51,7 @@ namespace archives.service.biz.impl
                 ReturnDate = request.ReturnDate,
                 SignPhoto = request.SignPhoto,
                 Status = BorrowRegisterStatus.Registered,
-                Company = request.Compnay,
+                Company = request.Company,
                 Department = request.Department,
                 CreateTime = DateTime.Now,
                 Deleted = false,

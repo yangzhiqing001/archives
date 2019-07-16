@@ -8,6 +8,9 @@ namespace archives.service.biz.web
 
     public class ArchivesEditRequest
     {
+        /// <summary>
+        /// 档案Id(唯一值，也就是查询档案返回的Id)
+        /// </summary>
         public int Id { get; set; }
         /// <summary>
         /// 档号

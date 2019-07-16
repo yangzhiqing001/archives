@@ -8,6 +8,9 @@ namespace archives.service.dal.Entity
 {
     public class BorrowRegister : BaseEntity
     {
+        /// <summary>
+        /// 借阅登记Id(唯一值，用在查看详情，以及其它确认借阅，归还等接口中)
+        /// </summary>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
@@ -21,8 +24,14 @@ namespace archives.service.dal.Entity
         /// </summary>
         public string Phone { get; set; }
 
+        /// <summary>
+        /// 公司
+        /// </summary>
         public string Company { get; set; }
 
+        /// <summary>
+        /// 部门
+        /// </summary>
         public string Department { get; set; }
 
         /// <summary>
@@ -41,6 +50,9 @@ namespace archives.service.dal.Entity
         public BorrowRegisterStatus Status { get; set; }
     }
 
+    /// <summary>
+    /// 借阅状态
+    /// </summary>
     public enum BorrowRegisterStatus
     {
         /// <summary>

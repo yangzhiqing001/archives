@@ -3,8 +3,14 @@ namespace archives.service.biz.web
 {
     public class ArchivesAddResult
     {
+        /// <summary>
+        /// 档案ID，唯一值
+        /// </summary>
         public int Id { get; set; }
     }
+    /// <summary>
+    /// 添加档案入参
+    /// </summary>
     public class ArchivesAddRequest
     {
         /// <summary>

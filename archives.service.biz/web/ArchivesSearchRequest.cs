@@ -1,8 +1,14 @@
 ﻿using System;
 namespace archives.service.biz.web
 {
+    /// <summary>
+    /// 档案查询参数
+    /// </summary>
     public class ArchivesSearchRequest : BaseRequest
 	{
+        /// <summary>
+        /// 搜索关键字
+        /// </summary>
         public string Keyword { get; set; }
 
         /// <summary>
@@ -16,8 +22,14 @@ namespace archives.service.biz.web
         public bool? ShowBorrowed { get; set; }
     }
 
+    /// <summary>
+    /// 档案搜索结果 
+    /// </summary>
     public class ArchivesSearchResult
 	{
+        /// <summary>
+        /// ID (唯一值，用来做后续操作（编辑、借阅==）)
+        /// </summary>
         public int Id { get; set; }
 		/// <summary>
 		/// 档号

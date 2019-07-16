@@ -4,12 +4,21 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace archives.service.biz.web
-{
+{ 
+    /// <summary>
+    /// 借阅详情入参
+    /// </summary>
     public class GetBorrowDetailRequest
     {
+        /// <summary>
+        /// 借阅登记Id(借阅列表返回的Id)
+        /// </summary>
         public int BorrowRegisterId { get; set; }
     }
 
+    /// <summary>
+    /// 借阅列表返回
+    /// </summary>
     public class GetBorrowDetailResult
     {
         /// <summary>

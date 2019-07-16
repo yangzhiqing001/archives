@@ -223,6 +223,8 @@ namespace archives.service.biz.impl
 
                 if (borrowRegister.Status == BorrowRegisterStatus.Returned)
                 {
+                    response.Message = "当前状态已经归还";
+                    response.ErrorCode = 1;
                     response.Success = true;
                     return response;
                 }
@@ -265,6 +267,8 @@ namespace archives.service.biz.impl
 
                     if (borrowRegister.Status == BorrowRegisterStatus.Borrowed)
                     {
+                        response.Message = "当前状态已经借出";
+                        response.ErrorCode = 1;
                         response.Success = true;
                         return response;
                     }

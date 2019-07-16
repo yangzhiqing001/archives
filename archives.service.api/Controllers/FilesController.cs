@@ -14,12 +14,20 @@ using Microsoft.Extensions.Configuration;
 
 namespace archives.service.api.Controllers
 {
+    /// <summary>
+    /// 文件上传下载接口
+    /// </summary>
     [Route("api/[controller]/[action]")]
     public class FilesController : Controller
     {
         private readonly IFileStorageService _fileStorageService;
         private readonly string _localPath;
         private readonly string _gatewayFilePath;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fileStorageService"></param>
+        /// <param name="configuration"></param>
         public FilesController(IFileStorageService fileStorageService, IConfiguration configuration)
         {
             _fileStorageService = fileStorageService;
@@ -27,6 +35,11 @@ namespace archives.service.api.Controllers
             _gatewayFilePath = configuration.GetValue<string>("GatewayFilePath");
         }
 
+        /// <summary>
+        /// 上传接口
+        /// </summary>
+        /// <param name="formFile">file</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<CommonResponse<AddFileResult>> AddFile(IFormFile formFile)
         {
@@ -70,6 +83,11 @@ namespace archives.service.api.Controllers
 
         }
 
+        /// <summary>
+        /// 下载
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> DownLoad(string f)
         {

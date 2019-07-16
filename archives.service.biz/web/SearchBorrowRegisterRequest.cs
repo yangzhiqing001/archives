@@ -64,6 +64,9 @@ namespace archives.service.biz.web
         /// 借阅档案列表
         /// </summary>
         public List<ArchivesSimple> ArchivesList { get; set; }
+
+
+        public string ArchivesStr { get; set; }
     }
 
     public class ArchivesSimple

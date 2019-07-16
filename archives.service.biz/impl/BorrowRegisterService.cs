@@ -147,7 +147,13 @@ namespace archives.service.biz.impl
                                               OrderNumber = a.OrderNumber
                                           }).ToListAsync();
 
-                list.ForEach(c => { c.ArchivesList = archivesList.Where(j => j.BorrowRegisterId == c.Id).ToList(); c.ReturnDateStr = c.ReturnDate.ToString("yyyy-MM-dd"); });
+                list.ForEach(c =>
+                {
+                    var arlist = archivesList.Where(j => j.BorrowRegisterId == c.Id).ToList();
+                    c.ArchivesList = arlist;
+                    c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}/{j.FileNumber}/{j.OrderNumber}"));
+                    c.ReturnDateStr = c.ReturnDate.ToString("yyyy-MM-dd");
+                });
 
                 response.Data = list;
                 response.Success = true;

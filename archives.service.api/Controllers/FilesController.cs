@@ -70,6 +70,7 @@ namespace archives.service.api.Controllers
 
         }
 
+        [HttpGet]
         public async Task<IActionResult> DownLoad(string f)
         {
             try

@@ -336,7 +336,7 @@
         },
         //获取所有档案项目名
         {
-            "DownstreamPathTemplate": "api/archives/queryAllProjectname",
+            "DownstreamPathTemplate": "/api/archives/queryAllProjectname",
             "UpstreamPathTemplate": "/archives/queryAllProjectname",
             "UpstreamHttpMethod": [
                 "Get"

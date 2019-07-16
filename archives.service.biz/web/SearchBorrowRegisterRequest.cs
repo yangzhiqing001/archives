@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using archives.service.dal.Entity;
 
 namespace archives.service.biz.web
 {
@@ -13,5 +14,85 @@ namespace archives.service.biz.web
         /// 搜索关键字
         /// </summary>
         public string Keyword { get; set; }
+    }
+
+    public class SearchBorrowRegisterResult
+    {
+        /// <summary>
+        /// 借阅id
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// 借阅人
+        /// </summary>
+        public string Borrower { get; set; }
+
+        /// <summary>
+        /// 手机
+        /// </summary>
+        public string Phone { get; set; }
+
+        /// <summary>
+        /// 公司
+        /// </summary>
+        public string Company { get; set; }
+
+        /// <summary>
+        /// 部门
+        /// </summary>
+        public string Department { get; set; }
+
+        /// <summary>
+        /// 归还日期
+        /// </summary>
+        public DateTime ReturnDate { get; set; }
+
+        public string ReturnDateStr { get; set; }
+
+        /// <summary>
+        /// 签名照片
+        /// </summary>
+        public string SignPhoto { get; set; }
+
+        /// <summary>
+        /// 状态 0.正常 1.已登记 2.已借出 3.已延期 4.已归还 5.逾期
+        /// </summary>
+        public BorrowRegisterStatus Status { get; set; }
+
+        /// <summary>
+        /// 借阅档案列表
+        /// </summary>
+        public List<ArchivesSimple> ArchivesList { get; set; }
+    }
+
+    public class ArchivesSimple
+    {
+        public int BorrowRegisterId { get; set; }
+        /// <summary>
+        /// 档号
+        /// </summary>
+
+        public string ArchivesNumber { get; set; }
+
+        /// <summary>
+        /// 分类号
+        /// </summary>
+        public string CategoryId { get; set; }
+
+        /// <summary>
+        /// 案卷号
+        /// </summary>
+        public string FileNumber { get; set; }
+
+        /// <summary>
+        /// 卷内序号
+        /// </summary>
+        public string OrderNumber { get; set; }
+
+        /// <summary>
+        /// 目录号
+        /// </summary>
+        public string CatalogNumber { get; set; }
     }
 }

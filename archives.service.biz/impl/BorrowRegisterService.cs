@@ -33,7 +33,7 @@ namespace archives.service.biz.impl
                 response.Message = "手机不能为空";
                 return response;
             }
-            if (string.IsNullOrEmpty(request.Borrwoer))
+            if (string.IsNullOrEmpty(request.Borrower))
             {
                 response.Message = "借阅人不能为空";
                 return response;
@@ -46,7 +46,7 @@ namespace archives.service.biz.impl
 
             var regEntity = new dal.Entity.BorrowRegister
             {
-                Borrower = request.Borrwoer,
+                Borrower = request.Borrower,
                 Phone = request.Phone,
                 ReturnDate = request.ReturnDate,
                 SignPhoto = request.SignPhoto,
@@ -107,9 +107,9 @@ namespace archives.service.biz.impl
             return response;
         }
 
-        public async Task<CommonSearchResponse<List<BorrowRegister>>> SearchBorrowRegister(SearchBorrowRegisterRequest request)
+        public async Task<CommonSearchResponse<List<SearchBorrowRegisterResult>>> SearchBorrowRegister(SearchBorrowRegisterRequest request)
         {
-            var response = new CommonSearchResponse<List<BorrowRegister>>();
+            var response = new CommonSearchResponse<List<SearchBorrowRegisterResult>>();
             try
             {
                 var query = _db.BorrowRegister.Where(c => c.Status != BorrowRegisterStatus.Returned && !c.Deleted);
@@ -120,7 +120,34 @@ namespace archives.service.biz.impl
                 var list = await query.OrderBy(c => c.Status).ThenBy(c => c.Id)
                         .Skip(request.PageNumber * request.PageSize)
                         .Take(request.PageSize)
-                        .ToListAsync();
+                        .Select(c => new SearchBorrowRegisterResult
+                        {
+                            Id = c.Id,
+                            Borrower = c.Borrower,
+                            Company = c.Company,
+                            Department = c.Company,
+                            Phone = c.Phone,
+                            ReturnDate = c.ReturnDate,
+                            SignPhoto = c.SignPhoto,
+                            Status = c.Status,
+                        }).ToListAsync();
+
+                var ids = list.Select(c => c.Id);
+
+                var archivesList = await (from brd in _db.BorrowRegisterDetail
+                                          join a in _db.ArchivesInfo on brd.ArchivesId equals a.Id
+                                          where ids.Contains(brd.BorrowRegisterId)
+                                          select new ArchivesSimple
+                                          {
+                                              BorrowRegisterId = brd.BorrowRegisterId,
+                                              ArchivesNumber = a.ArchivesNumber,
+                                              CatalogNumber = a.CatalogNumber,
+                                              CategoryId = a.CategoryId,
+                                              FileNumber = a.FileNumber,
+                                              OrderNumber = a.OrderNumber
+                                          }).ToListAsync();
+
+                list.ForEach(c => { c.ArchivesList = archivesList.Where(j => j.BorrowRegisterId == c.Id).ToList(); c.ReturnDateStr = c.ReturnDate.ToString("yyyy-MM-dd"); });
 
                 response.Data = list;
                 response.Success = true;
@@ -145,19 +172,32 @@ namespace archives.service.biz.impl
                 if (borrowRegister == null)
                     throw new BizException("借阅登记不存在");
 
-                var archivesList = await _db.ArchivesInfo.Join(_db.BorrowRegisterDetail, a => a.Id, b => b.ArchivesId, (a, b) => new { a, b }).Where(j => j.b.BorrowRegisterId == borrowRegister.Id).Select(c => new ArchivesSearchResult
-                {
-                    Id = c.a.Id,
-                    ArchivesNumber = c.a.ArchivesNumber,
-                    CategoryId = c.a.CategoryId,
-                    FileNumber = c.a.FileNumber,
-                    ProjectName = c.a.ProjectName,
-                    Title = c.a.Title
-                }).ToListAsync();
+                var archivesList = await _db.ArchivesInfo.Join(_db.BorrowRegisterDetail, a => a.Id, b => b.ArchivesId, (a, b) => new { a, b })
+                    .Where(j => j.b.BorrowRegisterId == borrowRegister.Id).Select(c => new ArchivesSearchResult
+                    {
+                        Id = c.a.Id,
+                        ArchivesNumber = c.a.ArchivesNumber,
+                        CategoryId = c.a.CategoryId,
+                        FileNumber = c.a.FileNumber,
+                        ProjectName = c.a.ProjectName,
+                        Title = c.a.Title,
+                        OrderNumber = c.a.OrderNumber,
+                    }).ToListAsync();
 
                 response.Data = new GetBorrowDetailResult
                 {
-                    BorrowRegister = borrowRegister,
+                    BorrowRegister = new BorrowRegisterSimple
+                    {
+                        Id = borrowRegister.Id,
+                        Borrower = borrowRegister.Borrower,
+                        Company = borrowRegister.Company,
+                        Phone = borrowRegister.Phone,
+                        ReturnDate = borrowRegister.ReturnDate,
+                        ReturnDateStr = borrowRegister.ReturnDate.ToString("yyyy-MM-dd"),
+                        Department = borrowRegister.Department,
+                        SignPhoto = borrowRegister.SignPhoto,
+                        Status = borrowRegister.Status
+                    },
                     ArchivesList = archivesList
                 };
                 response.Success = true;

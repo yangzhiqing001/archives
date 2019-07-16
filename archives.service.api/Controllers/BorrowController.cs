@@ -40,7 +40,7 @@ namespace archives.service.api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<CommonSearchResponse<List<BorrowRegister>>> SearchBorrowRegister(SearchBorrowRegisterRequest request)
+        public async Task<CommonSearchResponse<List<SearchBorrowRegisterResult>>> SearchBorrowRegister(SearchBorrowRegisterRequest request)
         {
             return await _borrowRegisterService.SearchBorrowRegister(request);
         }

@@ -55,5 +55,7 @@ namespace archives.service.biz.web
 		/// 项目名称
 		/// </summary>
 		public string ProjectName { get; set; }
+
+        public string OrderNumber { get; set; }
 	}
 }

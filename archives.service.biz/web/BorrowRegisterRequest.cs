@@ -17,7 +17,7 @@ namespace archives.service.biz.web
         /// 借阅人名
         /// </summary>
         [Required]
-        public string Borrwoer { get; set; }
+        public string Borrower { get; set; }
         /// <summary>
         /// 电话
         /// </summary>

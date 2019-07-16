@@ -10,7 +10,7 @@ namespace archives.service.biz.ifs
     {
         Task<CommonResponse<BorrowRegisterResult>> BorrowRegister(BorrowRegisterRequest request);
 
-        Task<CommonSearchResponse<List<BorrowRegister>>> SearchBorrowRegister(SearchBorrowRegisterRequest request);
+        Task<CommonSearchResponse<List<SearchBorrowRegisterResult>>> SearchBorrowRegister(SearchBorrowRegisterRequest request);
 
         Task<CommonResponse<string>> RenewBorrow(RenewBorrowRequest request);
 

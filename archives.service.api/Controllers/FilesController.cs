@@ -38,32 +38,32 @@ namespace archives.service.api.Controllers
         /// <summary>
         /// 上传接口
         /// </summary>
-        /// <param name="formFile">file</param>
+        /// <param name="file">file name=file</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<CommonResponse<AddFileResult>> AddFile(IFormFile formFile)
+        public async Task<CommonResponse<AddFileResult>> AddFile(IFormFile file)
         {
             var response = new CommonResponse<AddFileResult>();
 
             try
             {
                 var id = Guid.NewGuid().ToString("N");
-                var suffix = formFile.FileName.Substring(formFile.FileName.LastIndexOf(".") + 1);
+                var suffix = file.FileName.Substring(file.FileName.LastIndexOf(".") + 1);
                 var filePath = $"{_localPath}{id}.{suffix}";//注意formFile.FileName包含上传文件的文件路径，所以要进行Substring只取出最后的文件名
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    await formFile.CopyToAsync(stream);
+                    await file.CopyToAsync(stream);
                 }
 
                 var entity = new dal.Entity.FileStorage
                 {
                     Id = id,
-                    ContentType = formFile.ContentType,
+                    ContentType = file.ContentType,
                     CreateTime = DateTime.Now,
                     StoragePath = filePath,
                     StorageType = dal.Entity.FileStorageType.Local,
-                    Size = formFile.Length,
+                    Size = file.Length,
                     AccessUrl = $"{_gatewayFilePath}?f={id}"
                 };
                 await _fileStorageService.AddFile(entity);
@@ -71,7 +71,7 @@ namespace archives.service.api.Controllers
                 {
                     Id = id,
                     AccessUrl = entity.AccessUrl,
-                    Size = formFile.Length
+                    Size = file.Length
                 };
                 response.Success = true;
             }

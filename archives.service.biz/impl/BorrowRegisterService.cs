@@ -269,7 +269,7 @@ namespace archives.service.biz.impl
                         return response;
                     }
 
-                    if (borrowRegister.Status == BorrowRegisterStatus.Registered)
+                    if (borrowRegister.Status != BorrowRegisterStatus.Registered)
                     {
                         throw new BizException("借阅登记状态为：已登记 才能确认借出");
                     }

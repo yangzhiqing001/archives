@@ -227,7 +227,7 @@ namespace archives.service.biz.impl
                     return response;
                 }
 
-                if (borrowRegister.Status == BorrowRegisterStatus.Borrowed || borrowRegister.Status == BorrowRegisterStatus.Overdue || borrowRegister.Status == BorrowRegisterStatus.Renewed)
+                if (borrowRegister.Status != BorrowRegisterStatus.Borrowed && borrowRegister.Status != BorrowRegisterStatus.Overdue && borrowRegister.Status != BorrowRegisterStatus.Renewed)
                 {
                     throw new BizException("借阅登记状态为：已借出、延期、逾期 才需要归还");
                 }

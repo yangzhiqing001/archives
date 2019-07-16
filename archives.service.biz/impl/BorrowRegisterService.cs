@@ -97,7 +97,7 @@ namespace archives.service.biz.impl
                     trans.Rollback();
                     response.Message = ex.Message;
                 }
-                catch
+                catch (Exception ex)
                 {
                     trans.Rollback();
                     response.Message = "提交申请借阅发生异常";
@@ -117,9 +117,10 @@ namespace archives.service.biz.impl
                 {
                     query = query.Where(c => c.Phone.Contains(request.Keyword.Trim()) || c.Borrower.Contains(request.Keyword.Trim()) || c.Company.Contains(request.Keyword.Trim()) || c.Department.Contains(request.Keyword.Trim()));
                 }
-                var list = await query.Skip(request.PageNumber * request.PageSize)
+                var list = await query.OrderBy(c => c.Status).ThenBy(c => c.Id)
+                        .Skip(request.PageNumber * request.PageSize)
                         .Take(request.PageSize)
-                        .OrderBy(c => c.Status).ThenBy(c => c.Id).ToListAsync();
+                        .ToListAsync();
 
                 response.Data = list;
                 response.Success = true;

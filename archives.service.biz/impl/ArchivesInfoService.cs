@@ -42,9 +42,9 @@ namespace archives.service.biz.impl
                     }
 
                 }
-                var list = await query.Skip(request.PageNumber * request.PageSize)
-                    .Take(request.PageSize)
-                    .OrderBy(c => c.ArchivesNumber)
+                var list = await query.OrderBy(c => c.ArchivesNumber)
+                    .Skip(request.PageNumber * request.PageSize)
+                    .Take(request.PageSize)                    
                     .Select(c => new ArchivesSearchResult
                     {
                         Id = c.Id,

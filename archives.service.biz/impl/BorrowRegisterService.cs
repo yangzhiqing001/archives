@@ -291,7 +291,7 @@ namespace archives.service.biz.impl
                         }
                     });
                     borrowRegister.UpdateTime = DateTime.Now;
-                    borrowRegister.Status = BorrowRegisterStatus.Registered;
+                    borrowRegister.Status = BorrowRegisterStatus.Borrowed;
                     borrowRegister.UpdateTime = DateTime.Now;
 
                     await _db.SaveChangesAsync();

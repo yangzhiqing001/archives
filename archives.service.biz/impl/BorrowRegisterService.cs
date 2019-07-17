@@ -112,7 +112,7 @@ namespace archives.service.biz.impl
             var response = new CommonSearchResponse<List<SearchBorrowRegisterResult>>();
             try
             {
-                var query = _db.BorrowRegister.Where(c => c.Status != BorrowRegisterStatus.Returned && !c.Deleted);
+                var query = _db.BorrowRegister.AsNoTracking().Where(c => c.Status != BorrowRegisterStatus.Returned && !c.Deleted);
                 if (!string.IsNullOrEmpty(request.Keyword))
                 {
                     query = query.Where(c => c.Phone.Contains(request.Keyword.Trim()) || c.Borrower.Contains(request.Keyword.Trim()) || c.Company.Contains(request.Keyword.Trim()) || c.Department.Contains(request.Keyword.Trim()));
@@ -134,8 +134,8 @@ namespace archives.service.biz.impl
 
                 var ids = list.Select(c => c.Id);
 
-                var archivesList = await (from brd in _db.BorrowRegisterDetail
-                                          join a in _db.ArchivesInfo on brd.ArchivesId equals a.Id
+                var archivesList = await (from brd in _db.BorrowRegisterDetail.AsNoTracking()
+                                          join a in _db.ArchivesInfo.AsNoTracking() on brd.ArchivesId equals a.Id
                                           where ids.Contains(brd.BorrowRegisterId)
                                           select new ArchivesSimple
                                           {
@@ -174,11 +174,11 @@ namespace archives.service.biz.impl
             var response = new CommonResponse<GetBorrowDetailResult>();
             try
             {
-                var borrowRegister = await _db.BorrowRegister.FirstOrDefaultAsync(c => c.Id == request.BorrowRegisterId && !c.Deleted);
+                var borrowRegister = await _db.BorrowRegister.AsNoTracking().FirstOrDefaultAsync(c => c.Id == request.BorrowRegisterId && !c.Deleted);
                 if (borrowRegister == null)
                     throw new BizException("借阅登记不存在");
 
-                var archivesList = await _db.ArchivesInfo.Join(_db.BorrowRegisterDetail, a => a.Id, b => b.ArchivesId, (a, b) => new { a, b })
+                var archivesList = await _db.ArchivesInfo.AsNoTracking().Join(_db.BorrowRegisterDetail.AsNoTracking(), a => a.Id, b => b.ArchivesId, (a, b) => new { a, b })
                     .Where(j => j.b.BorrowRegisterId == borrowRegister.Id).Select(c => new ArchivesSearchResult
                     {
                         Id = c.a.Id,

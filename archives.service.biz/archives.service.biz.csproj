@@ -18,6 +18,7 @@
     <Folder Include="exp\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\archives.common\archives.common.csproj" />
     <ProjectReference Include="..\archives.service.dal\archives.service.dal.csproj" />
   </ItemGroup>
   <ItemGroup>

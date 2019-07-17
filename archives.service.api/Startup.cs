@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using archives.common;
 using archives.service.api.Models;
 using archives.service.biz;
 using archives.service.dal;
@@ -17,6 +18,7 @@ namespace archives.service.api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            ApplicationLog.Init();
         }
 
         public IConfiguration Configuration { get; }

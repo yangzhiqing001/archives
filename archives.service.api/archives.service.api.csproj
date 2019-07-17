@@ -22,7 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\archives.common\archives.common.csproj" />
     <ProjectReference Include="..\archives.service.dal\archives.service.dal.csproj" />
     <ProjectReference Include="..\archives.service.biz\archives.service.biz.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="logs\" />
   </ItemGroup>
 </Project>

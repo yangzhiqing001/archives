@@ -1,21 +1,24 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "archives.gateway", "archives.gateway\archives.gateway.csproj", "{DBA10F26-918D-4A0D-AE77-6D55B9579D0D}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "archives.gateway", "archives.gateway\archives.gateway.csproj", "{DBA10F26-918D-4A0D-AE77-6D55B9579D0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "archives.identityserver", "archives.identityserver\archives.identityserver.csproj", "{8F884B03-7998-475F-9483-1F80A75B31FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "archives.identityserver", "archives.identityserver\archives.identityserver.csproj", "{8F884B03-7998-475F-9483-1F80A75B31FD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CB6032AB-77C0-4A87-915D-10F358723640}"
 	ProjectSection(SolutionItems) = preProject
-		readme.md = readme.md
 		.gitignore = .gitignore
+		readme.md = readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "archives.service.dal", "archives.service.dal\archives.service.dal.csproj", "{8A876D26-1DE8-4453-871B-DCB50F033D00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "archives.service.dal", "archives.service.dal\archives.service.dal.csproj", "{8A876D26-1DE8-4453-871B-DCB50F033D00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "archives.service.api", "archives.service.api\archives.service.api.csproj", "{CB468BAF-A022-430E-8507-3CB75F4AA6AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "archives.service.api", "archives.service.api\archives.service.api.csproj", "{CB468BAF-A022-430E-8507-3CB75F4AA6AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "archives.service.biz", "archives.service.biz\archives.service.biz.csproj", "{5FD9790F-E2C3-4545-A00B-831849B30C60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "archives.service.biz", "archives.service.biz\archives.service.biz.csproj", "{5FD9790F-E2C3-4545-A00B-831849B30C60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "archives.common", "archives.common\archives.common.csproj", "{D34A65B2-9606-447A-8766-81BD946D3682}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,7 +46,15 @@ Global
 		{5FD9790F-E2C3-4545-A00B-831849B30C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FD9790F-E2C3-4545-A00B-831849B30C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FD9790F-E2C3-4545-A00B-831849B30C60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D34A65B2-9606-447A-8766-81BD946D3682}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D34A65B2-9606-447A-8766-81BD946D3682}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D34A65B2-9606-447A-8766-81BD946D3682}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D34A65B2-9606-447A-8766-81BD946D3682}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A27D2BB-954D-44C1-8FEB-B58A8ECD26FE}
 	EndGlobalSection
 EndGlobal

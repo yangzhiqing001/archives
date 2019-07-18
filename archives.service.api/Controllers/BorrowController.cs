@@ -6,6 +6,7 @@ using archives.service.biz.web;
 using archives.service.biz.ifs;
 using Microsoft.AspNetCore.Mvc;
 using archives.service.dal.Entity;
+using archives.common;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -31,7 +32,10 @@ namespace archives.service.api.Controllers
         [HttpPost]
         public async Task<CommonResponse<BorrowRegisterResult>> Register([FromBody]BorrowRegisterRequest request)
         {
-            return await _borrowRegisterService.BorrowRegister(request);
+            request.SerializeToLog("Register");
+            var response = await _borrowRegisterService.BorrowRegister(request);
+            response.SerializeToLog("Register");
+            return response;
         }
 
         /// <summary>
@@ -64,7 +68,10 @@ namespace archives.service.api.Controllers
         [HttpPost]
         public async Task<CommonResponse<string>> RenewBorrow([FromBody]RenewBorrowRequest request)
         {
-            return await _borrowRegisterService.RenewBorrow(request);
+            request.SerializeToLog("RenewBorrow");
+            var response = await _borrowRegisterService.RenewBorrow(request);
+            response.SerializeToLog("RenewBorrow");
+            return response;
         }
 
         /// <summary>
@@ -75,7 +82,10 @@ namespace archives.service.api.Controllers
         [HttpPost]
         public async Task<CommonResponse<string>> ReturnBorrow([FromBody]ReturnBorrowRequest request)
         {
-            return await _borrowRegisterService.ReturnArchives(request);
+            request.SerializeToLog("ReturnArchives");
+            var response = await _borrowRegisterService.ReturnArchives(request);
+            response.SerializeToLog("ReturnArchives");
+            return response;
         }
 
         /// <summary>
@@ -86,7 +96,10 @@ namespace archives.service.api.Controllers
         [HttpPost]
         public async Task<CommonResponse<string>> ConfirmBorrowed([FromBody]ConfirmBorrowedRequest request)
         {
-            return await _borrowRegisterService.ConfirmBorrowed(request);
+            request.SerializeToLog("ConfirmBorrowed");
+            var response = await _borrowRegisterService.ConfirmBorrowed(request);
+            response.SerializeToLog("ConfirmBorrowed");
+            return response;
         }
     }
 }

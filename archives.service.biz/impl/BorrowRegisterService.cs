@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using archives.service.biz.exp;
+using archives.common;
 
 namespace archives.service.biz.impl
 {
@@ -101,6 +102,7 @@ namespace archives.service.biz.impl
                 {
                     trans.Rollback();
                     response.Message = "提交申请借阅发生异常";
+                    ApplicationLog.Error("BorrowRegister", ex);
                 }
             }
 
@@ -158,9 +160,10 @@ namespace archives.service.biz.impl
                 response.Data = list;
                 response.Success = true;
             }
-            catch
+            catch(Exception ex)
             {
                 response.Message = "获取借阅列表失败";
+                ApplicationLog.Error("SearchBorrowRegister", ex);
             }
 
             return response;
@@ -212,9 +215,10 @@ namespace archives.service.biz.impl
             {
                 response.Message = ex.Message;
             }
-            catch
+            catch(Exception ex)
             {
                 response.Message = "获取借阅详情发生异常";
+                ApplicationLog.Error("GetBorrowDetail", ex);
             }
             return response;
         }
@@ -245,9 +249,10 @@ namespace archives.service.biz.impl
             {
                 response.Message = ex.Message;
             }
-            catch
+            catch(Exception ex)
             {
                 response.Message = "提交续借发生异常";
+                ApplicationLog.Error("RenewBorrow", ex);
             }
             return response;
 
@@ -292,9 +297,10 @@ namespace archives.service.biz.impl
             {
                 response.Message = ex.Message;
             }
-            catch
+            catch(Exception ex)
             {
                 response.Message = "提交续借发生异常";
+                ApplicationLog.Error("ReturnArchives", ex);
             }
             return response;
         }
@@ -354,10 +360,11 @@ namespace archives.service.biz.impl
                     trans.Rollback();
                     response.Message = ex.Message;
                 }
-                catch
+                catch(Exception ex)
                 {
                     trans.Rollback();
                     response.Message = "提交续借发生异常";
+                    ApplicationLog.Error("ConfirmBorrowed", ex);
                 }
             }
 

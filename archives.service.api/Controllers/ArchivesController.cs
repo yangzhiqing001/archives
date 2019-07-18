@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using archives.common;
 using archives.service.biz.ifs;
 using archives.service.biz.web;
 using archives.service.dal.Entity;
@@ -38,7 +39,8 @@ namespace archives.service.api.Controllers
         [HttpGet]
         public async Task<CommonSearchResponse<List<ArchivesSearchResult>>> SearchArchives([FromQuery]ArchivesSearchRequest request)
         {
-            return await _archivesService.SearchArchives(request);
+            var response = await _archivesService.SearchArchives(request);
+            return response;
         }
 
         /// <summary>
@@ -80,7 +82,10 @@ namespace archives.service.api.Controllers
         [HttpPost]
         public async Task<CommonResponse<ArchivesEditResult>> EditArchives([FromBody]ArchivesEditRequest request)
         {
-            return await _archivesService.Edit(request);
+            request.SerializeToLog("SearchArchives request");
+            var response = await _archivesService.Edit(request);
+            response.SerializeToLog("SearchArchives response");
+            return response;
         }
 
         /// <summary>
@@ -91,7 +96,10 @@ namespace archives.service.api.Controllers
         [HttpPost]
         public async Task<CommonResponse<ArchivesAddResult>> AddArchives([FromBody]ArchivesAddRequest request)
         {
-            return await _archivesService.Add(request);
+            request.SerializeToLog("AddArchives request");
+            var response = await _archivesService.Add(request);
+            response.SerializeToLog("AddArchives response");
+            return response;
         }
 
         /// <summary>
@@ -102,7 +110,10 @@ namespace archives.service.api.Controllers
         [HttpPost]
         public async Task<CommonResponse<ArchivesDeleteResult>> DeleteArchives([FromBody]ArchivesDeleteRequest request)
         {
-            return await _archivesService.Delete(request);
+            request.SerializeToLog("DeleteArchives request");
+            var response = await _archivesService.Delete(request);
+            response.SerializeToLog("DeleteArchives response");
+            return response;
         }
     }
 }

@@ -8,6 +8,7 @@ using archives.service.biz.web;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using archives.service.biz.exp;
+using archives.common;
 
 namespace archives.service.biz.impl
 {
@@ -63,9 +64,10 @@ namespace archives.service.biz.impl
                 response.TotalCount = total;
                 response.Success = true;
             }
-            catch
+            catch(Exception ex)
             {
                 response.Message = "获取案档列表发生异常";
+                ApplicationLog.Error("SearchArchives", ex);
             }
 
             return response;
@@ -90,6 +92,7 @@ namespace archives.service.biz.impl
             catch (Exception ex)
             {
                 response.Message = "获取档案详情失败";
+                ApplicationLog.Error("GetArchives", ex);
                 //写日志可以用log4netcore
             }
             return response;
@@ -143,9 +146,10 @@ namespace archives.service.biz.impl
             {
                 response.Message = ex.Message;
             }
-            catch
+            catch(Exception ex)
             {
                 response.Message = "操作发生异常";
+                ApplicationLog.Error("Edit", ex);
             }
             return response;
         }
@@ -193,9 +197,10 @@ namespace archives.service.biz.impl
             {
                 response.Message = ex.Message;
             }
-            catch
+            catch(Exception ex)
             {
                 response.Message = "添加档案发生异常";
+                ApplicationLog.Error("Add", ex);
             }
             return response;
 
@@ -227,9 +232,10 @@ namespace archives.service.biz.impl
             {
                 response.Message = ex.Message;
             }
-            catch
+            catch(Exception ex)
             {
                 response.Message = "删除发生异常";
+                ApplicationLog.Error("Delete", ex);
             }
             return response;
 

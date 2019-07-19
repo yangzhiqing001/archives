@@ -238,13 +238,30 @@ namespace archives.service.biz.impl
                 if (borrowRegister == null)
                     throw new BizException("借阅登记不存在");
 
-                if (borrowRegister.Status == BorrowRegisterStatus.Renewed || borrowRegister.Status == BorrowRegisterStatus.Overdue || borrowRegister.Status == BorrowRegisterStatus.Borrowed)
+                if (!(borrowRegister.Status == BorrowRegisterStatus.Renewed || borrowRegister.Status == BorrowRegisterStatus.Overdue || borrowRegister.Status == BorrowRegisterStatus.Borrowed))
                     throw new BizException("借阅登记状态为：已借出、延期、逾期 才能续借");
 
                 borrowRegister.ReturnDate = request.RenewDate;
                 borrowRegister.Status = BorrowRegisterStatus.Renewed;
                 borrowRegister.UpdateTime = DateTime.Now;
+                borrowRegister.ReturnNotified = false;
                 await _db.SaveChangesAsync();
+                response.Success = true;
+
+                try
+                {
+                    var archivesFirst = await _db.ArchivesInfo.AsNoTracking().Join(_db.BorrowRegisterDetail.AsNoTracking().Take(1), a => a.Id, b => b.ArchivesId, (a, b) => new { a, b }).Where(j => j.b.BorrowRegisterId == borrowRegister.Id).Select(c => new
+                    {
+                        c.a.ProjectName
+                    }).FirstOrDefaultAsync();
+                    var msgRes = OssHelper.SendSms("SMS_171116665", borrowRegister.Phone, $"{{\"name\":\"{borrowRegister.Borrower}\", \"PtName\":\"{(archivesFirst.ProjectName)}\", \"RDate\":\"{borrowRegister.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
+
+                }
+                catch(Exception ex1)
+                {
+                    ApplicationLog.Error("RenewBorrow notice exception", ex1);
+                }
+                
             }
             catch (BizException ex)
             {
@@ -355,6 +372,9 @@ namespace archives.service.biz.impl
 
                     trans.Commit();
                     response.Success = true;
+
+                    var msgRes = OssHelper.SendSms("SMS_171116670", borrowRegister.Phone, $"{{\"name\":\"{borrowRegister.Borrower}\", \"PtName\":\"{(archives[0].ProjectName)}\", \"RDate\":\"{borrowRegister.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
+
                 }
                 catch (BizException ex)
                 {
@@ -392,7 +412,7 @@ namespace archives.service.biz.impl
                     {
                         var projectName = archivesList.FirstOrDefault(a => a.Id == c.Id);
 
-                        //var msgRes = OssHelper.SendSms("SMS_171116662", c.Phone, $"{{\"name\":\"{c.Borrower}\", \"PtName\":\"{(projectName != null ? projectName.ProjectName : string.Empty)}\", \"RDate\":\"{c.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
+                        var msgRes = OssHelper.SendSms("SMS_171116662", c.Phone, $"{{\"name\":\"{c.Borrower}\", \"PtName\":\"{(projectName != null ? projectName.ProjectName : string.Empty)}\", \"RDate\":\"{c.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
                         //循环发送短信
                         c.ReturnNotified = true;
                         c.UpdateTime = DateTime.Now;

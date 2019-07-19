@@ -1,7 +1,6 @@
 ﻿using log4net;
 using log4net.Config;
 using log4net.Repository;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 

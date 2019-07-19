@@ -12,9 +12,9 @@ namespace archives.service.dal.Entity
         public long Id { get; set; }
 
         /// <summary>
-        /// 操作类型（关键字）
+        /// 操作名
         /// </summary>
-        public string OperationKeyword { get; set; }
+        public string Name { get; set; }
 
         public OperationAction Action { get; set; }
 

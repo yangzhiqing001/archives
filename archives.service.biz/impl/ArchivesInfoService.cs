@@ -55,6 +55,7 @@ namespace archives.service.biz.impl
                         ProjectName = c.ProjectName,
                         Title = c.Title,
                         OrderNumber = c.OrderNumber,
+                        Status = c.Status,
                     }).ToListAsync();
 
                 var total = await query.CountAsync();
@@ -100,7 +101,7 @@ namespace archives.service.biz.impl
 
         public async Task<List<string>> QueryAllProject()
         {
-            var list = await _db.ArchivesInfo.AsNoTracking().Where(c => !c.Deleted).OrderByDescending(c => c.Id).Select(c => c.ProjectName).Distinct().ToListAsync();
+            var list = await _db.ArchivesInfo.AsNoTracking().Where(c => !c.Deleted && c.ProjectName != null && c.ProjectName != string.Empty).OrderByDescending(c => c.Id).Select(c => c.ProjectName).Distinct().ToListAsync();
             return list;
         }
 

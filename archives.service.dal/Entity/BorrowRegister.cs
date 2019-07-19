@@ -48,6 +48,12 @@ namespace archives.service.dal.Entity
         /// 状态 0.正常 1.已登记 2.已借出 3.已延期 4.已归还 5.逾期
         /// </summary>
         public BorrowRegisterStatus Status { get; set; }
+
+        /// <summary>
+        /// 是否已归还并通知
+        /// </summary>
+        [Column(TypeName = "bit")]
+        public bool? ReturnNotified { get; set; }
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using archives.service.dal.Entity;
+using System;
 namespace archives.service.biz.web
 {
     /// <summary>
@@ -57,5 +58,10 @@ namespace archives.service.biz.web
 		public string ProjectName { get; set; }
 
         public string OrderNumber { get; set; }
-	}
+
+        /// <summary>
+        /// 0 初使化（可删除） 1 正常可借阅状态 2 已借阅 (前端可根据状态值显示操作按钮)
+        /// </summary>
+        public ArchivesStatus Status { get; set; }
+    }
 }

@@ -56,7 +56,8 @@ namespace archives.service.biz.impl
                 Department = request.Department,
                 CreateTime = DateTime.Now,
                 Deleted = false,
-                UpdateTime = DateTime.Now
+                UpdateTime = DateTime.Now,
+                ReturnNotified = false
             };
 
             using (var trans = await _db.Database.BeginTransactionAsync())
@@ -160,7 +161,7 @@ namespace archives.service.biz.impl
                 response.Data = list;
                 response.Success = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Message = "获取借阅列表失败";
                 ApplicationLog.Error("SearchBorrowRegister", ex);
@@ -215,7 +216,7 @@ namespace archives.service.biz.impl
             {
                 response.Message = ex.Message;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Message = "获取借阅详情发生异常";
                 ApplicationLog.Error("GetBorrowDetail", ex);
@@ -249,7 +250,7 @@ namespace archives.service.biz.impl
             {
                 response.Message = ex.Message;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Message = "提交续借发生异常";
                 ApplicationLog.Error("RenewBorrow", ex);
@@ -297,7 +298,7 @@ namespace archives.service.biz.impl
             {
                 response.Message = ex.Message;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Message = "提交续借发生异常";
                 ApplicationLog.Error("ReturnArchives", ex);
@@ -360,7 +361,7 @@ namespace archives.service.biz.impl
                     trans.Rollback();
                     response.Message = ex.Message;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     trans.Rollback();
                     response.Message = "提交续借发生异常";
@@ -368,6 +369,36 @@ namespace archives.service.biz.impl
                 }
             }
 
+            return response;
+        }
+
+        public async Task<CommonResponse<string>> BorrowRegisterNotify(int dayLimit)
+        {
+            var response = new CommonResponse<string>();
+            var list = await _db.BorrowRegister.Where(c => !c.Deleted && c.ReturnDate <= DateTime.Now.AddDays(dayLimit) &&
+                (c.Status == BorrowRegisterStatus.Borrowed || c.Status == BorrowRegisterStatus.Overdue || c.Status == BorrowRegisterStatus.Renewed))
+                .OrderBy(c => c.Id).Take(50).ToListAsync();
+            
+            if (list.Any())
+            {
+                list.ForEach(c =>
+                {
+                    //循环发送短信
+                    c.ReturnNotified = true;
+                    c.UpdateTime = DateTime.Now;
+                });
+                var data = list.Select(c => c.Id).Serialize();
+                await _db.OperationLog.AddAsync(new OperationLog
+                {
+                    Action = OperationAction.Create,
+                    OperationKeyword = "催还短信",
+                    CreateTime = DateTime.Now,
+                    BeforeData = data
+                });
+                await _db.SaveChangesAsync();
+                response.Data = data;
+            }
+            response.Success = true;
             return response;
         }
     }

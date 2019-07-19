@@ -101,5 +101,16 @@ namespace archives.service.api.Controllers
             response.SerializeToLog("ConfirmBorrowed");
             return response;
         }
+
+        /// <summary>
+        /// 短信通知借阅归还
+        /// </summary>
+        /// <param name="dayLimit"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<CommonResponse<string>> BorrowReturnNotify([FromQuery]int dayLimit)
+        {
+            return await _borrowRegisterService.BorrowRegisterNotify(dayLimit);
+        }
     }
 }

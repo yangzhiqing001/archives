@@ -18,7 +18,7 @@ namespace archives.service.api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            ApplicationLog.Init();
+            ApplicationLog.Init();            
         }
 
         public IConfiguration Configuration { get; }

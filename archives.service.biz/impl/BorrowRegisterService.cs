@@ -378,11 +378,19 @@ namespace archives.service.biz.impl
             var list = await _db.BorrowRegister.Where(c => !c.Deleted && c.ReturnDate <= DateTime.Now.AddDays(dayLimit) &&
                 (c.Status == BorrowRegisterStatus.Borrowed || c.Status == BorrowRegisterStatus.Overdue || c.Status == BorrowRegisterStatus.Renewed))
                 .OrderBy(c => c.Id).Take(50).ToListAsync();
-            
+
+            var archivesList = await _db.ArchivesInfo.Join(_db.BorrowRegisterDetail.Take(1), a => a.Id, b => b.ArchivesId, (a, b) => new { a, b }).Where(j => list.Select(l=>l.Id).Contains(j.b.BorrowRegisterId)).Select(c => new {
+                c.a.ProjectName,
+                c.b.Id
+            }).ToListAsync();
+
             if (list.Any())
             {
                 list.ForEach(c =>
                 {
+                    var projectName = archivesList.FirstOrDefault(a => a.Id == c.Id);
+
+                    var msgRes = OssHelper.SendSms("SMS_171116662", c.Phone, $"{{\"name\":\"{c.Borrower}\", \"PtName\":\"{(projectName != null ? projectName.ProjectName : string.Empty)}\", \"RDate\":\"{c.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
                     //循环发送短信
                     c.ReturnNotified = true;
                     c.UpdateTime = DateTime.Now;

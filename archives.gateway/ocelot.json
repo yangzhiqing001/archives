@@ -313,7 +313,7 @@
         },
         {
             //删除档案
-            "DownstreamPathTemplate": "/api/archives/delteArchives",
+            "DownstreamPathTemplate": "/api/archives/deleteArchives",
             "UpstreamPathTemplate": "/archives/deleteArchives",
             "UpstreamHttpMethod": [
                 "Post"

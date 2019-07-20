@@ -20,6 +20,11 @@ namespace archives.service.biz.impl
             _db = db;
         }
 
+        public async Task<List<ArchivesInfo>> QueryAllArchives()
+        {
+            return await _db.ArchivesInfo.ToListAsync();
+        }
+
         public async Task<CommonSearchResponse<List<ArchivesSearchResult>>> SearchArchives(ArchivesSearchRequest request)
         {
             var response = new CommonSearchResponse<List<ArchivesSearchResult>>();

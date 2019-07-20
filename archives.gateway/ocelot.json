@@ -385,6 +385,22 @@
                 }
             ],
             "UseServiceDiscovery": false
+        },
+        {
+            //导出档案
+            "DownstreamPathTemplate": "/api/archives/export",
+            "UpstreamPathTemplate": "/archives/export",
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "UseServiceDiscovery": false
         }
     ],
     "GlobalConfiguration": {

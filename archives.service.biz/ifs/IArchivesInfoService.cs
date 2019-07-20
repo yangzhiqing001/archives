@@ -19,5 +19,7 @@ namespace archives.service.biz.ifs
         Task<CommonResponse<ArchivesAddResult>> Add(ArchivesAddRequest request);
 
         Task<CommonResponse<ArchivesDeleteResult>> Delete(ArchivesDeleteRequest request);
+
+        Task<List<ArchivesInfo>> QueryAllArchives();
     }
 }

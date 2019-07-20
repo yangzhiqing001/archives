@@ -115,5 +115,54 @@ namespace archives.service.api.Controllers
             response.SerializeToLog("DeleteArchives response");
             return response;
         }
+
+        [HttpGet]
+        public async Task<ActionResult> Export()
+        {
+            try
+            {
+                var list = await _archivesService.QueryAllArchives();
+
+                System.IO.MemoryStream output = new System.IO.MemoryStream();
+
+                System.IO.StreamWriter writer = new System.IO.StreamWriter(output, System.Text.Encoding.UTF8);
+                writer.Write("档号,分类号,案卷号,卷内序号,题名,项目名称,责任者,成文日期,页数,保管期限,密级,归档部门,归档日期,备注,目录号,提要");
+
+                writer.WriteLine();
+
+                //输出内容
+                list.ForEach(a => {
+                    writer.Write($"\"{a.ArchivesNumber}\",\"");//第一列
+                    writer.Write($"{a.CategoryId}\",\"");
+                    writer.Write($"{a.FileNumber}\",\"");
+                    writer.Write($"{a.OrderNumber}\",\"");
+                    writer.Write($"{a.Title}\",\"");
+                    writer.Write($"{a.ProjectName}\",\"");
+                    writer.Write($"{a.ResponsibleObject}\",\"");
+                    writer.Write($"{a.WrittenDate.ToString("yyyy-MM-dd")}\",\"");
+                    writer.Write($"{a.Pages}\",\"");
+                    writer.Write($"{a.IsPermanent}\",\"");
+                    writer.Write($"{a.SecretLevel}\",\"");
+                    writer.Write($"{a.ArchivingDepartment}\",\"");
+                    writer.Write($"{a.ArchivingDate.ToString("yyyy-MM-dd")}\",\"");
+                    writer.Write($"{a.Remark}\",\"");
+                    writer.Write($"{a.CatalogNumber}\",\"");
+                    writer.Write($"{a.Summary}\",");
+                    writer.WriteLine();
+                });
+
+                writer.Flush();
+
+                output.Position = 0;
+
+                return File(output, "application/ms-excel", "卷盒内文件.csv");
+            }
+            catch(Exception ex)
+            {
+                ApplicationLog.Error("Export Excetpion", ex);
+                return Ok(ex.Message);
+            }
+        }
+
     }
 }

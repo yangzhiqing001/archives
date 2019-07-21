@@ -84,7 +84,7 @@ namespace archives.common
         /// <param name="ex">异常堆栈</param>
         public static void Error(string message, Exception ex)
         {
-            Error(message, ex);
+            AppLog.Error(message, ex);
         }
 
         #endregion
@@ -107,7 +107,7 @@ namespace archives.common
         /// <param name="ex">异常堆栈</param>
         public static void Fatal(string message, Exception ex)
         {
-            Fatal(message, ex);
+            AppLog.Fatal(message, ex);
         }
 
         #endregion
@@ -130,7 +130,7 @@ namespace archives.common
         /// <param name="ex">异常堆栈</param>
         public static void Warn(string message, Exception ex)
         {
-            Warn(message, ex);
+            AppLog.Warn(message, ex);
         }
 
         #endregion

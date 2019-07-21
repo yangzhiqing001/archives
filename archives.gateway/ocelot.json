@@ -334,6 +334,29 @@
             },
             "UseServiceDiscovery": false
         },
+        {
+            //催还档案
+            "DownstreamPathTemplate": "/api/borrow/returnWarn",
+            "UpstreamPathTemplate": "/borrow/returnWarn",
+            "UpstreamHttpMethod": [
+                "Post"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "AuthProviderKey",
+                "AllowedScopes": []
+            },
+            "RouteClaimsRequirement": {
+                "role": "admin"
+            },
+            "UseServiceDiscovery": false
+        },
         //获取所有档案项目名
         {
             "DownstreamPathTemplate": "/api/archives/queryAllProjectname",

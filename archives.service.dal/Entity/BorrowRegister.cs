@@ -54,6 +54,11 @@ namespace archives.service.dal.Entity
         /// </summary>
         [Column(TypeName = "bit")]
         public bool? ReturnNotified { get; set; }
+
+        /// <summary>
+        /// 通知次数
+        /// </summary>
+        public int? NotifyCount { get; set; }
     }
 
     /// <summary>

@@ -193,6 +193,7 @@ namespace archives.service.biz.impl
                     WrittenDate = request.WrittenDate
                 };
                 await _db.ArchivesInfo.AddAsync(entity);
+                await _db.SaveChangesAsync();
                 response.Data = new ArchivesAddResult
                 {
                     Id = entity.Id
@@ -202,6 +203,7 @@ namespace archives.service.biz.impl
             catch (BizException ex)
             {
                 response.Message = ex.Message;
+
             }
             catch(Exception ex)
             {

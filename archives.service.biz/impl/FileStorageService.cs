@@ -20,7 +20,7 @@ namespace archives.service.biz.impl
         public async Task<string> AddFile(FileStorage fileStorage)
         {
             await _db.FileStorage.AddAsync(fileStorage);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return fileStorage.Id;
         }
 

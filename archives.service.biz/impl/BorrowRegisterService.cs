@@ -340,10 +340,11 @@ namespace archives.service.biz.impl
 
                     if (borrowRegister.Status == BorrowRegisterStatus.Borrowed)
                     {
-                        response.Message = "当前状态已经借出";
-                        response.ErrorCode = 1;
-                        response.Success = true;
-                        return response;
+                        //response.Message = "当前状态已经借出";
+                        //response.ErrorCode = 1;
+                        //response.Success = true;
+                        //return response;
+                        throw new BizException("当前借阅的状态为已借出");
                     }
 
                     if (borrowRegister.Status != BorrowRegisterStatus.Registered)

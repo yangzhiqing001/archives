@@ -234,6 +234,12 @@ namespace archives.service.biz.impl
             var response = new CommonResponse<string>();
             try
             {
+                if (request == null)
+                    throw new BizException("参数不能为空");
+
+                if (request.RenewDate < DateTime.Now)
+                    throw new BizException("续借日期不能小于当天");
+
                 var borrowRegister = await _db.BorrowRegister.FirstOrDefaultAsync(c => c.Id == request.BorrowRegisterId && !c.Deleted);
                 if (borrowRegister == null)
                     throw new BizException("借阅登记不存在");
@@ -289,6 +295,9 @@ namespace archives.service.biz.impl
             var response = new CommonResponse<string>();
             try
             {
+                if (request == null)
+                    throw new BizException("参数不能为空");
+
                 var borrowRegister = await _db.BorrowRegister.FirstOrDefaultAsync(c => c.Id == request.BorrowRegisterId && !c.Deleted);
                 if (borrowRegister == null)
                     throw new BizException("借阅登记不存在");
@@ -334,6 +343,9 @@ namespace archives.service.biz.impl
             {
                 try
                 {
+                    if (request == null)
+                        throw new BizException("参数不能为空");
+
                     var borrowRegister = await _db.BorrowRegister.FirstOrDefaultAsync(c => c.Id == request.BorrowRegisterId && !c.Deleted);
                     if (borrowRegister == null)
                         throw new BizException("借阅登记不存在");
@@ -404,6 +416,9 @@ namespace archives.service.biz.impl
 
             try
             {
+                if (request == null)
+                    throw new BizException("参数不能为空");
+
                 var borrowRegister = await _db.BorrowRegister.FirstAsync(c => c.Id == request.BorrowRegisterId);
                 if (borrowRegister == null)
                 {

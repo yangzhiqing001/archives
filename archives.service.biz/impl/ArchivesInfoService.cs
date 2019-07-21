@@ -115,6 +115,9 @@ namespace archives.service.biz.impl
             var response = new CommonResponse<ArchivesEditResult>();
             try
             {
+                if (request == null)
+                    throw new BizException("参数不能为空");
+
                 var entity = await _db.ArchivesInfo.FirstOrDefaultAsync(c => c.Id == request.Id);
                 if (entity == null)
                     throw new BizException("档案不存在");
@@ -165,6 +168,8 @@ namespace archives.service.biz.impl
             var response = new CommonResponse<ArchivesAddResult>();
             try
             {
+                if (request == null)
+                    throw new BizException("参数不能为空");
                 //var exists = await _db.ArchivesInfo.AnyAsync(c => c.ArchivesNumber == request.ArchivesNumber && c.CatalogNumber == request.CatalogNumber && c.FileNumber == request.FileNumber && c.CategoryId == request.CategoryId);
                 //if (exists)
                 //    throw new BizException("当前提交的档号、目录号、分类号、案卷号在数据库中已存在，无法重复添加，请查询是否已添加");
@@ -219,6 +224,8 @@ namespace archives.service.biz.impl
             var response = new CommonResponse<ArchivesDeleteResult>();
             try
             {
+                if (request == null)
+                    throw new BizException("参数不能为空");
                 var archives = await _db.ArchivesInfo.FirstOrDefaultAsync(c => c.Id == request.ArchivesId);
                 if (archives == null)
                 {

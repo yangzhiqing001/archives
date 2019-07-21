@@ -28,7 +28,11 @@ namespace archives.service.biz.impl
         public async Task<CommonResponse<BorrowRegisterResult>> BorrowRegister(BorrowRegisterRequest request)
         {
             var response = new CommonResponse<BorrowRegisterResult>();
-
+            if (request == null)
+            {
+                response.Message = "参数不能为空";
+                return response;
+            }
             if (string.IsNullOrEmpty(request.Phone))
             {
                 response.Message = "手机不能为空";
@@ -178,6 +182,8 @@ namespace archives.service.biz.impl
             var response = new CommonResponse<GetBorrowDetailResult>();
             try
             {
+                if (request == null)
+                    throw new BizException("参数不能为空");
                 var borrowRegister = await _db.BorrowRegister.AsNoTracking().FirstOrDefaultAsync(c => c.Id == request.BorrowRegisterId && !c.Deleted);
                 if (borrowRegister == null)
                     throw new BizException("借阅登记不存在");

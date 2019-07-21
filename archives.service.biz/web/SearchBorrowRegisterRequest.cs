@@ -51,6 +51,13 @@ namespace archives.service.biz.web
         public string ReturnDateStr { get; set; }
 
         /// <summary>
+        /// 借阅日期
+        /// </summary>
+        public DateTime CreateTime { get; set; }
+
+        public string CreateTimeStr { get; set; }
+
+        /// <summary>
         /// 签名照片
         /// </summary>
         public string SignPhoto { get; set; }

@@ -33,11 +33,19 @@ namespace archives.service.biz.web
         /// 部门
         /// </summary>
         public string Department { get; set; }
+
         /// <summary>
         /// 归还日期
         /// </summary>
         [Required]
         public DateTime ReturnDate { get; set; }
+
+        /// <summary>
+        /// 借阅日期
+        /// </summary>
+        public DateTime CreateTime { get; set; }
+
+        public string CreateTimeStr { get; set; }
 
         /// <summary>
         /// 图片（用上传接口返回的图片地址）

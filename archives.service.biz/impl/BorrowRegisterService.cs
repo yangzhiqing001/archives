@@ -137,7 +137,9 @@ namespace archives.service.biz.impl
                             ReturnDate = c.ReturnDate,
                             SignPhoto = c.SignPhoto,
                             Status = c.Status,
-                        }).ToListAsync();
+							CreateTime = c.CreateTime,
+							CreateTimeStr = c.CreateTime.ToString("yyyy-MM-dd")
+			            }).ToListAsync();
 
                 var ids = list.Select(c => c.Id);
 
@@ -212,7 +214,9 @@ namespace archives.service.biz.impl
                         ReturnDateStr = borrowRegister.ReturnDate.ToString("yyyy-MM-dd"),
                         Department = borrowRegister.Department,
                         SignPhoto = borrowRegister.SignPhoto,
-                        Status = borrowRegister.Status
+						CreateTime = borrowRegister.CreateTime,
+						CreateTimeStr = borrowRegister.CreateTime.ToString("yyyy-MM-dd"),
+		                Status = borrowRegister.Status
                     },
                     ArchivesList = archivesList
                 };

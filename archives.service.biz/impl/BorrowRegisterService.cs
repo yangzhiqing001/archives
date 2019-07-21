@@ -262,9 +262,8 @@ namespace archives.service.biz.impl
 
                 try
                 {
-                    var archivesFirst = await _db.ArchivesInfo.AsNoTracking().Join(_db.BorrowRegisterDetail.AsNoTracking().Take(1),
+                    var archivesFirst = await _db.ArchivesInfo.AsNoTracking().Join(_db.BorrowRegisterDetail.AsNoTracking().Where(j => j.BorrowRegisterId == borrowRegister.Id).Take(1),
                         a => a.Id, b => b.ArchivesId, (a, b) => new { a, b })
-                        .Where(j => j.b.BorrowRegisterId == borrowRegister.Id)
                         .Select(c => new
                         {
                             c.a.ProjectName
@@ -436,8 +435,8 @@ namespace archives.service.biz.impl
                     throw new BizException("借阅登记状态为：已借出、延期、逾期 才能催还");
                 }
 
-                var archives = await _db.ArchivesInfo.Join(_db.BorrowRegisterDetail.Take(1), a => a.Id, b => b.ArchivesId, (a, b) => new { a, b })
-                    .Where(j => j.b.BorrowRegisterId == borrowRegister.Id).Select(c => new
+                var archives = await _db.ArchivesInfo.Join(_db.BorrowRegisterDetail.Where(j => j.BorrowRegisterId == borrowRegister.Id).Take(1), a => a.Id, b => b.ArchivesId, (a, b) => new { a, b })
+                    .Select(c => new
                     {
                         c.a.ProjectName,
                         c.b.Id

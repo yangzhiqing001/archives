@@ -392,6 +392,32 @@ namespace archives.service.biz.impl
             return response;
         }
 
+        public async Task<CommonResponse<string>> ReturnWarn(ReturnWarnRequest request)
+        {
+            var response = new CommonResponse<string>();
+
+            using (var trans = await _db.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    
+                }
+                catch (BizException ex)
+                {
+                    trans.Rollback();
+                    response.Message = ex.Message;
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    response.Message = "催还发生异常";
+                    ApplicationLog.Error("ReturnWarn", ex);
+                }
+            }
+
+            return response;
+        }
+
         public async Task<CommonResponse<string>> BorrowRegisterNotify(int dayLimit)
         {
             var response = new CommonResponse<string>();

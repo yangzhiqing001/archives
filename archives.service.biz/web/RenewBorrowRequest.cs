@@ -41,4 +41,17 @@ namespace archives.service.biz.web
         /// </summary>
         public int BorrowRegisterId { get; set; }
     }
+
+
+    /// <summary>
+    /// 催还入参
+    /// </summary>
+    public class ReturnWarnRequest
+    {
+        /// <summary>
+        /// 借阅登记Id(唯一值，也就是查询借阅列表及详情返回的Id)
+        /// </summary>
+        public int BorrowRegisterId { get; set; }
+    }
+    
 }

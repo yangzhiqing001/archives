@@ -103,6 +103,20 @@ namespace archives.service.api.Controllers
         }
 
         /// <summary>
+        /// 催还（管理员使用）
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<CommonResponse<string>> ReturnWarn([FromBody]ReturnWarnRequest request)
+        {
+            request.SerializeToLog("ReturnWarn");
+            var response = await _borrowRegisterService.ReturnWarn(request);
+            response.SerializeToLog("ReturnWarn");
+            return response;
+        }
+
+        /// <summary>
         /// 短信通知借阅归还
         /// </summary>
         /// <param name="dayLimit"></param>

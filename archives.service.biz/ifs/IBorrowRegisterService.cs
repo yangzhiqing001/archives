@@ -21,5 +21,7 @@ namespace archives.service.biz.ifs
         Task<CommonResponse<string>> ConfirmBorrowed(ConfirmBorrowedRequest request);
 
         Task<CommonResponse<string>> BorrowRegisterNotify(int dayLimit);
+
+        Task<CommonResponse<string>> ReturnWarn(ReturnWarnRequest request); 
     }
 }

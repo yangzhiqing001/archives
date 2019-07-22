@@ -454,7 +454,9 @@ namespace archives.service.biz.impl
                     borrowRegister.NotifyCount = borrowRegister.NotifyCount.GetValueOrDefault() + 1;
                     borrowRegister.UpdateTime = DateTime.Now;
                     await _db.SaveChangesAsync();
+                    response.Data = borrowRegister.NotifyCount.ToString();
                 }
+                response.Success = true;
             }
             catch (BizException ex)
             {

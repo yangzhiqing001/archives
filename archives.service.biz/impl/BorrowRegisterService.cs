@@ -526,5 +526,38 @@ namespace archives.service.biz.impl
 
             return response;
         }
+
+        public async Task<CommonResponse<string>> CloseBorrow(CloseBorrowRequest request)
+        {
+            var response = new CommonResponse<string>();
+            try
+            {
+                if (request == null)
+                    throw new BizException("参数不能为空");
+
+                var borrowRegister = await _db.BorrowRegister.FirstOrDefaultAsync(c => c.Id == request.BorrowRegisterId && !c.Deleted);
+                if (borrowRegister == null)
+                    throw new BizException("借阅登记不存在");
+
+                if (borrowRegister.Status != BorrowRegisterStatus.Registered)
+                    throw new BizException("借阅登记状态为：已登记 才能关闭");
+
+                borrowRegister.Status = BorrowRegisterStatus.Closed;
+                borrowRegister.UpdateTime = DateTime.Now;
+                await _db.SaveChangesAsync();
+                response.Success = true;
+
+            }
+            catch (BizException ex)
+            {
+                response.Message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                response.Message = "关闭借阅发生异常";
+                ApplicationLog.Error("RenewBorrow", ex);
+            }
+            return response;
+        }
     }
 }

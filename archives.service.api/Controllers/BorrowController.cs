@@ -128,5 +128,14 @@ namespace archives.service.api.Controllers
             response.SerializeToLog("BorrowReturnNotify");
             return response;
         }
+
+        [HttpPost]
+        public async Task<CommonResponse<string>> CloseBorrow([FromBody]CloseBorrowRequest request)
+        {
+            request.SerializeToLog("CloseBorrow");
+            var response = await _borrowRegisterService.CloseBorrow(request);
+            response.SerializeToLog("CloseBorrow");
+            return response;
+        }
     }
 }

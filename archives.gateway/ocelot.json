@@ -424,7 +424,30 @@
                 }
             ],
             "UseServiceDiscovery": false
-        }
+        },
+        {
+            //关闭借阅接口
+            "DownstreamPathTemplate": "/api/borrow/closeBorrow",
+            "UpstreamPathTemplate": "/borrow/closeBorrow",
+            "UpstreamHttpMethod": [
+                "Post"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "AuthProviderKey",
+                "AllowedScopes": []
+            },
+            "RouteClaimsRequirement": {
+                "role": "admin"
+            },
+            "UseServiceDiscovery": false
+        },
     ],
     "GlobalConfiguration": {
         "RequestIdKey": "OcRequestId"

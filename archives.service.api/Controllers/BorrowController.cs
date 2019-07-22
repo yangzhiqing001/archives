@@ -124,7 +124,9 @@ namespace archives.service.api.Controllers
         [HttpGet]
         public async Task<CommonResponse<string>> BorrowReturnNotify([FromQuery]int dayLimit)
         {
-            return await _borrowRegisterService.BorrowRegisterNotify(dayLimit);
+            var response = await _borrowRegisterService.BorrowRegisterNotify(dayLimit);
+            response.SerializeToLog("BorrowReturnNotify");
+            return response;
         }
     }
 }

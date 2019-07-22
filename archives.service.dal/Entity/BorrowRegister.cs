@@ -94,5 +94,10 @@ namespace archives.service.dal.Entity
         /// 5.逾期
         /// </summary>
         Overdue = 5,
+
+        /// <summary>
+        /// 已关闭
+        /// </summary>
+        Closed = 6,
     }
 }

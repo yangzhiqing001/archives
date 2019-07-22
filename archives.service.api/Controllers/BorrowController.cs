@@ -126,5 +126,14 @@ namespace archives.service.api.Controllers
         {
             return await _borrowRegisterService.BorrowRegisterNotify(dayLimit);
         }
+
+        [HttpPost]
+        public async Task<CommonResponse<string>> CloseBorrow([FromBody]CloseBorrowRequest request)
+        {
+            request.SerializeToLog("CloseBorrow");
+            var response = await _borrowRegisterService.CloseBorrow(request);
+            response.SerializeToLog("CloseBorrow");
+            return response;
+        }
     }
 }

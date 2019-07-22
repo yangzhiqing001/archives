@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using archives.identityserver.Config;
 using IdentityServer4.Models;
 using archives.identityserver.Service;
+using archives.service.dal;
+using Microsoft.EntityFrameworkCore;
 
 namespace archives.identityserver
 {
@@ -42,6 +44,8 @@ namespace archives.identityserver
                 //.AddExtensionGrantValidator<CustomGrantValidator>()
                 .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
                 .AddProfileService<ProfileService>();
+
+            services.AddDbContext<ArchivesContext>(d => d.UseMySQL(Configuration.GetConnectionString("Default")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -19,6 +19,8 @@ namespace archives.service.dal
         public DbSet<OperationLog> OperationLog { get; set; }
 
         public DbSet<FileStorage> FileStorage { get; set; }
+
+        public DbSet<AdminUser> AdminUser { get; set; }
     }
 
 }

@@ -119,7 +119,7 @@ namespace archives.service.biz.impl
             var response = new CommonSearchResponse<List<SearchBorrowRegisterResult>>();
             try
             {
-                var query = _db.BorrowRegister.AsNoTracking().Where(c => c.Status != BorrowRegisterStatus.Returned && !c.Deleted);
+                var query = _db.BorrowRegister.AsNoTracking().Where(c => !c.Deleted);
                 if (!string.IsNullOrEmpty(request.Keyword))
                 {
                     query = query.Where(c => c.Phone.Contains(request.Keyword.Trim()) || c.Borrower.Contains(request.Keyword.Trim()) || c.Company.Contains(request.Keyword.Trim()) || c.Department.Contains(request.Keyword.Trim()));
@@ -272,6 +272,7 @@ namespace archives.service.biz.impl
                         {
                             c.a.ProjectName
                         }).FirstOrDefaultAsync();
+                    ApplicationLog.Info("SMS_171116665."+ borrowRegister.Phone+"."+ borrowRegister.Id);
                     var msgRes = OssHelper.SendSms("SMS_171116665", borrowRegister.Phone, $"{{\"name\":\"{borrowRegister.Borrower}\", \"PtName\":\"{(archivesFirst.ProjectName)}\", \"RDate\":\"{borrowRegister.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
 
                 }
@@ -399,7 +400,7 @@ namespace archives.service.biz.impl
 
                     trans.Commit();
                     response.Success = true;
-
+                    ApplicationLog.Info("SMS_171116670." + borrowRegister.Phone + "." + borrowRegister.Id);
                     var msgRes = OssHelper.SendSms("SMS_171116670", borrowRegister.Phone, $"{{\"name\":\"{borrowRegister.Borrower}\", \"PtName\":\"{(archives[0].ProjectName)}\", \"RDate\":\"{borrowRegister.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
 
                 }
@@ -445,7 +446,7 @@ namespace archives.service.biz.impl
                         c.a.ProjectName,
                         c.b.Id
                     }).FirstOrDefaultAsync();
-
+                ApplicationLog.Info("SMS_171116662." + borrowRegister.Phone + "." + borrowRegister.Id);
                 var msgRes = OssHelper.SendSms("SMS_171116662", borrowRegister.Phone, $"{{\"name\":\"{borrowRegister.Borrower}\", \"PtName\":\"{(archives.ProjectName)}\", \"RDate\":\"{borrowRegister.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
 
                 if (msgRes.Code == "OK")
@@ -493,8 +494,9 @@ namespace archives.service.biz.impl
                 {
                     list.ForEach(c =>
                     {
-                        var projectName = archivesList.FirstOrDefault(a => a.Id == c.Id);
+                        var projectName = archivesList.FirstOrDefault(a => a.BorrowRegisterId == c.Id);
 
+                        ApplicationLog.Info("task.SMS_171116662." + c.Phone + "." + c.Id);
                         var msgRes = OssHelper.SendSms("SMS_171116662", c.Phone, $"{{\"name\":\"{c.Borrower}\", \"PtName\":\"{(projectName != null ? projectName.ProjectName : string.Empty)}\", \"RDate\":\"{c.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
                         //循环发送短信
                         if (msgRes.Code == "OK")

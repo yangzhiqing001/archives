@@ -387,9 +387,9 @@ namespace archives.service.biz.impl
                                 c.Status = ArchivesStatus.Borrowed;
                                 break;
                             case ArchivesStatus.Borrowed:
-                                throw new BizException($"档案：{c.ArchivesNumber}当前状态为 已借出，无法再次借出");
+                                throw new BizException("您选择的档案可能已借出，无法再次借阅");
                             default:
-                                throw new BizException($"档案：{c.ArchivesNumber}当前状态出错，无法确认借出");
+                                throw new BizException("您选择的档案档案当前状态出错，无法确认借出");
                         }
                     });
                     borrowRegister.UpdateTime = DateTime.Now;

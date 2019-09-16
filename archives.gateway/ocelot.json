@@ -1,5 +1,17 @@
 ﻿{
     "ReRoutes": [
+        {
+            "DownstreamPathTemplate": "/admin/{catchAll}",
+            "UpstreamPathTemplate": "/admin/{catchAll}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5005
+                }
+            ],
+            "UseServiceDiscovery": false
+        },
         //获取token地址
         {
             "DownstreamPathTemplate": "/connect/token",

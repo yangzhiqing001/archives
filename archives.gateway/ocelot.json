@@ -12,6 +12,18 @@
             ],
             "UseServiceDiscovery": false
         },
+        {
+            "DownstreamPathTemplate": "/admin",
+            "UpstreamPathTemplate": "/admin",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5005
+                }
+            ],
+            "UseServiceDiscovery": false
+        },
         //获取token地址
         {
             "DownstreamPathTemplate": "/connect/token",

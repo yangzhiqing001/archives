@@ -76,7 +76,10 @@ namespace archives.gateway.Controllers
             {
                 try {
                     client.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                    var response_data = client.UploadValues("http://localhost:5001/token",
+
+                    string myurl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+
+                    var response_data = client.UploadValues(myurl + "/token",
                                              "POST",
                                              parameters);
                     var ret = Encoding.UTF8.GetString(response_data);
@@ -84,14 +87,10 @@ namespace archives.gateway.Controllers
 
                     //user.AuthenticationType = CookieAuthenticationDefaults.AuthenticationScheme;
                     var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                    identity.AddClaim(new Claim(ClaimTypes.Name, forms["username"]));
+                    LoginUserModel lm = new LoginUserModel { UserName = forms["username"], Token = (string)json["access_token"] };
+                    identity.AddClaim(new Claim(ClaimTypes.Name, JsonHelper.Serialize(lm)));
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
-
                     return RedirectToAction("manage", "da");
-
-                    //CookieOptions option = new CookieOptions();
-                    //option.Expires = DateTime.Now.AddMinutes(10);
-                    //Response.Cookies.Append("nnn", (string)json["access_token"], option);
                 }
                 catch (Exception x) {
                     return View("Login");

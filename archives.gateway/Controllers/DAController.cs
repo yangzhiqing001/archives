@@ -15,7 +15,7 @@ namespace archives.gateway.Controllers
         [Authorize]
         public IActionResult Manage()
         {
-            return View();
+            return View(getUser());
         }
 
         public IActionResult Upload()

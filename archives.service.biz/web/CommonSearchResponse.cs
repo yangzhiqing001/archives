@@ -17,7 +17,7 @@ namespace archives.service.biz.web
         /// </summary>
         public int TotalCount { get; set; }
 
-
+        public string SEcho { get; set; }
     }
 
     public static class ResponseHelp

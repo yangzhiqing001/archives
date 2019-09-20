@@ -1,6 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model LoginUserModel
 @{
 }
 
@@ -25,12 +23,10 @@
 <section class="content">
     <div class="row">
         <div class="col-12">
-        <div class="card">
+            <div class="card">
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="daListTable" class="table table-bordered table-striped">
-
-                    </table>
+                    <table id="daListTable" class="table table-bordered table-striped"></table>
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -63,38 +59,93 @@ $(function () {
                 "bProcessing": true,
                 "bSearchable": true,
                 "bServerSide": true,
-                "sAjaxSource": "@Url.Content("~/da/search")",
+                "sAjaxSource": "@Url.Content("~/archives/searchArchives")",
+                "fnServerData": function ( sSource, aoData, fnCallback ) {
+                    var ds;
+                    var sl;
+                    var key;
+                    for(var i = 0; i < aoData.length; i++)
+                    {
+                      if(aoData[i].name == 'iDisplayStart')
+                      {
+                          ds = aoData[i].value;
+                      }
+                      if(aoData[i].name == 'iDisplayLength')
+                      {
+                          dl = aoData[i].value;
+                      }
+                      if(aoData[i].name == 'sSearch')
+                      {
+                          key = aoData[i].value;
+                      }
+                    }
+                    aoData.push( {"name": "PageNumber", "value": ds / dl} );
+                    aoData.push( {"name": "PageSize", "value": dl} );
+                    aoData.push( {"name": "Keyword", "value": key} );
+                    $.ajax( {
+                            headers: {
+                                Accept: "application/json; charset=utf-8",
+                                Authorization: "Bearer @Model.Token"
+                            },
+                            "dataType": 'json',
+                            "type": "GET",
+                            "url": sSource,
+                            "data": aoData,
+                            "success": function(result){
+                                if (result.success) {
+                                    var ooret = {
+                                        "sEcho": result.SEcho,
+                                        "iTotalRecords": result.totalCount,
+                                        "iTotalDisplayRecords": result.totalCount,
+                                        "aaData": result.data
+                                    }
+                                    console.log(fnCallback)
+                                    fnCallback(ooret)
+                                } else {
+                                    fnCallback(null)
+                                }
+                            }
+
+                    } );
+                },
                 "aoColumns" : [{
-                        "mDataProp" : "id",
-                        "sDefaultContent" : "", //此列默认值为""，以防数据中没有此值，DataTables加载数据的时候报错
-                        "bVisible" : false //此列不显示
-                    }, {
-                        "mDataProp" : "USERNAME",
+                        "mDataProp" : "archivesNumber",
                         "sTitle" : "档案号",
                         "sDefaultContent" : "",
                         "sClass" : "center"
                     }, {
-                        "mDataProp" : "EMAIL",
+                        "mDataProp" : "categoryId",
                         "sTitle" : "分类号",
                         "sDefaultContent" : "",
                         "sClass" : "center"
                     }, {
-                        "mDataProp" : "MOBILE",
+                        "mDataProp" : "fileNumber",
                         "sTitle" : "案卷号",
                         "sDefaultContent" : "",
                         "sClass" : "center"
                     }, {
-                        "mDataProp" : "PHONE",
+                        "mDataProp" : "title",
                         "sTitle" : "题名",
                         "sDefaultContent" : "",
                         "sClass" : "center"
                     }, {
-                        "mDataProp" : "PHON1E",
-                        "sTitle" : "名称",
+                        "mDataProp" : "projectName",
+                        "sTitle" : "项目名称",
                         "sDefaultContent" : "",
                         "sClass" : "center"
-                    }]
-
+                    }, {
+                        "mDataProp" : "id",
+                        "sTitle" : "操作",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    }],
+                    "aoColumnDefs": [ {
+                        "aTargets": [ -1 ],
+                        "mData": "download_link",
+                        "mRender": function ( data, type, full ) {
+                            return '<a href="'+data+'">Download</a>';
+                        }
+                    } ]
             });
         });</script>
 }

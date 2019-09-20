@@ -69,6 +69,7 @@ namespace archives.service.biz.impl
                 response.TotalPage = total.GetPages(request.PageSize);
                 response.TotalCount = total;
                 response.Success = true;
+                response.SEcho = request.SEcho;
             }
             catch(Exception ex)
             {

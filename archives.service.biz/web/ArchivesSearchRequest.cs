@@ -21,6 +21,8 @@ namespace archives.service.biz.web
         /// 是否显示已借出（可为空）
         /// </summary>
         public bool? ShowBorrowed { get; set; }
+
+        public string SEcho { get; set; }
     }
 
     /// <summary>

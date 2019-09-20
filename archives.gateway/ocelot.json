@@ -10,7 +10,10 @@
                     "Port": 5005
                 }
             ],
-            "UseServiceDiscovery": false
+            "UseServiceDiscovery": false,
+            "HttpHandlerOptions": {
+                "AllowAutoRedirect": true
+            }
         },
         {
             "DownstreamPathTemplate": "/admin",
@@ -22,7 +25,10 @@
                     "Port": 5005
                 }
             ],
-            "UseServiceDiscovery": false
+            "UseServiceDiscovery": false,
+            "HttpHandlerOptions": {
+                "AllowAutoRedirect": true
+            }
         },
         //获取token地址
         {

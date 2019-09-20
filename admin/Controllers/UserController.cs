@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using admin.Models;
 using archives.common;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -59,27 +62,41 @@ namespace admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult doLogin(LoginUser user)
+        public async Task<IActionResult> doLogin(IFormCollection forms)
         {
             var parameters = new NameValueCollection();
 
             parameters.Add("grant_type", "password");
-            parameters.Add("username", user.UserName);
-            parameters.Add("password", user.Psd);
+            parameters.Add("username", forms["username"]);
+            parameters.Add("password", forms["psd"]);
             parameters.Add("client_id", _identityServerClientId);
             parameters.Add("client_secret", _identityServerSecret);
 
             using (var client = new WebClient())
             {
-                client.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                var response_data = client.UploadValues("http://localhost:5001/token",
-                                         "POST",
-                                         parameters);
-                JObject json = JObject.Parse(Encoding.UTF8.GetString(response_data));
-                CookieOptions option = new CookieOptions();
-                option.Expires = DateTime.Now.AddMinutes(10);
-                Response.Cookies.Append("nnn", (string)json["access_token"], option);
-                return View(new ErrorViewModel { RequestId = (string)json["access_token"] });
+                try {
+                    client.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    var response_data = client.UploadValues("http://localhost:5001/token",
+                                             "POST",
+                                             parameters);
+                    JObject json = JObject.Parse(Encoding.UTF8.GetString(response_data));
+
+                    //user.AuthenticationType = CookieAuthenticationDefaults.AuthenticationScheme;
+                    var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                    identity.AddClaim(new Claim(ClaimTypes.Name, forms["username"]));
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
+                    return RedirectToAction("Upload", "da");
+
+                    //CookieOptions option = new CookieOptions();
+                    //option.Expires = DateTime.Now.AddMinutes(10);
+                    //Response.Cookies.Append("nnn", (string)json["access_token"], option);
+                    return null;
+                }
+                catch (Exception x) {
+                    return View("Login");
+                }
+
             }
         }
 

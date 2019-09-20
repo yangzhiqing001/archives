@@ -39,6 +39,7 @@
     <None Remove="logs\debug.txt" />
     <None Remove="logs\debug.txt20190722" />
     <None Remove="logs\error.txt20190722" />
+    <None Remove="logs\debug.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="logs\" />

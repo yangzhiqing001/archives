@@ -1,35 +1,5 @@
 ﻿{
     "ReRoutes": [
-        {
-            "DownstreamPathTemplate": "/admin/{catchAll}",
-            "UpstreamPathTemplate": "/admin/{catchAll}",
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5005
-                }
-            ],
-            "UseServiceDiscovery": false,
-            "HttpHandlerOptions": {
-                "AllowAutoRedirect": true
-            }
-        },
-        {
-            "DownstreamPathTemplate": "/admin",
-            "UpstreamPathTemplate": "/admin",
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5005
-                }
-            ],
-            "UseServiceDiscovery": false,
-            "HttpHandlerOptions": {
-                "AllowAutoRedirect": true
-            }
-        },
         //获取token地址
         {
             "DownstreamPathTemplate": "/connect/token",

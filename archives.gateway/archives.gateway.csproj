@@ -17,5 +17,15 @@
 
   <ItemGroup>
     <Folder Include="Config\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Views\" />
+    <Folder Include="Models\" />
+    <Folder Include="Views\Borrow\" />
+    <Folder Include="Views\DA\" />
+    <Folder Include="Views\User\" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\archives.common\archives.common.csproj" />
   </ItemGroup>
 </Project>

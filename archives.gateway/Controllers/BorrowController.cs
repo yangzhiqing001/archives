@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace archives.gateway.Controllers
 {
-    public class BorrowController : Controller
+    public class BorrowController : BaseController
     {
         // GET: /<controller>/
         public IActionResult List()

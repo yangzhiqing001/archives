@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace archives.gateway.Controllers
 {
     [Authorize]
-    public class DAController : Controller
+    public class DAController : BaseController
     {
         [Authorize]
         public IActionResult Manage()

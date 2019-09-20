@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace archives.gateway.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public IActionResult Index()
         {

@@ -19,7 +19,7 @@ using Newtonsoft.Json.Linq;
 
 namespace archives.gateway.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly string _identityServerClientId;
         private readonly string _identityServerSecret;

@@ -87,7 +87,7 @@ namespace archives.gateway.Controllers
                     identity.AddClaim(new Claim(ClaimTypes.Name, forms["username"]));
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
-                    return RedirectToAction("Upload", "da");
+                    return RedirectToAction("manage", "da");
 
                     //CookieOptions option = new CookieOptions();
                     //option.Expires = DateTime.Now.AddMinutes(10);

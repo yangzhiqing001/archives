@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace archives.service.api.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ArchivesBaseController : ControllerBase
     {
         /// <summary>

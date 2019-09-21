@@ -24,4 +24,7 @@
   <ItemGroup>
     <Compile Remove="impl\ArchivesInfoBiz.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNetCore.NPOI" Version="1.2.1" />
+  </ItemGroup>
 </Project>

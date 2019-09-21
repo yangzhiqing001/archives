@@ -43,8 +43,10 @@ namespace archives.gateway
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
             {
-            o.LoginPath = new PathString("/user/Login");
-            o.AccessDeniedPath = new PathString("/user/Login");
+                o.LoginPath = new PathString("/user/Login");
+                o.AccessDeniedPath = new PathString("/user/Login");
+                o.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                o.SlidingExpiration = true;
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

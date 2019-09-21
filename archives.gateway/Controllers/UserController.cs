@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,38 +38,17 @@ namespace archives.gateway.Controllers
         // GET: /<controller>/
         public IActionResult Login()
         {
-            return View(new ErrorViewModel { RequestId = _identityServerClientId });
-            //return View();
-            //var parameters = new NameValueCollection();
-
-            //parameters.Add("grant_type", "password");
-            //parameters.Add("username", "yzq");
-            //parameters.Add("password", "123");
-            //parameters.Add("client_id", "bf0b2b168b37b7a5c3db403b57cab1f2");
-            //parameters.Add("client_secret", "1eed954f309ce95e894cfd1dfb0c21e9");
-
-            //using (var client = new WebClient())
-            //{
-            //    client.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-            //    var response_data = client.UploadValues("http://localhost:5001/token",
-            //                             "POST",
-            //                             parameters);
-            //    JObject json = JObject.Parse(Encoding.UTF8.GetString(response_data));
-            //    CookieOptions option = new CookieOptions();
-            //    option.Expires = DateTime.Now.AddMinutes(10);
-            //    Response.Cookies.Append("nnn", (string)json["access_token"], option);
-            //    return View(new ErrorViewModel { RequestId =_localPath });
-            //}
+            return View(new LoginViewModel ());
         }
 
         [HttpPost]
-        public async Task<IActionResult> doLogin(IFormCollection forms)
+        public async Task<IActionResult> doLogin(LoginViewModel model)
         {
             var parameters = new NameValueCollection();
 
             parameters.Add("grant_type", "password");
-            parameters.Add("username", forms["username"]);
-            parameters.Add("password", forms["psd"]);
+            parameters.Add("username", model.UserName);
+            parameters.Add("password", model.Password);
             parameters.Add("client_id", _identityServerClientId);
             parameters.Add("client_secret", _identityServerSecret);
 
@@ -87,29 +67,23 @@ namespace archives.gateway.Controllers
 
                     //user.AuthenticationType = CookieAuthenticationDefaults.AuthenticationScheme;
                     var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                    LoginUserModel lm = new LoginUserModel { UserName = forms["username"], Token = (string)json["access_token"] };
+                    LoginUserModel lm = new LoginUserModel { UserName = model.UserName, Token = (string)json["access_token"] };
                     identity.AddClaim(new Claim(ClaimTypes.Name, JsonHelper.Serialize(lm)));
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+                    AuthenticationProperties ap = null;
+                    if (model.RememberMe) {
+                        ap = new AuthenticationProperties
+                        {
+                            IsPersistent = model.RememberMe,
+                            ExpiresUtc = DateTime.UtcNow.AddDays(1)
+                        };
+                    }
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), ap);
                     return RedirectToAction("manage", "da");
                 }
                 catch (Exception x) {
                     return View("Login");
                 }
 
-            }
-        }
-
-        public class LoginUser
-        {
-            public string UserName
-            {
-                get;
-                set;
-            }
-            public string Psd
-            {
-                get;
-                set;
             }
         }
     }

@@ -83,6 +83,47 @@ namespace archives.service.api.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<CommonResponse<List<AddFileResult>>> BatchAddFile()
+        {
+            var response = new CommonResponse<List<AddFileResult>>();
+
+            try
+            {
+                var listFile = new List<dal.Entity.FileStorage>();
+                foreach (var file in Request.Form.Files)
+                {
+                    var id = Guid.NewGuid().ToString("N");
+                    var suffix = file.FileName.Substring(file.FileName.LastIndexOf(".") + 1);
+                    var filePath = $"{_localPath}{id}.{suffix}";//注意formFile.FileName包含上传文件的文件路径，所以要进行Substring只取出最后的文件名
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    listFile.Add(new dal.Entity.FileStorage
+                    {
+                        Id = id,
+                        ContentType = file.ContentType,
+                        CreateTime = DateTime.Now,
+                        StoragePath = filePath,
+                        StorageType = dal.Entity.FileStorageType.Local,
+                        Size = file.Length,
+                        AccessUrl = $"{_gatewayFilePath}?f={id}"
+                    });
+                }
+                var list = await _fileStorageService.AddRangeFile(listFile);
+                response.Data = list.Select(c => new AddFileResult { Id = c}).ToList();
+                response.Success = true;
+            }
+            catch
+            {
+                response.Message = "上传发生异常";
+            }
+            return response;
+        }
+
         /// <summary>
         /// 下载
         /// </summary>
@@ -107,6 +148,26 @@ namespace archives.service.api.Controllers
                 return Json("系统异常"+ex.ToString());
             }
 
+        }
+
+        [HttpPost]
+        public async Task<CommonResponse<List<string>>> ConfirmUpload([FromBody]ConfirmUploadRequest request)
+        {
+            var response = new CommonResponse<List<string>>();
+            try
+            {
+                response.Data = await _fileStorageService.ConfirmUpload(request.FileIds);
+                response.Success = !response.Data.Any();
+            }
+            catch(BizException ex)
+            {
+                response.Message = ex.Message;
+            }
+            catch
+            {
+                response.Message = "上传发生异常";
+            }
+            return response;
         }
     }
 }

@@ -29,5 +29,9 @@
   <ItemGroup>
     <ProjectReference Include="..\archives.common\archives.common.csproj" />
     <ProjectReference Include="..\archives.service.biz\archives.service.biz.csproj" />
+    <ProjectReference Include="..\archives.service.dal\archives.service.dal.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\plugins\bootstrap-slider\css\bootstrap-slider.css" />
   </ItemGroup>
 </Project>

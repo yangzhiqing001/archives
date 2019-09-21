@@ -21,5 +21,6 @@ namespace archives.service.biz.ifs
         Task<CommonResponse<ArchivesDeleteResult>> Delete(ArchivesDeleteRequest request);
 
         Task<List<ArchivesInfo>> QueryAllArchives();
+
     }
 }

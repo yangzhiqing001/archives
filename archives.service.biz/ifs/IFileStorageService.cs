@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using archives.service.biz.web;
 using archives.service.dal.Entity;
 
 namespace archives.service.biz.ifs
@@ -15,7 +16,7 @@ namespace archives.service.biz.ifs
 
         Task<List<FileStorage>> GetList(List<string> ids);
 
-        Task<List<string>> ConfirmUpload(List<string> ids);
+        Task<CommonResponse<ConfirmUploadResult>> ConfirmUpload(List<string> ids);
     }
 
 }

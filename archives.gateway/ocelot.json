@@ -448,6 +448,38 @@
             },
             "UseServiceDiscovery": false
         },
+        {
+            //批量上传档案Excel
+            "DownstreamPathTemplate": "/api/files/batchAddFile",
+            "UpstreamPathTemplate": "/files/batchAddFile",
+            "UpstreamHttpMethod": [
+                "Post"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "UseServiceDiscovery": false
+        },
+        {
+            //确认提交上传的Excel
+            "DownstreamPathTemplate": "/api/files/confirmUpload",
+            "UpstreamPathTemplate": "/files/confirmUpload",
+            "UpstreamHttpMethod": [
+                "Post"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "UseServiceDiscovery": false
+        }
     ],
     "GlobalConfiguration": {
         "RequestIdKey": "OcRequestId"

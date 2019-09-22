@@ -151,23 +151,9 @@ namespace archives.service.api.Controllers
         }
 
         [HttpPost]
-        public async Task<CommonResponse<List<string>>> ConfirmUpload([FromBody]ConfirmUploadRequest request)
+        public async Task<CommonResponse<ConfirmUploadResult>> ConfirmUpload([FromBody]ConfirmUploadRequest request)
         {
-            var response = new CommonResponse<List<string>>();
-            try
-            {
-                response.Data = await _fileStorageService.ConfirmUpload(request.FileIds);
-                response.Success = !response.Data.Any();
-            }
-            catch(BizException ex)
-            {
-                response.Message = ex.Message;
-            }
-            catch
-            {
-                response.Message = "上传发生异常";
-            }
-            return response;
+            return await _fileStorageService.ConfirmUpload(request.FileIds);
         }
     }
 }

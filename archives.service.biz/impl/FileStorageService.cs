@@ -130,7 +130,7 @@ namespace archives.service.biz.impl
                                         archives.ProjectName = row.GetCell(5).StringCellValue;
                                         archives.ResponsibleObject = row.GetCell(6).StringCellValue;
                                         archives.WrittenDate = writtenDate;
-                                        archives.Pages = (int)row.GetCell(8).NumericCellValue;
+                                        archives.Pages = int.Parse(row.GetCell(8).StringCellValue);
                                         archives.IsPermanent = row.GetCell(9).StringCellValue;
                                         archives.SecretLevel = row.GetCell(10).StringCellValue;
                                         archives.ArchivingDepartment = row.GetCell(11).StringCellValue;
@@ -153,11 +153,14 @@ namespace archives.service.biz.impl
                     if (response.Data.ErrorList.Any())
                     {
                         trans.Rollback();
+                        response.Message = string.Join("<br />", response.Data.ErrorList);
                     }
                     else
                     {
                         await _db.SaveChangesAsync();
                         trans.Commit();
+                        response.Success = true;
+                        response.Message = $"成功添加{response.Data.AddTotoal}条档案信息，更新{response.Data.UpdateTotal}条档案信息。";
                     }
                 }
                 catch (Exception ex)

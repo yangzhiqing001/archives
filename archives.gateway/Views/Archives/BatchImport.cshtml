@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewData["Title"] = "批量上传档案Excel";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-4">
+                <h1>批量上传档案Excle</h1>
+            </div>
+            <div class="col-sm-8">
+
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-warning alert-dismissible" style="display:none">
+
+            </div>
+            <div class="alert alert-success alert-dismissible" style="display:none">
+
+            </div>
+            
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div>
+                    <input id="file" name="files" type="file" class="file" data-browse-on-zone-click="true" multiple>
+                </div>
+            </div>
+            <div class="card-body">
+                <button type="button" class="btn btn-block btn-primary btn-lg" style="display:none" id="submit">确认上传</button>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+@section PageCss
+{
+    @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">*@
+    <link rel="stylesheet" href="~/plugins/all-krajee/all-krajee.min.css">
+    <link rel="stylesheet" href="~/plugins/fileinput/css/fileinput.min.css">
+    <link rel="stylesheet" href="~/plugins/fileinput/css/fileinput-rtl.min.css">
+}
+@section PagePlusgins
+{
+    <script src="~/plugins/fileinput/fileinput.min.js"></script>
+}
+@section PageScripts
+{
+    <script>
+        var $submit = $("#submit");
+        var $file = $("#file");
+        $file.fileinput({
+            showPreview: true,
+            showUpload: true,
+            showRemove: true, //显示移除按钮
+            maxFileCount: 10,
+            elErrorContainer: '#kartik-file-errors',
+            allowedFileExtensions: ["xls"],
+            layoutTemplates: {
+                actionUpload: ''//去除上传预览缩略图中的上传图片
+                //actionZoom: '',   //去除上传预览缩略图中的查看详情预览的缩略图标
+                //actionDownload: '' //去除上传预览缩略图中的下载图标
+                //actionDelete: '', //去除上传预览的缩略图中的删除图标
+            },
+            uploadUrl: '/files/batchAddFile',
+        }).on('change', function (event) {
+            //console.log("change");
+        }).on('filebatchselected', function (event, files) {
+            console.log("filebatchselected", files, files.length);
+            $warning.hide();
+            $success.hide();
+        }).on('fileremoved', function (event, id, index) {
+            console.log('fileremoved id = ' + id + ', index = ' + index);
+        }).on('filesuccessremove', function (event, id) {
+            console.log('filesuccessremove:', id);
+            delete result[id];
+        }).on('filecleared', function (event) {
+            result = null;
+            $submit.hide();
+            console.log("filecleared");
+        }).on('fileuploaded', function (event, data, previewId, index) {
+            console.log('fileuploaded', previewId, index, data);
+            data.response.data = data.response.data[0];
+            result[previewId] = data.response;
+        }).on('filebatchuploadcomplete', function () {
+            $submit.show();
+            $warning.hide();
+            $success.hide();
+            console.log('filebatchuploadcomplete');
+        });
+        var result = {};
+        var $warning = $(".alert-warning");
+        var $success = $(".alert-success");
+        function showError(text) {
+            $success.hide();
+            $warning.show().html(text);
+        }
+        function showSuccess(text) {
+            $warning.hide();
+            $success.show().html(text);
+            $submit.hide();
+        }
+        $submit.on('click', function () {
+            var getFilesCount = $file.fileinput('getFilesCount');
+            console.log('submit', getFilesCount, result);
+            if (getFilesCount > 0) {
+                showError("文件未全部上传完成"); return;
+            }
+            var files = [];
+            for (var key in result) {
+                var item = result[key];
+                if (item.success)
+                    files.push(item.data.id);
+                else {
+                    showError("请删除未上传或上传失败的文件再提交");
+                    return;
+                }
+            }
+            if (files.length === 0) {
+                showError("请先上传文件再提交");
+                return;
+            }
+            var str = JSON.stringify({ "fileIds": files });
+            
+            $submit.attr("disabled","disabled").text("正在提交中，可能需要较长时间，请耐心等待...");
+            $.ajax({
+                url: "/files/confirmUpload",
+                type: "post",
+                dataType: "json",
+                contentType: 'application/json',
+                cache: false,
+                data: str,
+                success: function (data) {
+                    $submit.removeAttr("disabled").text("确认上传");
+                    if (!data.success) {
+                        showError(data.message);
+                    }
+                    else {
+                        $file.fileinput("refresh");
+                        result = {};
+                        showSuccess(data.message);
+                    }
+                },
+                error: function (data) {
+                    $submit.removeAttr("disabled").text("确认上传");
+                    showError('发送异常，请稍后重试');
+                }
+            });
+        });
+    </script>
+}
+
+

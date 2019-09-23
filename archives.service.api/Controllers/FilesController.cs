@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using archives.common;
 using archives.service.biz.exp;
 using archives.service.biz.ifs;
 using archives.service.biz.web;
@@ -64,14 +65,18 @@ namespace archives.service.api.Controllers
                     StoragePath = filePath,
                     StorageType = dal.Entity.FileStorageType.Local,
                     Size = file.Length,
-                    AccessUrl = $"{_gatewayFilePath}?f={id}"
+                    AccessUrl = $"{_gatewayFilePath}?f={id}",
+                    BizType = dal.Entity.FileStorageBizType.SignImage,
+                    OriginalFileName = file.FileName
                 };
                 await _fileStorageService.AddFile(entity);
                 response.Data = new AddFileResult
                 {
                     Id = id,
                     AccessUrl = entity.AccessUrl,
-                    Size = file.Length
+                    Size = file.Length,
+                    ContentType = file.ContentType,
+                    FileName = file.FileName
                 };
                 response.Success = true;
             }
@@ -84,14 +89,14 @@ namespace archives.service.api.Controllers
         }
 
         [HttpPost]
-        public async Task<CommonResponse<List<AddFileResult>>> BatchAddFile()
+        public async Task<CommonResponse<List<AddFileResult>>> BatchAddFile(List<IFormFile> files)
         {
             var response = new CommonResponse<List<AddFileResult>>();
 
             try
             {
                 var listFile = new List<dal.Entity.FileStorage>();
-                foreach (var file in Request.Form.Files)
+                foreach (var file in files)
                 {
                     var id = Guid.NewGuid().ToString("N");
                     var suffix = file.FileName.Substring(file.FileName.LastIndexOf(".") + 1);
@@ -110,15 +115,25 @@ namespace archives.service.api.Controllers
                         StoragePath = filePath,
                         StorageType = dal.Entity.FileStorageType.Local,
                         Size = file.Length,
-                        AccessUrl = $"{_gatewayFilePath}?f={id}"
+                        AccessUrl = $"{_gatewayFilePath}?f={id}",
+                        BizType = dal.Entity.FileStorageBizType.ArchivesExcel,
+                        OriginalFileName = file.FileName
                     });
                 }
                 var list = await _fileStorageService.AddRangeFile(listFile);
-                response.Data = list.Select(c => new AddFileResult { Id = c}).ToList();
+                response.Data = listFile.Select(c => new AddFileResult
+                {
+                    Id = c.Id,
+                    Size = c.Size,
+                    ContentType = c.ContentType,
+                    AccessUrl = c.AccessUrl,
+                    FileName = c.OriginalFileName
+                }).ToList();
                 response.Success = true;
             }
-            catch
+            catch (Exception ex)
             {
+                ApplicationLog.Error("BatchAddFile", ex);
                 response.Message = "上传发生异常";
             }
             return response;
@@ -138,14 +153,14 @@ namespace archives.service.api.Controllers
                 var stream = System.IO.File.OpenRead(fileStorage.StoragePath);
                 return File(stream, fileStorage.ContentType);
             }
-            catch(BizException ex)
+            catch (BizException ex)
             {
                 return Json(ex.Message);//两个catch先暂时这么写吧，
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var s = ex.Message;
-                return Json("系统异常"+ex.ToString());
+                return Json("系统异常" + ex.ToString());
             }
 
         }

@@ -40,7 +40,10 @@ namespace archives.service.biz.impl
         {
             var response = new CommonResponse<ConfirmUploadResult>
             {
-                Data = new ConfirmUploadResult()
+                Data = new ConfirmUploadResult
+                {
+                    ErrorList = new List<string>()
+                },
             };
             try
             {
@@ -57,10 +60,10 @@ namespace archives.service.biz.impl
                         using (var fs = new FileStream(item.StoragePath, FileMode.Open, FileAccess.Read))
                         {
                             IWorkbook workbook = WorkbookFactory.Create(fs);
-                            ISheet sheet = workbook.GetSheetAt(0);
+                            ISheet sheet = workbook.GetSheet("卷盒内文件"); //workbook.GetSheetAt(0);
                             if (sheet == null)
                             {
-                                response.Data.ErrorList.Add($"第{index}个上传文件不不存在sheet，请确认");
+                                response.Data.ErrorList.Add($"第{index}个上传文件不不存在sheet:卷盒内文件，请确认");
                                 continue;
                             }
 
@@ -79,6 +82,9 @@ namespace archives.service.biz.impl
                                         && c.FileNumber == fileNumber
                                         && c.OrderNumber == orderNumber
                                     );
+                                var date = DateTime.Now;
+                                var writtenDate = DateTime.TryParse(row.GetCell(7).StringCellValue, out date) ? date : date;
+                                var archivingDate = DateTime.TryParse(row.GetCell(12).StringCellValue, out date) ? date : date;
                                 if (archives == null)
                                 {
                                     var entity = new ArchivesInfo
@@ -90,12 +96,12 @@ namespace archives.service.biz.impl
                                         Title = row.GetCell(4).StringCellValue,
                                         ProjectName = row.GetCell(5).StringCellValue,
                                         ResponsibleObject = row.GetCell(6).StringCellValue,
-                                        WrittenDate = row.GetCell(7).DateCellValue,
-                                        Pages = (int)row.GetCell(8).NumericCellValue,
+                                        WrittenDate = writtenDate,
+                                        Pages = int.Parse(row.GetCell(8).StringCellValue),
                                         IsPermanent = row.GetCell(9).StringCellValue,
                                         SecretLevel = row.GetCell(10).StringCellValue,
                                         ArchivingDepartment = row.GetCell(11).StringCellValue,
-                                        ArchivingDate = row.GetCell(12).DateCellValue,
+                                        ArchivingDate = archivingDate,
                                         Remark = row.GetCell(13).StringCellValue,
                                         CatalogNumber = row.GetCell(14).StringCellValue,
                                         Summary = row.GetCell(15).StringCellValue,
@@ -123,12 +129,12 @@ namespace archives.service.biz.impl
                                         archives.Title = row.GetCell(4).StringCellValue;
                                         archives.ProjectName = row.GetCell(5).StringCellValue;
                                         archives.ResponsibleObject = row.GetCell(6).StringCellValue;
-                                        archives.WrittenDate = row.GetCell(7).DateCellValue;
+                                        archives.WrittenDate = writtenDate;
                                         archives.Pages = (int)row.GetCell(8).NumericCellValue;
                                         archives.IsPermanent = row.GetCell(9).StringCellValue;
                                         archives.SecretLevel = row.GetCell(10).StringCellValue;
                                         archives.ArchivingDepartment = row.GetCell(11).StringCellValue;
-                                        archives.ArchivingDate = row.GetCell(12).DateCellValue;
+                                        archives.ArchivingDate = archivingDate;
                                         archives.Remark = row.GetCell(13).StringCellValue;
                                         archives.CatalogNumber = row.GetCell(14).StringCellValue;
                                         archives.Summary = row.GetCell(15).StringCellValue;

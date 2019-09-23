@@ -17,5 +17,9 @@ namespace archives.service.biz.web
         /// 文件访问地址（用这个提交给其它接口）
         /// </summary>
         public string AccessUrl { get; set; }
+
+        public string FileName { get; set; }
+
+        public string ContentType { get; set; }
     }
 }

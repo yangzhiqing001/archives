@@ -20,11 +20,21 @@ namespace archives.service.dal.Entity
         public long Size { get; set; }
 
         public DateTime CreateTime { get; set; }
+
+        public FileStorageBizType? BizType { get; set; }
+
+        public string OriginalFileName { get; set; }
     }
 
     public enum FileStorageType
     {
         Local = 0,
         AliOss = 1,
+    }
+
+    public enum FileStorageBizType
+    {
+        SignImage = 0,
+        ArchivesExcel = 1,
     }
 }

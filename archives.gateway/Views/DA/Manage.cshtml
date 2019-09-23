@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-4">
-                @*<h1>选择项目</h1>*@
+                <input type="button" onclick="window.location.href='new'" value="新建档案" class="btn btn-success float-left">
             </div>
             <div class="col-sm-8">
                 <select class="form-control select2" style="width: 100%;">
@@ -178,9 +178,9 @@ $(function () {
                     }],
                     "aoColumnDefs": [ {
                         "aTargets": [ -1 ],
-                        "mData": "download_link",
+                        "mData": "detail_link",
                         "mRender": function ( data, type, full ) {
-                            return '<a href="'+data+'">Download</a>';
+                            return '<a href="'+data+'">查看详情</a>';
                         }
                     } ]
             });

@@ -22,6 +22,18 @@ namespace archives.gateway.Controllers
             return View(getUser());
         }
 
+        [Authorize]
+        public IActionResult New()
+        {
+            return View(getUser());
+        }
+
+        [Authorize]
+        public IActionResult Edit()
+        {
+            return View(getUser());
+        }
+
         public IActionResult Upload()
         {
             return View();

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>AdminLTE 3 | Dashboard 2</title>
+    <title>@ViewBag.Title</title>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="~/static/loading.css"> 
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!-- PAGE SCRIPTS -->
@@ -31,7 +32,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="~/home" class="nav-link">首页</a>
+                    <a href="#" class="nav-link">@ViewBag.Title</a>
                 </li>
             </ul>
 
@@ -94,7 +95,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                         with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="~/da/upload" class="nav-link">
+                            <a href="/Archives/BatchImport" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
                                     档案导入
@@ -102,7 +103,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="~/da/manage" class="nav-link">
+                            <a href="/da/manage" class="nav-link">
                                 <i class="nav-icon fas fa-file"></i>
                                 <p>
                                     档案管理
@@ -110,7 +111,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="~/borrow/list" class="nav-link">
+                            <a href="/borrow/list" class="nav-link">
                                 <i class="nav-icon fas fa-calendar-alt"></i>
                                 <p>
                                     借阅记录
@@ -118,7 +119,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="~/user/ChangePsd" class="nav-link">
+                            <a href="/user/changepsd" class="nav-link">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>
                                     修改密码
@@ -161,6 +162,7 @@
     <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/dist/js/adminlte.js"></script>
+    <script src="~/static/jquery.loading.min.js"></script>
 
 
     <!-- PAGE PLUGINS -->

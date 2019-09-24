@@ -1,3 +1,166 @@
-﻿@model LoginUserModel
+﻿@model EditArchiveModel
 @{
+    ViewBag.Title = "编辑档案";
+}
+
+
+<!-- Main content -->
+<section class="content" style="padding-bottom:5px;padding-top:10px">
+    <div class="container-fluid">
+        <!-- SELECT2 EXAMPLE -->
+        <div class="card card-default">
+            <div class="card-body">
+                <form id="archivesFrom">
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">档案号</label>
+                            <input type="text" name="archivesNumber" id="archivesNumber" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">分类号</label>
+                            <input type="text" name="categoryId" id="categoryId" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">案卷号</label>
+                            <input type="text" name="fileNumber" id="fileNumber" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">卷内序号</label>
+                            <input type="text" name="orderNumber" id="orderNumber" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">成文日期</label>
+                            <input type="text" name="writtenDate" id="writtenDate" class="form-control" readonly="readonly">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">页数</label>
+                            <input type="text" name="pages" id="pages" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">保管期限</label>
+                            <input type="text" name="isPermanent" id="isPermanent" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">密级</label>
+                            <input type="text" name="secretLevel" id="secretLevel" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">归档部门</label>
+                            <input type="text" name="archivingDepartment" id="archivingDepartment" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">归档日期</label>
+                            <input type="text" name="archivingDate" id="archivingDate" class="form-control" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">目录号</label>
+                            <input type="text" name="catalogNumber" id="catalogNumber" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">项目名称</label>
+                            <input type="text" name="projectName" id="projectName" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">题名</label>
+                            <input type="text" name="title" id="title" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">责任者</label>
+                            <input type="text" name="responsibleObject" id="responsibleObject" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">备注</label>
+                            <input type="text" name="remark" id="remark" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">提要</label>
+                            <input type="text" name="summary" id="summary" class="form-control">
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-12" id="initButton">
+                        <input type="button" value="编辑" class="btn btn-success float-right mx-4" onclick="goEdit()">
+                        <input type="button" value="删除" class="btn btn-secondary float-right">
+                    </div>
+                    <div class="col-12" style="display:none" id="opButton">
+                        <input type="button" value="保存" class="btn btn-success float-right mx-4">
+                        <input type="button" value="取消" class="btn btn-secondary float-right" onclick="cancelEdit()">
+                    </div>
+                </div>
+            </div>
+            <div>
+
+            </div>
+        </div>
+    </div>
+</section>
+@section PageCss
+    {
+    <link rel="stylesheet" href="~/plugins/jquery-ui/jquery-ui.min.css">
+}
+
+@section PagePlusgins
+    {
+    <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/static/dateZH.js"></script>
+}
+
+@section PageScripts
+    {
+    <script>
+        $(function () {
+
+            $( "#writtenDate" ).datepicker({dateFormat: 'yy-mm-dd'});
+            $( "#archivingDate" ).datepicker({dateFormat: 'yy-mm-dd'});
+            $.ajax({
+                headers: {
+                    Accept: "application/json; charset=utf-8",
+                    Authorization: "Bearer @Model.Token"
+                },
+                url: "@Url.Content("~/archives/getArchives")?archivesId=" + @Model.Id,
+                dataType: 'json',
+                beforeSend:function(){
+                    $(".card").loading();
+                },
+                complete:function(){
+                    $(".card").loading('stop');
+                },
+                success:function(result){
+                    if(result && result.success){
+                        var myform = $('#archivesFrom');
+                        $.each(result.data,function(key,value) {
+                            myform.find("input[name='"+key+"']").attr("disabled",true).val(value);
+                        });
+                    }
+                }
+            });
+        });
+
+        function goEdit(){
+            $("#archivesFrom :input").prop("disabled", false);
+            $("#initButton").hide();
+            $("#opButton").show();
+        }
+
+        function cancelEdit(){
+            $("#archivesFrom :input").prop("disabled", true);
+            $("#initButton").show();
+            $("#opButton").hide();
+        }
+    </script>
 }

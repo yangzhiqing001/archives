@@ -1,5 +1,6 @@
 ﻿@model LoginUserModel
 @{
+    ViewBag.Title = "档案管理";
 }
 
 <!-- Content Header (Page header) -->
@@ -10,8 +11,7 @@
                 <input type="button" onclick="window.location.href='new'" value="新建档案" class="btn btn-success float-left">
             </div>
             <div class="col-sm-8">
-                <select class="form-control select2" style="width: 100%;">
-                </select>
+                <select class="form-control select2" style="width: 100%;"></select>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -180,7 +180,7 @@ $(function () {
                         "aTargets": [ -1 ],
                         "mData": "detail_link",
                         "mRender": function ( data, type, full ) {
-                            return '<a href="'+data+'">查看详情</a>';
+                            return '<a href="/da/edit/'+data+'">查看详情</a>';
                         }
                     } ]
             });

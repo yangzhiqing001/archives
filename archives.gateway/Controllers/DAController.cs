@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using archives.service.biz.web;
 using archives.service.biz.exp;
 using NPOI.SS.UserModel;
+using archives.gateway.Models;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace archives.gateway.Controllers
@@ -29,9 +30,11 @@ namespace archives.gateway.Controllers
         }
 
         [Authorize]
-        public IActionResult Edit()
+        public IActionResult Edit(string id)
         {
-            return View(getUser());
+            EditArchiveModel model = new EditArchiveModel(getUser());
+            model.Id = id;
+            return View(model);
         }
 
         public IActionResult Upload()

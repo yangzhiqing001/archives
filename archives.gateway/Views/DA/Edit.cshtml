@@ -95,12 +95,34 @@
                 <div class="row">
                     <div class="col-12" id="initButton">
                         <input type="button" value="编辑" class="btn btn-success float-right mx-4" onclick="goEdit()">
-                        <input type="button" value="删除" class="btn btn-secondary float-right">
+                        <input type="button" value="删除" class="btn btn-secondary float-right" data-toggle="modal" data-target="#modal-sm">
                     </div>
                     <div class="col-12" style="display:none" id="opButton">
-                        <input type="button" value="保存" class="btn btn-success float-right mx-4">
+                        <input type="button" value="保存" class="btn btn-success float-right mx-4" onclick="doEdit()">
                         <input type="button" value="取消" class="btn btn-secondary float-right" onclick="cancelEdit()">
                     </div>
+                    <div class="modal fade" id="modal-sm">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">请确认操作</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>是否确定要删除档案&hellip;</p>
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary" onclick="doDelete()">确定</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
                 </div>
             </div>
             <div>
@@ -161,6 +183,14 @@
             $("#archivesFrom :input").prop("disabled", true);
             $("#initButton").show();
             $("#opButton").hide();
+        }
+
+        function doDelete(){
+            
+        }
+
+        function doEdit(){
+
         }
     </script>
 }

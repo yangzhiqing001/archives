@@ -76,6 +76,7 @@ namespace archives.service.biz.impl
                                 var categoryId = row.GetCell(1).StringCellValue;
                                 var fileNumber = row.GetCell(2).StringCellValue;
                                 var orderNumber = row.GetCell(3).StringCellValue;
+                                
                                 var archives = await _db.ArchivesInfo.FirstOrDefaultAsync
                                     (c => c.ArchivesNumber == archivesNumber
                                         && c.CategoryId == categoryId
@@ -85,6 +86,8 @@ namespace archives.service.biz.impl
                                 var date = DateTime.Now;
                                 var writtenDate = DateTime.TryParse(row.GetCell(7).StringCellValue, out date) ? date : date;
                                 var archivingDate = DateTime.TryParse(row.GetCell(12).StringCellValue, out date) ? date : date;
+                                int ii = 0;
+                                var pages = int.TryParse(row.GetCell(8).StringCellValue, out ii) ? ii : ii;
                                 if (archives == null)
                                 {
                                     var entity = new ArchivesInfo
@@ -97,7 +100,7 @@ namespace archives.service.biz.impl
                                         ProjectName = row.GetCell(5).StringCellValue,
                                         ResponsibleObject = row.GetCell(6).StringCellValue,
                                         WrittenDate = writtenDate,
-                                        Pages = int.Parse(row.GetCell(8).StringCellValue),
+                                        Pages = pages,
                                         IsPermanent = row.GetCell(9).StringCellValue,
                                         SecretLevel = row.GetCell(10).StringCellValue,
                                         ArchivingDepartment = row.GetCell(11).StringCellValue,
@@ -130,7 +133,7 @@ namespace archives.service.biz.impl
                                         archives.ProjectName = row.GetCell(5).StringCellValue;
                                         archives.ResponsibleObject = row.GetCell(6).StringCellValue;
                                         archives.WrittenDate = writtenDate;
-                                        archives.Pages = int.Parse(row.GetCell(8).StringCellValue);
+                                        archives.Pages = pages;
                                         archives.IsPermanent = row.GetCell(9).StringCellValue;
                                         archives.SecretLevel = row.GetCell(10).StringCellValue;
                                         archives.ArchivingDepartment = row.GetCell(11).StringCellValue;

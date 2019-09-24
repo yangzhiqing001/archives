@@ -20,6 +20,50 @@ namespace archives.service.biz.impl
             _db = db;
         }
 
+        public async Task<List<SearchBorrowRegisterResult>> QueryAllBorrowRegisters()
+        {
+            var query = _db.BorrowRegister.AsNoTracking().Where(c => !c.Deleted);
+
+            var list = await query.OrderBy(c => c.Status).ThenBy(c => c.Id)
+                    .Select(c => new SearchBorrowRegisterResult
+                    {
+                        Id = c.Id,
+                        Borrower = c.Borrower,
+                        Company = c.Company,
+                        Department = c.Department,
+                        Phone = c.Phone,
+                        ReturnDate = c.ReturnDate,
+                        SignPhoto = c.SignPhoto,
+                        Status = c.Status,
+                        CreateTime = c.CreateTime,
+                        CreateTimeStr = c.CreateTime.ToString("yyyy-MM-dd")
+                    }).ToListAsync();
+
+            var ids = list.Select(c => c.Id);
+
+            var archivesList = await (from brd in _db.BorrowRegisterDetail.AsNoTracking()
+                                      join a in _db.ArchivesInfo.AsNoTracking() on brd.ArchivesId equals a.Id
+                                      where ids.Contains(brd.BorrowRegisterId)
+                                      select new ArchivesSimple
+                                      {
+                                          BorrowRegisterId = brd.BorrowRegisterId,
+                                          ArchivesNumber = a.ArchivesNumber,
+                                          CatalogNumber = a.CatalogNumber,
+                                          CategoryId = a.CategoryId,
+                                          FileNumber = a.FileNumber,
+                                          OrderNumber = a.OrderNumber
+                                      }).ToListAsync();
+
+            list.ForEach(c =>
+            {
+                var arlist = archivesList.Where(j => j.BorrowRegisterId == c.Id).ToList();
+                c.ArchivesList = arlist;
+                c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}/{j.FileNumber}/{j.OrderNumber}"));
+                c.ReturnDateStr = c.ReturnDate.ToString("yyyy-MM-dd");
+            });
+            return list;
+        }
+
         /// <summary>
         /// 申报借阅
         /// </summary>
@@ -132,7 +176,7 @@ namespace archives.service.biz.impl
                             Id = c.Id,
                             Borrower = c.Borrower,
                             Company = c.Company,
-                            Department = c.Company,
+                            Department = c.Department,
                             Phone = c.Phone,
                             ReturnDate = c.ReturnDate,
                             SignPhoto = c.SignPhoto,
@@ -164,8 +208,16 @@ namespace archives.service.biz.impl
                     c.ReturnDateStr = c.ReturnDate.ToString("yyyy-MM-dd");
                 });
 
+                var total = await query.CountAsync();
+
                 response.Data = list;
+                response.TotalPage = total.GetPages(request.PageSize);
+                response.TotalCount = total;
                 response.Success = true;
+
+
+                //response.Data = list;
+                //response.Success = true;
             }
             catch (Exception ex)
             {

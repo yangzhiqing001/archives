@@ -164,5 +164,19 @@ namespace archives.service.api.Controllers
             }
         }
 
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<CommonResponse<string>> ChangePassword([FromBody]ChangePsdRequest request)
+        {
+            request.SerializeToLog("ChangPassword request");
+            var response = await _archivesService.ChangPassword(request);
+            response.SerializeToLog("ChangPassword response");
+            return response;
+        }
+
     }
 }

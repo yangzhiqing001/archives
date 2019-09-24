@@ -8,7 +8,8 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-4">
-                <input type="button" onclick="window.location.href='new'" value="新建档案" class="btn btn-success float-left">
+                <input type="button" onclick="window.location.href='new'" value="新建档案" class="btn btn-success float-left mx-4">
+                <input type="button" id="btnExport" value="导出Excel" class="btn btn-success float-left">
             </div>
             <div class="col-sm-8">
                 <select class="form-control select2" style="width: 100%;"></select>
@@ -54,36 +55,36 @@
 @section PageScripts
     {
     <script>
-$(function () {
-    $.ajax({
-        headers: {
-            Accept: "application/json; charset=utf-8",
-            Authorization: "Bearer @Model.Token"
-        },
-        url: "@Url.Content("~/archives/queryAllProjectName")",
-        dataType: 'json',
-        success:function(result){
-            var rs = [];
-            if(result && result.success){
-                result.data.forEach(function(element) {
-                    rs.push({id:element,text:element})
-                });
-                $(".select2").select2({
-                    tags: true,                          //支持新增，默认为false
-                    maximumSelectionLength: 6,           //最多能够选择的个数
-                    multiple: true,                      //支持多选，默认为false
-                    allowClear: true,                    //支持清空，默认为false
-                    placeholder: '筛选项目',      //提示语
-                    data: rs                      //下拉框绑定的数据
-                }).on("change", function (e) {
-                    console.log($(".select2").val());
-                    $('#daListTable').DataTable().ajax.reload();
+        $(function () {
+            $.ajax({
+                headers: {
+                    Accept: "application/json; charset=utf-8",
+                    Authorization: "Bearer @Model.Token"
+                },
+                url: "@Url.Content("~/archives/queryAllProjectName")",
+                dataType: 'json',
+                success:function(result){
+                    var rs = [];
+                    if(result && result.success){
+                        result.data.forEach(function(element) {
+                            rs.push({id:element,text:element})
+                        });
+                        $(".select2").select2({
+                            tags: true,                          //支持新增，默认为false
+                            maximumSelectionLength: 6,           //最多能够选择的个数
+                            multiple: true,                      //支持多选，默认为false
+                            allowClear: true,                    //支持清空，默认为false
+                            placeholder: '筛选项目',      //提示语
+                            data: rs                      //下拉框绑定的数据
+                        }).on("change", function (e) {
+                            console.log($(".select2").val());
+                            $('#daListTable').DataTable().ajax.reload();
 
-                });
+                        });
 
-            }
-        }
-    });
+                    }
+                }
+            });
 
             $.fn.dataTable.ext.errMode = 'throw';
             $('#daListTable').dataTable({
@@ -171,6 +172,11 @@ $(function () {
                         "sDefaultContent" : "",
                         "sClass" : "center"
                     }, {
+                        "mDataProp" : "statusDesc",
+                        "sTitle" : "状态",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    }, {
                         "mDataProp" : "id",
                         "sTitle" : "操作",
                         "sDefaultContent" : "",
@@ -180,9 +186,14 @@ $(function () {
                         "aTargets": [ -1 ],
                         "mData": "detail_link",
                         "mRender": function ( data, type, full ) {
-                            return '<a href="/da/edit/'+data+'">查看详情</a>';
+                            return '<a href="/da/edit/'+data+'" target="_blank">查看详情</a>';
                         }
                     } ]
             });
-        });</script>
+
+            $("#btnExport").click(function(){
+                window.open('/archives/export')
+            });
+        });
+    </script>
 }

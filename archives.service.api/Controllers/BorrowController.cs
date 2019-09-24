@@ -137,5 +137,46 @@ namespace archives.service.api.Controllers
             response.SerializeToLog("CloseBorrow");
             return response;
         }
+
+        [HttpGet]
+        public async Task<ActionResult> Export()
+        {
+            try
+            {
+                var list = await _borrowRegisterService.QueryAllBorrowRegisters();
+
+                System.IO.MemoryStream output = new System.IO.MemoryStream();
+
+                System.IO.StreamWriter writer = new System.IO.StreamWriter(output, System.Text.Encoding.UTF8);
+                writer.Write("姓名,手机,到期时间,借阅日期,公司,部门,档案号,状态,照片");
+
+                writer.WriteLine();
+
+                //输出内容
+                list.ForEach(a => {
+                    writer.Write($"\"{a.Borrower}\",\"");//第一列
+                    writer.Write($"{a.Phone}\",\"");
+                    writer.Write($"{a.ReturnDateStr}\",\"");
+                    writer.Write($"{a.CreateTimeStr}\",\"");
+                    writer.Write($"{a.Company}\",\"");
+                    writer.Write($"{a.Department}\",\"");
+                    writer.Write($"{a.ArchivesStr}\",\"");
+                    writer.Write($"{a.StatusDesc}\",\"");
+                    writer.Write($"{a.SignPhoto}\",");
+                    writer.WriteLine();
+                });
+
+                writer.Flush();
+
+                output.Position = 0;
+
+                return File(output, "application/ms-excel", "借阅记录.csv");
+            }
+            catch (Exception ex)
+            {
+                ApplicationLog.Error("Export Excetpion", ex);
+                return Ok(ex.Message);
+            }
+        }
     }
 }

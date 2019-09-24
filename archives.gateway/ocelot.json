@@ -1,486 +1,525 @@
 ﻿{
-    "ReRoutes": [
-        //获取token地址
+  "ReRoutes": [
+    //获取token地址
+    {
+      "DownstreamPathTemplate": "/connect/token",
+      "UpstreamPathTemplate": "/token",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
         {
-            "DownstreamPathTemplate": "/connect/token",
-            "UpstreamPathTemplate": "/token",
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5002
-                }
-            ],
-            "UseServiceDiscovery": false
-        },
-        {
-            "DownstreamPathTemplate": "/connect/userinfo",
-            "UpstreamPathTemplate": "/userinfo",
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5002
-                }
-            ],
-            "UseServiceDiscovery": false
-        },
-        //下游api示例 匿名登录访问
-        {
-            "DownstreamPathTemplate": "/api/values/test1",
-            "UpstreamPathTemplate": "/values/test1",
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "UseServiceDiscovery": false
-        },
-        //下游api 示例 需管理员登录访问的配置
-        {
-            "DownstreamPathTemplate": "/api/values/test2",
-            "UpstreamPathTemplate": "/values/test2",
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "RouteClaimsRequirement": {
-                "role": "admin"
-            },
-            "UseServiceDiscovery": false
-        },
-
-        //下游api + 示例 所有人可访问
-        {
-            "DownstreamPathTemplate": "/api/values/test3",
-            "UpstreamPathTemplate": "/values/test3",
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "UseServiceDiscovery": false
-        },
-
-        //业务服务接口，从这里开始
-        {
-            //查询档案接口
-            "DownstreamPathTemplate": "/api/archives/searchArchives",
-            "UpstreamPathTemplate": "/archives/searchArchives",
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "UseServiceDiscovery": false
-        },
-        {
-            //获取单个档案详情
-            "DownstreamPathTemplate": "/api/archives/getArchives",
-            "UpstreamPathTemplate": "/archives/getArchives",
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "UseServiceDiscovery": false
-        },
-        {
-            //借阅登记
-            "DownstreamPathTemplate": "/api/borrow/register",
-            "UpstreamPathTemplate": "/borrow/register",
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "UseServiceDiscovery": false
-        },
-        {
-            //借阅登记列表查询
-            "DownstreamPathTemplate": "/api/borrow/searchBorrowRegister",
-            "UpstreamPathTemplate": "/borrow/searchBorrowRegister",
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "RouteClaimsRequirement": {
-                "role": "admin"
-            },
-            "UseServiceDiscovery": false
-        },
-        {
-            //获取借阅详情（根据借阅ID，供借阅列表选中使用）
-            "DownstreamPathTemplate": "/api/borrow/getBorrowDetail",
-            "UpstreamPathTemplate": "/borrow/getBorrowDetail",
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "UseServiceDiscovery": false
-        },
-        {
-            //续借（延期）
-            "DownstreamPathTemplate": "/api/borrow/renewBorrow",
-            "UpstreamPathTemplate": "/borrow/renewBorrow",
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "RouteClaimsRequirement": {
-                "role": "admin"
-            },
-            "UseServiceDiscovery": false
-        },
-        {
-            //归还接口
-            "DownstreamPathTemplate": "/api/borrow/returnBorrow",
-            "UpstreamPathTemplate": "/borrow/returnBorrow",
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "RouteClaimsRequirement": {
-                "role": "admin"
-            },
-            "UseServiceDiscovery": false
-        },
-        {
-            //确认借出（管理员使用）
-            "DownstreamPathTemplate": "/api/borrow/confirmBorrowed",
-            "UpstreamPathTemplate": "/borrow/confirmBorrowed",
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "RouteClaimsRequirement": {
-                "role": "admin"
-            },
-            "UseServiceDiscovery": false
-        },
-        {
-            //编辑档案
-            "DownstreamPathTemplate": "/api/archives/editArchives",
-            "UpstreamPathTemplate": "/archives/editArchives",
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "RouteClaimsRequirement": {
-                "role": "admin"
-            },
-            "UseServiceDiscovery": false
-        },
-        {
-            //添加档案
-            "DownstreamPathTemplate": "/api/archives/addArchives",
-            "UpstreamPathTemplate": "/archives/addArchives",
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "RouteClaimsRequirement": {
-                "role": "admin"
-            },
-            "UseServiceDiscovery": false
-        },
-        {
-            //删除档案
-            "DownstreamPathTemplate": "/api/archives/deleteArchives",
-            "UpstreamPathTemplate": "/archives/deleteArchives",
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "RouteClaimsRequirement": {
-                "role": "admin"
-            },
-            "UseServiceDiscovery": false
-        },
-        {
-            //催还档案
-            "DownstreamPathTemplate": "/api/borrow/returnWarn",
-            "UpstreamPathTemplate": "/borrow/returnWarn",
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "RouteClaimsRequirement": {
-                "role": "admin"
-            },
-            "UseServiceDiscovery": false
-        },
-        //获取所有档案项目名
-        {
-            "DownstreamPathTemplate": "/api/archives/queryAllProjectname",
-            "UpstreamPathTemplate": "/archives/queryAllProjectname",
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "UseServiceDiscovery": false
-        },
-        {
-            //下载图片接品
-            "DownstreamPathTemplate": "/api/files/download",
-            "UpstreamPathTemplate": "/files/download",
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "UseServiceDiscovery": false
-        },
-        {
-            //上传图片接口
-            "DownstreamPathTemplate": "/api/files/addFile",
-            "UpstreamPathTemplate": "/files/addFile",
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "UseServiceDiscovery": false
-        },
-        {
-            //导出档案
-            "DownstreamPathTemplate": "/api/archives/export",
-            "UpstreamPathTemplate": "/archives/export",
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "UseServiceDiscovery": false
-        },
-        {
-            //关闭借阅接口
-            "DownstreamPathTemplate": "/api/borrow/closeBorrow",
-            "UpstreamPathTemplate": "/borrow/closeBorrow",
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "AuthProviderKey",
-                "AllowedScopes": []
-            },
-            "RouteClaimsRequirement": {
-                "role": "admin"
-            },
-            "UseServiceDiscovery": false
-        },
-        {
-            //批量上传档案Excel
-            "DownstreamPathTemplate": "/api/files/batchAddFile",
-            "UpstreamPathTemplate": "/files/batchAddFile",
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "UseServiceDiscovery": false
-        },
-        {
-            //确认提交上传的Excel
-            "DownstreamPathTemplate": "/api/files/confirmUpload",
-            "UpstreamPathTemplate": "/files/confirmUpload",
-            "UpstreamHttpMethod": [
-                "Post"
-            ],
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5003
-                }
-            ],
-            "UseServiceDiscovery": false
+          "Host": "localhost",
+          "Port": 5002
         }
-    ],
+      ],
+      "UseServiceDiscovery": false
+    },
+    {
+      "DownstreamPathTemplate": "/connect/userinfo",
+      "UpstreamPathTemplate": "/userinfo",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+      "UseServiceDiscovery": false
+    },
+    //下游api示例 匿名登录访问
+    {
+      "DownstreamPathTemplate": "/api/values/test1",
+      "UpstreamPathTemplate": "/values/test1",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "UseServiceDiscovery": false
+    },
+    //下游api 示例 需管理员登录访问的配置
+    {
+      "DownstreamPathTemplate": "/api/values/test2",
+      "UpstreamPathTemplate": "/values/test2",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
+      "UseServiceDiscovery": false
+    },
+
+    //下游api + 示例 所有人可访问
+    {
+      "DownstreamPathTemplate": "/api/values/test3",
+      "UpstreamPathTemplate": "/values/test3",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UseServiceDiscovery": false
+    },
+
+    //业务服务接口，从这里开始
+    {
+      //查询档案接口
+      "DownstreamPathTemplate": "/api/archives/searchArchives",
+      "UpstreamPathTemplate": "/archives/searchArchives",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //获取单个档案详情
+      "DownstreamPathTemplate": "/api/archives/getArchives",
+      "UpstreamPathTemplate": "/archives/getArchives",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //借阅登记
+      "DownstreamPathTemplate": "/api/borrow/register",
+      "UpstreamPathTemplate": "/borrow/register",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //借阅登记列表查询
+      "DownstreamPathTemplate": "/api/borrow/searchBorrowRegister",
+      "UpstreamPathTemplate": "/borrow/searchBorrowRegister",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //获取借阅详情（根据借阅ID，供借阅列表选中使用）
+      "DownstreamPathTemplate": "/api/borrow/getBorrowDetail",
+      "UpstreamPathTemplate": "/borrow/getBorrowDetail",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //续借（延期）
+      "DownstreamPathTemplate": "/api/borrow/renewBorrow",
+      "UpstreamPathTemplate": "/borrow/renewBorrow",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //归还接口
+      "DownstreamPathTemplate": "/api/borrow/returnBorrow",
+      "UpstreamPathTemplate": "/borrow/returnBorrow",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //确认借出（管理员使用）
+      "DownstreamPathTemplate": "/api/borrow/confirmBorrowed",
+      "UpstreamPathTemplate": "/borrow/confirmBorrowed",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //编辑档案
+      "DownstreamPathTemplate": "/api/archives/editArchives",
+      "UpstreamPathTemplate": "/archives/editArchives",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //添加档案
+      "DownstreamPathTemplate": "/api/archives/addArchives",
+      "UpstreamPathTemplate": "/archives/addArchives",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //删除档案
+      "DownstreamPathTemplate": "/api/archives/deleteArchives",
+      "UpstreamPathTemplate": "/archives/deleteArchives",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //催还档案
+      "DownstreamPathTemplate": "/api/borrow/returnWarn",
+      "UpstreamPathTemplate": "/borrow/returnWarn",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
+      "UseServiceDiscovery": false
+    },
+    //获取所有档案项目名
+    {
+      "DownstreamPathTemplate": "/api/archives/queryAllProjectname",
+      "UpstreamPathTemplate": "/archives/queryAllProjectname",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //下载图片接品
+      "DownstreamPathTemplate": "/api/files/download",
+      "UpstreamPathTemplate": "/files/download",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UseServiceDiscovery": false
+    },
+    {
+      //上传图片接口
+      "DownstreamPathTemplate": "/api/files/addFile",
+      "UpstreamPathTemplate": "/files/addFile",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UseServiceDiscovery": false
+    },
+    {
+      //导出档案
+      "DownstreamPathTemplate": "/api/archives/export",
+      "UpstreamPathTemplate": "/archives/export",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UseServiceDiscovery": false
+    },
+    {
+      //关闭借阅接口
+      "DownstreamPathTemplate": "/api/borrow/closeBorrow",
+      "UpstreamPathTemplate": "/borrow/closeBorrow",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //批量上传档案Excel
+      "DownstreamPathTemplate": "/api/files/batchAddFile",
+      "UpstreamPathTemplate": "/files/batchAddFile",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UseServiceDiscovery": false
+    },
+    {
+      //确认提交上传的Excel
+      "DownstreamPathTemplate": "/api/files/confirmUpload",
+      "UpstreamPathTemplate": "/files/confirmUpload",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UseServiceDiscovery": false
+    },
+    {
+      //修改密码
+      "DownstreamPathTemplate": "/api/archives/changePassword",
+      "UpstreamPathTemplate": "/archives/changePassword",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
+      "UseServiceDiscovery": false
+    },
+    {
+      //导出借阅记录
+      "DownstreamPathTemplate": "/api/borrow/export",
+      "UpstreamPathTemplate": "/borrow/export",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UseServiceDiscovery": false
+    }
+  ],
     "GlobalConfiguration": {
         "RequestIdKey": "OcRequestId"
         //"ServiceDiscoveryProvider": { "Type": "Eureka" } //指定服务发现的提供方为Eureka

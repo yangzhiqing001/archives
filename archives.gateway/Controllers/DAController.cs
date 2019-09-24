@@ -37,6 +37,7 @@ namespace archives.gateway.Controllers
             return View(model);
         }
 
+        [Authorize]
         public IActionResult Upload()
         {
             return View();

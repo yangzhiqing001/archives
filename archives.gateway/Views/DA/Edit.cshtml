@@ -93,13 +93,16 @@
                     </div>
                 </form>
                 <div class="row">
-                    <div class="col-12" id="initButton">
-                        <input type="button" value="编辑" class="btn btn-success float-right mx-4" onclick="goEdit()">
+                    <div class="col-12" style="display:none" id="initButton">
+                        <input type="button" value="编辑" class="btn btn-success float-right mx-4" id="btnGoEdit">
                         <input type="button" value="删除" class="btn btn-secondary float-right" data-toggle="modal" data-target="#modal-sm">
                     </div>
                     <div class="col-12" style="display:none" id="opButton">
-                        <input type="button" value="保存" class="btn btn-success float-right mx-4" onclick="doEdit()">
-                        <input type="button" value="取消" class="btn btn-secondary float-right" onclick="cancelEdit()">
+                        <input type="button" value="保存" class="btn btn-success float-right mx-4" data-toggle="modal" data-target="#modal-sm-edit">
+                        <input type="button" value="取消" class="btn btn-secondary float-right" id="btnCancelEdit">
+                    </div>
+                    <div class="col-12" style="display:none" id="tips">
+                        <label class="float-right">借出过的档案不可编辑</label>
                     </div>
                     <div class="modal fade" id="modal-sm">
                         <div class="modal-dialog modal-sm">
@@ -115,7 +118,29 @@
                                 </div>
                                 <div class="modal-footer justify-content-between">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                    <button type="button" class="btn btn-primary" onclick="doDelete()">确定</button>
+                                    <button type="button" class="btn btn-primary" id="btnConfirmDelete">确定</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
+                    <div class="modal fade" id="modal-sm-edit">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">请确认操作</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>是否确定要修改档案&hellip;</p>
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary" id="btnConfirmEdit">确定</button>
                                 </div>
                             </div>
                             <!-- /.modal-content -->
@@ -134,18 +159,31 @@
 @section PageCss
     {
     <link rel="stylesheet" href="~/plugins/jquery-ui/jquery-ui.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" href="~/plugins/toastr/toastr.min.css">
 }
 
 @section PagePlusgins
     {
     <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
     <script src="~/static/dateZH.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Toastr -->
+    <script src="~/plugins/toastr/toastr.min.js"></script>
 }
 
 @section PageScripts
     {
     <script>
         $(function () {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
 
             $( "#writtenDate" ).datepicker({dateFormat: 'yy-mm-dd'});
             $( "#archivingDate" ).datepicker({dateFormat: 'yy-mm-dd'});
@@ -168,29 +206,126 @@
                         $.each(result.data,function(key,value) {
                             myform.find("input[name='"+key+"']").attr("disabled",true).val(value);
                         });
+                        if(result.data.status == 0){
+                            $("#initButton").show();
+                        }
+                        else{
+                            $("#tips").show();
+                        }
                     }
                 }
             });
+
+            $("#btnGoEdit").click(function(){
+                $("#archivesFrom :input").prop("disabled", false);
+                $("#initButton").hide();
+                $("#opButton").show();
+            });
+
+            $("#btnCancelEdit").click(function(){
+                $("#archivesFrom :input").prop("disabled", true);
+                $("#initButton").show();
+                $("#opButton").hide();
+            });
+
+            $("#btnConfirmDelete").click(function(){
+                $.ajax({
+                    headers: {
+                        Accept: "application/json; charset=utf-8",
+                        Authorization: "Bearer @Model.Token"
+                    },
+                    method: 'POST',
+                    url: "@Url.Content("~/archives/DeleteArchives")",
+                    data: JSON.stringify({
+                        archivesId:@Model.Id
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    beforeSend:function(){
+                        $(".card").loading();
+                    },
+                    complete:function(){
+                        $('#modal-sm').modal('hide')
+                        $(".card").loading('stop');
+                    },
+                    success:function(result){
+                        if(result && result.success){
+                            Toast.fire({
+                                type: 'success',
+                                title: '档案已删除.',
+                                onClose: () => {
+                                    window.location.href='/da/manage';
+                                }
+                            })
+                        }
+                        else{
+                            Toast.fire({
+                                type: 'error',
+                                title: result.message,
+                            })
+                        }
+                    }
+                });
+            });
+
+            $("#btnConfirmEdit").click(function(){
+                $.ajax({
+                    headers: {
+                        Accept: "application/json; charset=utf-8",
+                        Authorization: "Bearer @Model.Token"
+                    },
+                    method: 'POST',
+                    url: "@Url.Content("~/archives/EditArchives")",
+                    data: JSON.stringify({
+                        "id": @Model.Id,
+                        "archivesNumber": $("#archivesNumber").val(),
+                        "categoryId": $("#categoryId").val(),
+                        "fileNumber": $("#fileNumber").val(),
+                        "orderNumber": $("#orderNumber").val(),
+                        "title": $("#title").val(),
+                        "projectName": $("#projectName").val(),
+                        "responsibleObject": $("#responsibleObject").val(),
+                        "writtenDate": $("#writtenDate").val(),
+                        "pages": $("#pages").val(),
+                        "isPermanent": $("#isPermanent").val(),
+                        "secretLevel": $("#secretLevel").val(),
+                        "archivingDepartment": $("#archivingDepartment").val(),
+                        "archivingDate": $("#archivingDate").val(),
+                        "remark": $("#remark").val(),
+                        "catalogNumber": $("#catalogNumber").val(),
+                        "summary": $("#summary").val()
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    beforeSend:function(){
+                        $(".card").loading();
+                    },
+                    complete:function(){
+                        $('#modal-sm-edit').modal('hide')
+                        $(".card").loading('stop');
+                    },
+                    success:function(result){
+                        if(result && result.success){
+                            Toast.fire({
+                                type: 'success',
+                                title: '档案已保存.',
+                                onClose: () => {
+                                    window.location.reload();
+                                }
+                            })
+                        }
+                        else{
+                            Toast.fire({
+                                type: 'error',
+                                title: result.message,
+                            })
+                        }
+                    }
+                });
+            });
+
         });
 
-        function goEdit(){
-            $("#archivesFrom :input").prop("disabled", false);
-            $("#initButton").hide();
-            $("#opButton").show();
-        }
 
-        function cancelEdit(){
-            $("#archivesFrom :input").prop("disabled", true);
-            $("#initButton").show();
-            $("#opButton").hide();
-        }
-
-        function doDelete(){
-            
-        }
-
-        function doEdit(){
-
-        }
     </script>
 }

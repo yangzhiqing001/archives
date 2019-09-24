@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -31,14 +32,29 @@ namespace archives.gateway.Controllers
             _identityServerSecret = configuration.GetValue<string>("IdentityServerSecret");
         }
         // GET: /<controller>/
+        [Authorize]
         public IActionResult ChangePsd()
         {
-            return View();
+            return View(getUser());
         }
         // GET: /<controller>/
         public IActionResult Login()
         {
-            return View(new LoginViewModel ());
+            LoginViewModel lv = new LoginViewModel();
+            bool rm = false;
+            
+            if (Request.Cookies["rememberme"] != null) {
+                bool.TryParse(Request.Cookies["rememberme"], out rm);
+                lv.RememberMe = rm;
+            }
+            return View(lv);
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync();
+            //return RedirectToAction("Index", "Home");
+            return View("login");
         }
 
         [HttpPost]

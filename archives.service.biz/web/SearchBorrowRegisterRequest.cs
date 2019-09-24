@@ -66,6 +66,28 @@ namespace archives.service.biz.web
         /// 状态 0.正常 1.已登记 2.已借出 3.已延期 4.已归还 5.逾期
         /// </summary>
         public BorrowRegisterStatus Status { get; set; }
+        public string StatusDesc
+        {
+            get
+            {
+                if (Status == BorrowRegisterStatus.Normoal)
+                    return "正常";
+                else if (Status == BorrowRegisterStatus.Borrowed)
+                    return "已借出";
+                else if (Status == BorrowRegisterStatus.Closed)
+                    return "已关闭";
+                else if (Status == BorrowRegisterStatus.Overdue)
+                    return "已逾期";
+                else if (Status == BorrowRegisterStatus.Registered)
+                    return "已登记";
+                else if (Status == BorrowRegisterStatus.Renewed)
+                    return "已延期";
+                else if (Status == BorrowRegisterStatus.Returned)
+                    return "已归还";
+                else
+                    return "未知状态";
+            }
+        }
 
         /// <summary>
         /// 借阅档案列表

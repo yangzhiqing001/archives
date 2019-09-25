@@ -151,7 +151,7 @@ namespace archives.service.api.Controllers
             {
                 var fileStorage = await _fileStorageService.Get(f);
                 var stream = System.IO.File.OpenRead(fileStorage.StoragePath);
-                return File(stream, fileStorage.ContentType);
+                return File(stream, fileStorage.ContentType, string.IsNullOrEmpty(fileStorage.OriginalFileName) ? f: fileStorage.OriginalFileName);
             }
             catch (BizException ex)
             {
@@ -159,8 +159,8 @@ namespace archives.service.api.Controllers
             }
             catch (Exception ex)
             {
-                var s = ex.Message;
-                return Json("系统异常" + ex.ToString());
+                ApplicationLog.Error($"DownLoad:{f}", ex);
+                return Json("系统异常");                
             }
 
         }

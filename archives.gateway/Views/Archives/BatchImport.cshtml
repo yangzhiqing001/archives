@@ -1,6 +1,5 @@
 ﻿
 @{
-    ViewBag.Title = "批量上传档案Excel";
     ViewData["Title"] = "批量上传档案Excel";
 }
 
@@ -43,22 +42,61 @@
         <!-- /.col -->
     </div>
     <!-- /.row -->
+    <div class="modal fade" id="modal-submit">
+        <div class="modal-dialog" style="max-width:800px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title">正在提交...</p>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" id="progress" style="width: 40%">
+                            <span class="sr-only">40% Complete (success)</span>
+                        </div>
+                    </div>
+                    <div class="box-body no-padding">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>文件</th>
+                                    <th style="width: 40px">完成</th>
+                                </tr>
+                            </thead>
+                            <tbody id="filelist">
+
+                            </tbody>                            
+                        </table>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn-finished">完 成</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
 </section>
+
 <!-- /.content -->
 @section PageCss
-    {
-    @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">*@
+{
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/plugins/all-krajee/all-krajee.min.css">
     <link rel="stylesheet" href="~/plugins/fileinput/css/fileinput.min.css">
     <link rel="stylesheet" href="~/plugins/fileinput/css/fileinput-rtl.min.css">
 }
 @section PagePlusgins
-    {
+{
     <script src="~/plugins/fileinput/fileinput.min.js"></script>
 }
 @section PageScripts
-    {
-    <script>var $submit = $("#submit");
+{
+    <script>
+        var $submit = $("#submit");
         var $file = $("#file");
         $file.fileinput({
             showPreview: true,
@@ -111,29 +149,57 @@
             $success.show().html(text);
             $submit.hide();
         }
+        var $progress = $("#progress");
+        var $modelfoot = $(".modal-footer");
+        var $modaltitle = $(".modal-title");
         $submit.on('click', function () {
             var getFilesCount = $file.fileinput('getFilesCount');
-            console.log('submit', getFilesCount, result);
             if (getFilesCount > 0) {
                 showError("文件未全部上传完成"); return;
             }
-            var files = [];
+            var filesCount = 0;
             for (var key in result) {
                 var item = result[key];
                 if (item.success)
-                    files.push(item.data.id);
+                    filesCount++;
                 else {
                     showError("请删除未上传或上传失败的文件再提交");
                     return;
                 }
             }
-            if (files.length === 0) {
+            if (filesCount === 0) {
                 showError("请先上传文件再提交");
                 return;
             }
-            var str = JSON.stringify({ "fileIds": files });
+            var $filelist = $("#filelist");
+            $filelist.empty();//bg-yellow bg-red bg-blue bg-green            
+            $('#modal-submit').modal({ backdrop: 'static', keyboard: false });
+            $modelfoot.hide();
+            $modaltitle.text("正在提交...")
+            $progress.css("width", "1%");
+            var index = 1;
+            for (var key in result) {
+                var item = result[key];
+                $filelist.append('<tr><td>'+index+'.</td><td><a target="_blank" href='+item.data.accessUrl+'>'+key+'</a></td><td><span class="badge bg-blue" id="filespan'+index+'">正在提交...</span></td></tr>');
+                index++;
+            }
+            index = 1;
+            for (var key in result) {
+                confirmSubmit(result,key, index);
+                index++;
+            }    
+        });
 
-            $submit.attr("disabled", "disabled").text("正在提交中，可能需要较长时间，请耐心等待...");
+        $("#btn-finished").on('click', function () {
+            $file.fileinput("refresh");
+            result = {};
+            $('#modal-submit').modal('hide');
+            $submit.hide();
+        });
+
+        function confirmSubmit(result, key, index) {
+            var obj = result[key];
+            var str = JSON.stringify({ "fileIds": [obj.data.id] });
             $.ajax({
                 url: "/files/confirmUpload",
                 type: "post",
@@ -142,22 +208,35 @@
                 cache: false,
                 data: str,
                 success: function (data) {
-                    $submit.removeAttr("disabled").text("确认上传");
+                    obj.submit = true;
+                    var total = 0;
+                    var submit = 0;
+                    for (var key in result) {
+                        total++;
+                        if (result[key].submit) {
+                            submit++;
+                        }
+                    }
+                    var bl = submit / total * 100;
+                    $progress.css("width", bl + "%");
+                    if (bl == 100) {
+                        $modelfoot.show();
+                        $modaltitle.text("提交完成");
+                    }
+                    var filespan = $("#filespan" + index);
                     if (!data.success) {
-                        showError(data.message);
+                        filespan.removeClass('bg-blue').addClass("bg-red").attr("title", data.message).text(data.message);
                     }
                     else {
-                        $file.fileinput("refresh");
-                        result = {};
-                        showSuccess(data.message);
+                        filespan.removeClass('bg-blue').addClass("bg-green").text(data.message);
                     }
                 },
                 error: function (data) {
-                    $submit.removeAttr("disabled").text("确认上传");
-                    showError('发送异常，请稍后重试');
+                    //showError('发送异常，请稍后重试');
                 }
             });
-        });</script>
+        }
+    </script>
 }
 
 

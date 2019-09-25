@@ -52,12 +52,12 @@ namespace archives.service.biz.web
         /// <summary>
         /// 成文日期
         /// </summary>
-        public DateTime WrittenDate { get; set; }
+        public string WrittenDate { get; set; }
 
         /// <summary>
         /// 页数
         /// </summary>
-        public int Pages { get; set; }
+        public string Pages { get; set; }
 
         /// <summary>
         /// 保管期限（是否永久)
@@ -77,7 +77,7 @@ namespace archives.service.biz.web
         /// <summary>
         /// 归档日期
         /// </summary>
-        public DateTime ArchivingDate { get; set; }
+        public string ArchivingDate { get; set; }
 
         /// <summary>
         /// 备注

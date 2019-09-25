@@ -11,6 +11,7 @@ using System.IO;
 using NPOI.SS.UserModel;
 using archives.service.biz.web;
 using archives.common;
+using MySql.Data.MySqlClient;
 
 namespace archives.service.biz.impl
 {
@@ -52,7 +53,7 @@ namespace archives.service.biz.impl
                     throw new BizException("没有获取到上传的文件");
 
                 var trans = await _db.Database.BeginTransactionAsync();
-                var index = 1;
+                var archivesList = new List<ArchivesInfo>();
                 try
                 {
                     foreach (var item in list)
@@ -63,96 +64,42 @@ namespace archives.service.biz.impl
                             ISheet sheet = workbook.GetSheet("卷盒内文件"); //workbook.GetSheetAt(0);
                             if (sheet == null)
                             {
-                                response.Data.ErrorList.Add($"第{index}个上传文件不不存在sheet:卷盒内文件，请确认");
+                                response.Data.ErrorList.Add($"Excel不存在sheet:卷盒内文件");
                                 continue;
                             }
-
+                            
                             for (int j = 1; j <= sheet.LastRowNum; ++j)
                             {
                                 IRow row = sheet.GetRow(j);
                                 if (row == null) continue; //没有数据的行默认是null　　　　　　　
 
-                                var archivesNumber = row.GetCell(0).StringCellValue;
-                                var categoryId = row.GetCell(1).StringCellValue;
-                                var fileNumber = row.GetCell(2).StringCellValue;
-                                var orderNumber = row.GetCell(3).StringCellValue;
-                                
-                                var archives = await _db.ArchivesInfo.FirstOrDefaultAsync
-                                    (c => c.ArchivesNumber == archivesNumber
-                                        && c.CategoryId == categoryId
-                                        && c.FileNumber == fileNumber
-                                        && c.OrderNumber == orderNumber
-                                    );
-                                var date = DateTime.Now;
-                                var writtenDate = DateTime.TryParse(row.GetCell(7).StringCellValue, out date) ? date : date;
-                                var archivingDate = DateTime.TryParse(row.GetCell(12).StringCellValue, out date) ? date : date;
-                                int ii = 0;
-                                var pages = int.TryParse(row.GetCell(8).StringCellValue, out ii) ? ii : ii;
-                                if (archives == null)
+                                archivesList.Add(new ArchivesInfo
                                 {
-                                    var entity = new ArchivesInfo
-                                    {
-                                        ArchivesNumber = archivesNumber,
-                                        CategoryId = categoryId,
-                                        FileNumber = fileNumber,
-                                        OrderNumber = orderNumber,
-                                        Title = row.GetCell(4).StringCellValue,
-                                        ProjectName = row.GetCell(5).StringCellValue,
-                                        ResponsibleObject = row.GetCell(6).StringCellValue,
-                                        WrittenDate = writtenDate,
-                                        Pages = pages,
-                                        IsPermanent = row.GetCell(9).StringCellValue,
-                                        SecretLevel = row.GetCell(10).StringCellValue,
-                                        ArchivingDepartment = row.GetCell(11).StringCellValue,
-                                        ArchivingDate = archivingDate,
-                                        Remark = row.GetCell(13).StringCellValue,
-                                        CatalogNumber = row.GetCell(14).StringCellValue,
-                                        Summary = row.GetCell(15).StringCellValue,
-                                        CreateTime = DateTime.Now,
-                                        Status = ArchivesStatus.Init,
-                                        UpdateTime = DateTime.Now,
-                                        Deleted = false,
-                                    };
-                                    await _db.ArchivesInfo.AddAsync(entity);
-                                    //await _db.SaveChangesAsync(); //或者放到最后
-                                    response.Data.AddTotoal++;
-                                }
-                                else
-                                {
-                                    if (archives.Status == ArchivesStatus.Borrowed)
-                                    {
-                                        response.Data.ErrorList.Add($"第{index}个上传档案号：{archivesNumber}在数据库中已存在，请确认");
-                                    }
-                                    else
-                                    {
-                                        archives.ArchivesNumber = archivesNumber;
-                                        archives.CategoryId = categoryId;
-                                        archives.FileNumber = fileNumber;
-                                        archives.OrderNumber = orderNumber;
-                                        archives.Title = row.GetCell(4).StringCellValue;
-                                        archives.ProjectName = row.GetCell(5).StringCellValue;
-                                        archives.ResponsibleObject = row.GetCell(6).StringCellValue;
-                                        archives.WrittenDate = writtenDate;
-                                        archives.Pages = pages;
-                                        archives.IsPermanent = row.GetCell(9).StringCellValue;
-                                        archives.SecretLevel = row.GetCell(10).StringCellValue;
-                                        archives.ArchivingDepartment = row.GetCell(11).StringCellValue;
-                                        archives.ArchivingDate = archivingDate;
-                                        archives.Remark = row.GetCell(13).StringCellValue;
-                                        archives.CatalogNumber = row.GetCell(14).StringCellValue;
-                                        archives.Summary = row.GetCell(15).StringCellValue;
-                                        archives.UpdateTime = DateTime.Now;
-                                        archives.Deleted = false;
-                                        //await _db.SaveChangesAsync();
-                                        response.Data.UpdateTotal++;
-                                    }
-                                }
-                            }
+                                    ArchivesNumber = row.GetCell(0).StringCellValue,
+                                    CategoryId = row.GetCell(1).StringCellValue,
+                                    FileNumber = row.GetCell(2).StringCellValue,
+                                    OrderNumber = row.GetCell(3).StringCellValue,
+                                    Title = row.GetCell(4).StringCellValue,
+                                    ProjectName = row.GetCell(5).StringCellValue,
+                                    ResponsibleObject = row.GetCell(6).StringCellValue,
+                                    WrittenDate = row.GetCell(7).StringCellValue,
+                                    Pages = row.GetCell(8).StringCellValue,
+                                    IsPermanent = row.GetCell(9).StringCellValue,
+                                    SecretLevel = row.GetCell(10).StringCellValue,
+                                    ArchivingDepartment = row.GetCell(11).StringCellValue,
+                                    ArchivingDate = row.GetCell(12).StringCellValue,
+                                    Remark = row.GetCell(13).StringCellValue,
+                                    CatalogNumber = row.GetCell(14).StringCellValue,
+                                    Summary = row.GetCell(15).StringCellValue,
+                                    CreateTime = DateTime.Now,
+                                    Status = ArchivesStatus.Init,
+                                    UpdateTime = DateTime.Now,
+                                    Deleted = false,
+                                });
+                            }                                                        
                         }
-
-                        index++;
                     }
-
+                    
                     if (response.Data.ErrorList.Any())
                     {
                         trans.Rollback();
@@ -160,15 +107,47 @@ namespace archives.service.biz.impl
                     }
                     else
                     {
-                        await _db.SaveChangesAsync();
+                        _db.ChangeTracker.AutoDetectChangesEnabled = false;
+                        await _db.ArchivesInfo.AddRangeAsync(archivesList);
+                        response.Data.AddTotoal = await _db.SaveChangesAsync();
                         trans.Commit();
                         response.Success = true;
-                        response.Message = $"成功添加{response.Data.AddTotoal}条档案信息，更新{response.Data.UpdateTotal}条档案信息。";
+                        response.Message = $"成功添加{response.Data.AddTotoal}条数据";
+                    }
+                }
+                catch (DbUpdateException ex)
+                {
+                    response.Message = $"导入发生数据异常";
+                    trans.Rollback();
+                    if (ex.InnerException!= null && ex.InnerException is MySqlException)
+                    {
+                        var exp = (MySqlException)ex.InnerException;
+                        if (exp.Number == 1062)
+                        {
+                            response.Message = "导入发现重复数据";
+                            for (int i = 0; i < archivesList.Count; i++)
+                            {
+                                var item = archivesList[i];
+                                var cc = await _db.ArchivesInfo.CountAsync(c => c.ArchivesNumber == item.ArchivesNumber
+                                    && c.CatalogNumber == item.CatalogNumber
+                                    && c.FileNumber == item.FileNumber
+                                    && c.OrderNumber == item.OrderNumber);
+                                if (cc > 0)
+                                {
+                                    response.Data.ErrorList.Add($"档号：{item.ArchivesNumber}，分类号：{item.CatalogNumber}，案卷号：{item.FileNumber}卷内序号：{item.OrderNumber} 已存在;");
+                                    if (response.Data.ErrorList.Count > archivesList.Count / 3 || response.Data.ErrorList.Count > 50)
+                                    {
+                                        response.Message = "发现大量重复数据";
+                                        break;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    response.Message = "批量导入发生异常";
+                    response.Message = $"导入发生异常";
                     trans.Rollback();
                     ApplicationLog.Error("ConfirmUpload", ex);
                 }
@@ -180,7 +159,7 @@ namespace archives.service.biz.impl
             catch(Exception ex)
             {
                 ApplicationLog.Error("ConfirmUpload", ex);
-                response.Message = "批量导入发生异常";
+                response.Message = "导入发生异常";
             }
             
             return response;

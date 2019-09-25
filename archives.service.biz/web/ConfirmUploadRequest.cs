@@ -18,6 +18,6 @@ namespace archives.service.biz.web
 
         public int AddTotoal { get; set; }
 
-        public int UpdateTotal { get; set; }
+        //public int UpdateTotal { get; set; }
     }
 }

@@ -91,7 +91,7 @@ namespace admin.Controllers
                     //CookieOptions option = new CookieOptions();
                     //option.Expires = DateTime.Now.AddMinutes(10);
                     //Response.Cookies.Append("nnn", (string)json["access_token"], option);
-                    return null;
+                    //return null;
                 }
                 catch (Exception x) {
                     return View("Login");

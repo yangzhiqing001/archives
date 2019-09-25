@@ -139,12 +139,12 @@ namespace archives.service.api.Controllers
                     writer.Write($"{a.Title}\",\"");
                     writer.Write($"{a.ProjectName}\",\"");
                     writer.Write($"{a.ResponsibleObject}\",\"");
-                    writer.Write($"{a.WrittenDate.ToString("yyyy-MM-dd")}\",\"");
+                    writer.Write($"{a.WrittenDate}\",\"");
                     writer.Write($"{a.Pages}\",\"");
                     writer.Write($"{a.IsPermanent}\",\"");
                     writer.Write($"{a.SecretLevel}\",\"");
                     writer.Write($"{a.ArchivingDepartment}\",\"");
-                    writer.Write($"{a.ArchivingDate.ToString("yyyy-MM-dd")}\",\"");
+                    writer.Write($"{a.ArchivingDate}\",\"");
                     writer.Write($"{a.Remark}\",\"");
                     writer.Write($"{a.CatalogNumber}\",\"");
                     writer.Write($"{a.Summary}\",");

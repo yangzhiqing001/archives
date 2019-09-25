@@ -191,7 +191,26 @@
             });
 
             $("#btnExport").click(function(){
-                window.open('/archives/export')
+                $.ajax({
+                    headers: {
+                        Authorization: "Bearer @Model.Token"
+                    },
+                    url: '/archives/export',
+                    method: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function (data) {
+                        var a = document.createElement('a');
+                        var url = window.URL.createObjectURL(data);
+                        a.href = url;
+                        a.download = '卷盒内文件.csv';
+                        document.body.append(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                    }
+                });
             });
         });
     </script>

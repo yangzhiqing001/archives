@@ -423,6 +423,13 @@
           "Port": 5003
         }
       ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
       "UseServiceDiscovery": false
     },
     {
@@ -517,6 +524,13 @@
           "Port": 5003
         }
       ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
       "UseServiceDiscovery": false
     }
   ],

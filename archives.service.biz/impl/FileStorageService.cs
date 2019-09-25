@@ -142,6 +142,9 @@ namespace archives.service.biz.impl
                                     }
                                 }
                             }
+                            if (response.Data.ErrorList.Count() == 0 && ex.InnerException!=null && ex.InnerException.Message !=null) {
+                                response.Data.ErrorList.Add("可能您上传的文件内有重数数据，请参考异常信息："+ex.InnerException.Message);
+                            }
                         }
                     }
                 }

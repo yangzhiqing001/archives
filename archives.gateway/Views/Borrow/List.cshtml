@@ -148,8 +148,31 @@
                     ]
             });
 
-            $("#btnExport").click(function(){
-                window.open('/borrow/export')
+            //$("#btnExport").click(function(){
+                //window.open('/borrow/export')
+            //});
+
+            $('#btnExport').on('click', function () {
+                $.ajax({
+                    headers: {
+                        Authorization: "Bearer @Model.Token"
+                    },
+                    url: '/borrow/export',
+                    method: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function (data) {
+                        var a = document.createElement('a');
+                        var url = window.URL.createObjectURL(data);
+                        a.href = url;
+                        a.download = '借阅记录.csv';
+                        document.body.append(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                    }
+                });
             });
         });
     </script>

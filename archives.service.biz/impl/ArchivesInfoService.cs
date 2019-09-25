@@ -236,11 +236,13 @@ namespace archives.service.biz.impl
                 {
                     throw new BizException("档案已借阅过，无法删除");
                 }
-                if (!archives.Deleted)
-                {
-                    archives.Deleted = true;
-                    await _db.SaveChangesAsync();
-                }
+                _db.ArchivesInfo.Remove(archives);
+                await _db.SaveChangesAsync();
+                //if (!archives.Deleted)
+                //{
+                //    archives.Deleted = true;
+                //    await _db.SaveChangesAsync();
+                //}
                 response.Data = new ArchivesDeleteResult();
                 response.Success = true;
             }

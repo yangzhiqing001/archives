@@ -1,5 +1,134 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model LoginUserModel
 @{
+    ViewBag.Title = "修改密码";
+}
+
+
+<!-- Main content -->
+<section class="content" style="padding-bottom:5px;padding-top:10px">
+    <div class="container-fluid">
+        <!-- SELECT2 EXAMPLE -->
+        <div class="card card-default">
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-12">
+                            <label for="inputName">原密码</label>
+                            <input type="password" id="oldpsd" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-12">
+                            <label for="inputName">新密码</label>
+                            <input type="password" id="newpsd" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-12">
+                            <label for="inputName">再次输入新密码</label>
+                            <input type="password" id="confirmpsd" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="button" id="btnConfirm" onclick="psdsubmit()" value="修改密码" class="btn btn-success">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@section PageCss
+    {
+    <link rel="stylesheet" href="~/plugins/jquery-ui/jquery-ui.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" href="~/plugins/toastr/toastr.min.css">
+}
+
+@section PagePlusgins
+    {
+    <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Toastr -->
+    <script src="~/plugins/toastr/toastr.min.js"></script>
+}
+
+@section PageScripts
+    {
+    <script>
+        var Toast
+        $(function () {
+             Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });   
+        });
+        function psdsubmit(){
+            if($("#oldpsd").val()==""){
+                Toast.fire({
+                    type: 'error',
+                    title: '请输入原密码'
+                })
+                return false;
+            }
+            else if($("#newpsd").val()==""){
+                Toast.fire({
+                    type: 'error',
+                    title: '请输入新密码'
+                })
+                return false;
+            }
+            else if($("#newpsd").val() != $("#confirmpsd").val()){
+                Toast.fire({
+                    type: 'error',
+                    title: '两次输入不一致'
+                })
+                return false;
+            }
+            $.ajax({
+                headers: {
+                    Accept: "application/json; charset=utf-8",
+                    Authorization: "Bearer @Model.Token"
+                },
+                method: 'POST',
+                url: "@Url.Content("~/archives/changePassword")",
+                data: JSON.stringify({
+                    UserName:"@Model.UserName",
+                    OldPassword:$("#oldpsd").val(),
+                    NewPassword:$("#newpsd").val()
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                beforeSend:function(){
+                    $(".card").loading();
+                },
+                complete:function(){
+                    $(".card").loading('stop');
+                },
+                success:function(result){
+                    if(result && result.success){
+                        Toast.fire({
+                            type: 'success',
+                            title: '密码已修改.'
+                        })
+                    }
+                    else{
+                        Toast.fire({
+                            type: 'error',
+                            title: result.message
+                        })
+                    }
+                }
+            });
+        }  
+    </script>
 }

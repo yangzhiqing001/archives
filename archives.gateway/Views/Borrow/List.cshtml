@@ -1,5 +1,156 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model LoginUserModel
 @{
+    ViewBag.Title = "借阅记录";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-4">
+                <input type="button" id="btnExport" value="导出Excel" class="btn btn-success float-left">
+            </div>
+            <div class="col-sm-8">
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="daListTable" class="table table-bordered table-striped"></table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+@section PageCss
+    {
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+}
+@section PagePlusgins
+    {
+    <!-- DataTables -->
+    <script src="~/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Select2 -->
+    <script src="~/plugins/select2/js/select2.full.min.js"></script>
+}
+@section PageScripts
+    {
+    <script>
+        $(function () {
+            $.fn.dataTable.ext.errMode = 'throw';
+            $('#daListTable').dataTable({
+                "oLanguage": {
+                    "sUrl": "@Url.Content("~/static/datatables_language.json")"
+                },
+                "bProcessing": true,
+                "bAutoWidth": false,
+                "bSort" : false,
+                "bSearchable": true,
+                "bServerSide": true,
+                "sAjaxSource": "@Url.Content("~/borrow/searchBorrowRegister")",
+                "fnServerData": function ( sSource, aoData, fnCallback ) {
+                    var ds;
+                    var sl;
+                    var key;
+                    for(var i = 0; i < aoData.length; i++)
+                    {
+                      if(aoData[i].name == 'iDisplayStart')
+                      {
+                          ds = aoData[i].value;
+                      }
+                      if(aoData[i].name == 'iDisplayLength')
+                      {
+                          dl = aoData[i].value;
+                      }
+                      if(aoData[i].name == 'sSearch')
+                      {
+                          key = aoData[i].value;
+                      }
+                    }
+                    aoData.push( {"name": "PageNumber", "value": ds / dl} );
+                    aoData.push( {"name": "PageSize", "value": dl} );
+                    aoData.push( {"name": "Keyword", "value": key} );
+                    $.ajax( {
+                            headers: {
+                                Accept: "application/json; charset=utf-8",
+                                Authorization: "Bearer @Model.Token"
+                            },
+                            "dataType": 'json',
+                            "type": "GET",
+                            "url": sSource,
+                            "data": aoData,
+                            "success": function(result){
+                                if (result.success) {
+                                    var ooret = {
+                                        "sEcho": result.SEcho,
+                                        "iTotalRecords": result.totalCount,
+                                        "iTotalDisplayRecords": result.totalCount,
+                                        "aaData": result.data
+                                    }
+                                    fnCallback(ooret)
+                                } else {
+                                    fnCallback(null)
+                                }
+                            }
+
+                    } );
+                },
+                "aoColumns" : [{
+                        "mDataProp" : "borrower",
+                        "sTitle" : "姓名",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    }, {
+                        "mDataProp" : "phone",
+                        "sTitle" : "手机",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    }, {
+                        "mDataProp" : "returnDateStr",
+                        "sTitle" : "到期时间",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    }, {
+                        "mDataProp" : "createTimeStr",
+                        "sTitle" : "借阅日期",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    }, {
+                        "mDataProp" : "statusDesc",
+                        "sTitle" : "状态",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    }, {
+                        "mDataProp" : "archivesStr",
+                        "sTitle" : "档案号",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    }],
+                    aoColumnDefs: [
+                          { sWidth: "16%", aTargets: [  0,1, 2,3,4,5 ] }
+                    ]
+            });
+
+            $("#btnExport").click(function(){
+                window.open('/borrow/export')
+            });
+        });
+    </script>
 }

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>AdminLTE 3 | Dashboard 2</title>
+    <title>@ViewBag.Title</title>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="~/static/loading.css"> 
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!-- PAGE SCRIPTS -->
@@ -31,7 +32,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="~/home" class="nav-link">首页</a>
+                    <a href="#" class="nav-link">@ViewBag.Title</a>
                 </li>
             </ul>
 
@@ -39,30 +40,10 @@
             <ul class="navbar-nav ml-auto">
                 <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
+                    <a class="nav-link" href="/user/logout">
                         <i class="far fa-bell"></i>
                         <span class="badge badge-warning navbar-badge">退出</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">15 Notifications</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2"></i> 4 new messages
-                            <span class="float-right text-muted text-sm">3 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-users mr-2"></i> 8 friend requests
-                            <span class="float-right text-muted text-sm">12 hours</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2"></i> 3 new reports
-                            <span class="float-right text-muted text-sm">2 days</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                    </div>
                 </li>
             </ul>
         </nav>
@@ -70,7 +51,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="~/home" class="brand-link">
+            <a href="~/da/manage" class="brand-link">
                 <img src="~/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
                      style="opacity: .8">
                 <span class="brand-text font-weight-light"> 档案管理后台</span>
@@ -78,15 +59,7 @@
 
             <!-- Sidebar -->
             <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="~/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">admin</a>
-                    </div>
-                </div>
+
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
@@ -102,7 +75,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/widgets.html" class="nav-link">
+                            <a href="/da/manage" class="nav-link">
                                 <i class="nav-icon fas fa-file"></i>
                                 <p>
                                     档案管理
@@ -110,7 +83,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/widgets.html" class="nav-link">
+                            <a href="/borrow/list" class="nav-link">
                                 <i class="nav-icon fas fa-calendar-alt"></i>
                                 <p>
                                     借阅记录
@@ -118,7 +91,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/widgets.html" class="nav-link">
+                            <a href="/user/changepsd" class="nav-link">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>
                                     修改密码
@@ -144,10 +117,9 @@
         <!-- /.control-sidebar -->
         <!-- Main Footer -->
         <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
-            All rights reserved.
+            <strong>Copyright &copy; 
             <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 3.0.0-rc.1
+                
             </div>
         </footer>
     </div>
@@ -161,6 +133,7 @@
     <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/dist/js/adminlte.js"></script>
+    <script src="~/static/jquery.loading.min.js"></script>
 
 
     <!-- PAGE PLUGINS -->

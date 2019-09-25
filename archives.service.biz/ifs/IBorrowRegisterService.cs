@@ -8,6 +8,8 @@ namespace archives.service.biz.ifs
 {
     public interface IBorrowRegisterService
     {
+        Task<List<SearchBorrowRegisterResult>> QueryAllBorrowRegisters();
+
         Task<CommonResponse<BorrowRegisterResult>> BorrowRegister(BorrowRegisterRequest request);
 
         Task<CommonSearchResponse<List<SearchBorrowRegisterResult>>> SearchBorrowRegister(SearchBorrowRegisterRequest request);

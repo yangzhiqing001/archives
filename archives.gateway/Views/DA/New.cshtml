@@ -1,0 +1,220 @@
+﻿@model LoginUserModel
+@{
+    ViewBag.Title = "新建档案";
+}
+
+
+<!-- Main content -->
+<section class="content" style="padding-bottom:5px;padding-top:10px">
+    <div class="container-fluid">
+        <!-- SELECT2 EXAMPLE -->
+        <div class="card card-default">
+            <div class="card-body">
+                <form id="archivesFrom">
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">档案号</label>
+                            <input type="text" name="archivesNumber" id="archivesNumber" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">分类号</label>
+                            <input type="text" name="categoryId" id="categoryId" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">案卷号</label>
+                            <input type="text" name="fileNumber" id="fileNumber" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">卷内序号</label>
+                            <input type="text" name="orderNumber" id="orderNumber" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">成文日期</label>
+                            <input type="text" name="writtenDate" id="writtenDate" class="form-control" readonly="readonly">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">页数</label>
+                            <input type="text" name="pages" id="pages" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">保管期限</label>
+                            <input type="text" name="isPermanent" id="isPermanent" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">密级</label>
+                            <input type="text" name="secretLevel" id="secretLevel" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">归档部门</label>
+                            <input type="text" name="archivingDepartment" id="archivingDepartment" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">归档日期</label>
+                            <input type="text" name="archivingDate" id="archivingDate" class="form-control" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">目录号</label>
+                            <input type="text" name="catalogNumber" id="catalogNumber" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">项目名称</label>
+                            <input type="text" name="projectName" id="projectName" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">题名</label>
+                            <input type="text" name="title" id="title" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">责任者</label>
+                            <input type="text" name="responsibleObject" id="responsibleObject" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">备注</label>
+                            <input type="text" name="remark" id="remark" class="form-control">
+                        </div>
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="inputName">提要</label>
+                            <input type="text" name="summary" id="summary" class="form-control">
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-12" id="initButton">
+                        <input type="button" value="新建" class="btn btn-secondary float-right" data-toggle="modal" data-target="#modal-sm">
+                    </div>
+                    <div class="modal fade" id="modal-sm">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">请确认操作</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>是否确定要新建档案&hellip;</p>
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary" id="btnConfirmNew">确定</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
+                </div>
+            </div>
+            <div>
+
+            </div>
+        </div>
+    </div>
+</section>
+@section PageCss
+    {
+    <link rel="stylesheet" href="~/plugins/jquery-ui/jquery-ui.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" href="~/plugins/toastr/toastr.min.css">
+}
+
+@section PagePlusgins
+    {
+    <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/static/dateZH.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Toastr -->
+    <script src="~/plugins/toastr/toastr.min.js"></script>
+}
+
+@section PageScripts
+    {
+    <script>
+        $(function () {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+            $( "#writtenDate" ).datepicker({dateFormat: 'yy-mm-dd'});
+            $( "#archivingDate" ).datepicker({dateFormat: 'yy-mm-dd'});
+
+            $("#btnConfirmNew").click(function(){
+                $.ajax({
+                    headers: {
+                        Accept: "application/json; charset=utf-8",
+                        Authorization: "Bearer @Model.Token"
+                    },
+                    method: 'POST',
+                    url: "@Url.Content("~/archives/AddArchives")",
+                    data: JSON.stringify({
+                        "archivesNumber": $("#archivesNumber").val(),
+                        "categoryId": $("#categoryId").val(),
+                        "fileNumber": $("#fileNumber").val(),
+                        "orderNumber": $("#orderNumber").val(),
+                        "title": $("#title").val(),
+                        "projectName": $("#projectName").val(),
+                        "responsibleObject": $("#responsibleObject").val(),
+                        "writtenDate": $("#writtenDate").val(),
+                        "pages": $("#pages").val(),
+                        "isPermanent": $("#isPermanent").val(),
+                        "secretLevel": $("#secretLevel").val(),
+                        "archivingDepartment": $("#archivingDepartment").val(),
+                        "archivingDate": $("#archivingDate").val(),
+                        "remark": $("#remark").val(),
+                        "catalogNumber": $("#catalogNumber").val(),
+                        "summary": $("#summary").val()
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    beforeSend:function(){
+                        $(".card").loading();
+                    },
+                    complete:function(){
+                        $('#modal-sm').modal('hide')
+                        $(".card").loading('stop');
+                    },
+                    success:function(result){
+                        if(result && result.success){
+                            Toast.fire({
+                                type: 'success',
+                                title: '档案已创建.',
+                                onClose: () => {
+                                    window.location.href="/da/edit/"+result.data.id;
+                                }
+                            })
+                        }
+                        else{
+                            Toast.fire({
+                                type: 'error',
+                                title: result.message,
+                            })
+                        }
+                    }
+                });
+            });
+
+        });
+
+
+    </script>
+}

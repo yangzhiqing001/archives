@@ -256,5 +256,38 @@ namespace archives.service.biz.impl
             return response;
 
         }
+
+        public async Task<CommonResponse<string>> ChangPassword(ChangePsdRequest request) {
+            var response = new CommonResponse<string>();
+            try
+            {
+                if (request == null)
+                    throw new BizException("参数不能为空");
+                var entity = await _db.AdminUser.FirstOrDefaultAsync(c => c.UserName == request.UserName);
+                if (entity.Password != Md5.MD5Hash(request.OldPassword).ToLower())
+                    throw new BizException("原密码错误");
+
+                if (entity == null)
+                    throw new BizException("用户不存在");
+
+                entity.Password = Md5.MD5Hash(request.NewPassword).ToLower();
+
+                await _db.SaveChangesAsync();
+
+                response.Data = "ok";
+                response.Success = true;
+            }
+            catch (BizException ex)
+            {
+                response.Message = ex.Message;
+
+            }
+            catch (Exception ex)
+            {
+                response.Message = "修改密码发生异常";
+                ApplicationLog.Error("ChangPassword", ex);
+            }
+            return response;
+        }
     }
 }

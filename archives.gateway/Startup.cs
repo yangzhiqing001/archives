@@ -104,6 +104,11 @@ namespace archives.gateway
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=User}/{action=login}");
+                routes.MapRoute(null,
+                 "da/edit/{id}",
+                 new { controller = "da", action = "edit" },
+                 new { id = @"\d+" } // Constraint to only allow numbers
+                );
             });
 
             app.UseErrorHandling();

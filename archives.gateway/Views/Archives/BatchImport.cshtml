@@ -67,6 +67,7 @@
 
                             </tbody>                            
                         </table>
+                        <div id="errorDiv"></div>
                     </div>
                     
                 </div>
@@ -195,6 +196,7 @@
             result = {};
             $('#modal-submit').modal('hide');
             $submit.hide();
+            $("#errorDiv").html('');
         });
 
         function confirmSubmit(result, key, index) {
@@ -226,6 +228,7 @@
                     var filespan = $("#filespan" + index);
                     if (!data.success) {
                         filespan.removeClass('bg-blue').addClass("bg-red").attr("title", data.message).text(data.message);
+                        $("#errorDiv").html(data.data.errorList);
                     }
                     else {
                         filespan.removeClass('bg-blue').addClass("bg-green").text(data.message);

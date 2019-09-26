@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace archives.gateway.Controllers
 {
-    public class ArchivesController : Controller
+    public class ArchivesController : BaseController
     {
         [Authorize]
         public IActionResult BatchImport()
         {
-            return View();
+            return View(getUser());
         }
     }
 }

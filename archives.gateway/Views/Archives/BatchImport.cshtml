@@ -1,4 +1,4 @@
-﻿
+﻿@model LoginUserModel
 @{
     ViewData["Title"] = "批量上传档案Excel";
 }
@@ -113,6 +113,11 @@
                 //actionDelete: '', //去除上传预览的缩略图中的删除图标
             },
             uploadUrl: '/files/batchAddFile',
+            ajaxSettings:{
+                headers: {
+                    Authorization: "Bearer @Model.Token"
+                },
+            }
         }).on('change', function (event) {
             //console.log("change");
         }).on('filebatchselected', function (event, files) {
@@ -204,6 +209,9 @@
             var str = JSON.stringify({ "fileIds": [obj.data.id] });
             $.ajax({
                 url: "/files/confirmUpload",
+                headers: {
+                    Authorization: "Bearer @Model.Token"
+                },
                 type: "post",
                 dataType: "json",
                 contentType: 'application/json',

@@ -19,7 +19,7 @@ namespace archives.service.api
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://*:5003")
+                .UseUrls("http://*:6003")
                 .UseStartup<Startup>();
     }
 }

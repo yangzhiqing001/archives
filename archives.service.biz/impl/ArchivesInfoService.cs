@@ -25,6 +25,26 @@ namespace archives.service.biz.impl
             return await _db.ArchivesInfo.ToListAsync();
         }
 
+        public async Task<List<ArchivesInfo>> QueryExportArchives(ArchivesSearchRequest request)
+        {
+
+            var query = _db.ArchivesInfo.AsNoTracking();
+            if (!string.IsNullOrEmpty(request.Keyword))
+            {
+                query = query.Where(c => c.Title.Contains(request.Keyword.Trim()) || c.ProjectName.Contains(request.Keyword.Trim()));
+            }
+            if (!string.IsNullOrEmpty(request.Label))
+            {
+                var projectNames = request.Label.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                query = query.Where(c => projectNames.Contains(c.ProjectName));
+            }
+
+            return await query.OrderBy(c => c.ArchivesNumber).ToListAsync();
+
+
+            //return await _db.ArchivesInfo.ToListAsync();
+        }
+
         public async Task<CommonSearchResponse<List<ArchivesSearchResult>>> SearchArchives(ArchivesSearchRequest request)
         {
             var response = new CommonSearchResponse<List<ArchivesSearchResult>>();
@@ -126,10 +146,10 @@ namespace archives.service.biz.impl
                 if (entity.Deleted)
                     throw new BizException("档案已删除，无法修改");//此条件需要放在where条件中么？
 
-                if (entity.Status != ArchivesStatus.Init)
-                    throw new BizException("档案已借阅过，无法再编辑");
+                //if (entity.Status != ArchivesStatus.Init)
+                //    throw new BizException("档案已借阅过，无法再编辑");
 
-                entity.ArchivesNumber = request.ArchivesNumber;
+                //entity.ArchivesNumber = request.ArchivesNumber;
                 entity.UpdateTime = DateTime.Now;
                 entity.Title = request.Title;
                 entity.WrittenDate = request.WrittenDate;
@@ -139,10 +159,10 @@ namespace archives.service.biz.impl
                 entity.Remark = request.Remark;
                 entity.ProjectName = request.ProjectName;
                 entity.Pages = request.Pages;
-                entity.OrderNumber = request.OrderNumber;
+                //entity.OrderNumber = request.OrderNumber;
                 entity.IsPermanent = request.IsPermanent;
-                entity.FileNumber = request.FileNumber;
-                entity.CategoryId = request.CategoryId;
+                //entity.FileNumber = request.FileNumber;
+                //entity.CategoryId = request.CategoryId;
                 entity.CatalogNumber = request.CatalogNumber;
                 entity.ArchivingDepartment = request.ArchivingDepartment;
                 entity.ArchivingDate = request.ArchivingDate;

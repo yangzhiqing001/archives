@@ -101,6 +101,11 @@ namespace archives.service.dal.Entity
         /// 0 初使化（可删除） 1 正常可借阅状态 2 已借阅 (前端可根据状态值显示操作按钮)
         /// </summary>
         public ArchivesStatus Status { get; set; }
+
+        /// <summary>
+        /// 导入时文件的名称
+        /// </summary>
+        public string ImportFileName { get; set; }
     }
 
     /// <summary>

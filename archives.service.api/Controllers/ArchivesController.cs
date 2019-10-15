@@ -117,11 +117,11 @@ namespace archives.service.api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Export()
+        public async Task<ActionResult> Export([FromQuery]ArchivesSearchRequest request)
         {
             try
             {
-                var list = await _archivesService.QueryAllArchives();
+                var list = await _archivesService.QueryExportArchives(request);
 
                 System.IO.MemoryStream output = new System.IO.MemoryStream();
 

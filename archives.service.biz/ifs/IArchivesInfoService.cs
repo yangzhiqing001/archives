@@ -22,6 +22,8 @@ namespace archives.service.biz.ifs
 
         Task<List<ArchivesInfo>> QueryAllArchives();
 
+        Task<List<ArchivesInfo>> QueryExportArchives(ArchivesSearchRequest request);
+
         Task<CommonResponse<string>> ChangPassword(ChangePsdRequest request);
 
     }

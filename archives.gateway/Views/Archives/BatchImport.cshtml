@@ -236,7 +236,7 @@
                     var filespan = $("#filespan" + index);
                     if (!data.success) {
                         filespan.removeClass('bg-blue').addClass("bg-red").attr("title", data.message).text(data.message);
-                        $("#errorDiv").html(data.data.errorList);
+                        $("#errorDiv").html($("#errorDiv").html() + data.data.errorList);
                     }
                     else {
                         filespan.removeClass('bg-blue').addClass("bg-green").text(data.message);

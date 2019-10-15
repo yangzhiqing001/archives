@@ -76,7 +76,6 @@
                             placeholder: '筛选项目',      //提示语
                             data: rs                      //下拉框绑定的数据
                         }).on("change", function (e) {
-                            console.log($(".select2").val());
                             $('#daListTable').DataTable().ajax.reload();
 
                         });
@@ -196,11 +195,16 @@
             });
 
             $("#btnExport").click(function(){
+                var aoData = [];
+                aoData.push( {"name": "Keyword", "value": $('.dataTables_filter input').val()} );
+                if($(".select2").val() && $(".select2").val().length>0)
+                    aoData.push( {"name": "Label", "value": $(".select2").val().join(',')} );
                 $.ajax({
                     headers: {
                         Authorization: "Bearer @Model.Token"
                     },
                     url: '/archives/export',
+                    data: aoData,
                     method: 'GET',
                     xhrFields: {
                         responseType: 'blob'

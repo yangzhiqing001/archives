@@ -11,7 +11,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5002
+          "Port": 6002
         }
       ],
       "UseServiceDiscovery": false
@@ -26,7 +26,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5002
+          "Port": 6002
         }
       ],
       "UseServiceDiscovery": false
@@ -42,7 +42,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -62,7 +62,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -86,7 +86,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "UseServiceDiscovery": false
@@ -104,7 +104,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -124,7 +124,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -144,7 +144,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -164,7 +164,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -187,12 +187,15 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "AuthProviderKey",
         "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
       },
       "UseServiceDiscovery": false
     },
@@ -207,7 +210,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -230,7 +233,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -253,7 +256,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -276,7 +279,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -299,7 +302,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -322,7 +325,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -345,7 +348,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -368,7 +371,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -388,7 +391,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "UseServiceDiscovery": false
@@ -404,9 +407,13 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
       "UseServiceDiscovery": false
     },
     {
@@ -420,7 +427,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -443,7 +450,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -466,9 +473,16 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
       "UseServiceDiscovery": false
     },
     {
@@ -482,9 +496,16 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
       "UseServiceDiscovery": false
     },
     {
@@ -498,7 +519,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {
@@ -521,7 +542,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5003
+          "Port": 6003
         }
       ],
       "AuthenticationOptions": {

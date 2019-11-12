@@ -26,5 +26,8 @@ namespace archives.service.biz.ifs
 
         Task<CommonResponse<string>> ChangPassword(ChangePsdRequest request);
 
+        Task<List<string>> QueryProject(string name);
+
+        Task<List<CategoryResult>> QueryAllCategory();
     }
 }

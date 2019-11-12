@@ -178,5 +178,44 @@ namespace archives.service.api.Controllers
             return response;
         }
 
+        /// <summary>
+        /// 获取项目名（可模糊查找）
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<CommonResponse<List<string>>> QueryProjectName([FromQuery]string name)
+        {
+            var response = new CommonResponse<List<string>>();
+            try
+            {
+                response.Data = await _archivesService.QueryProject(name);
+                response.Success = true;
+            }
+            catch
+            {
+                response.Message = "获取项目名称发生异常";
+            }
+            return response;
+        }
+
+        /// <summary>
+        /// 获取项目名（可模糊查找）
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<CommonResponse<List<CategoryResult>>> QueryAllCategory()
+        {
+            var response = new CommonResponse<List<CategoryResult>>();
+            try
+            {
+                response.Data = await _archivesService.QueryAllCategory();
+                response.Success = true;
+            }
+            catch
+            {
+                response.Message = "获取分类发生异常";
+            }
+            return response;
+        }
     }
 }

@@ -553,6 +553,38 @@
         "role": "admin"
       },
       "UseServiceDiscovery": false
+    },
+    //获取所有分类
+    {
+      "DownstreamPathTemplate": "/api/archives/queryAllCategory",
+      "UpstreamPathTemplate": "/archives/queryAllCategory",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6003
+        }
+      ],
+      "UseServiceDiscovery": false
+    },
+    //获取项目名（可搜索）
+    {
+      "DownstreamPathTemplate": "/api/archives/queryProjectName",
+      "UpstreamPathTemplate": "/archives/queryProjectName",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6003
+        }
+      ],
+      "UseServiceDiscovery": false
     }
   ],
     "GlobalConfiguration": {

@@ -311,5 +311,32 @@ namespace archives.service.biz.impl
             }
             return response;
         }
+
+        public async Task<List<string>> QueryProject(string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+                return await _db.Project.Where(c => c.ProjectName.Contains(name.Trim())).OrderBy(c => c.ProjectName).Take(20).Select(c=>c.ProjectName).ToListAsync();
+            return new List<string>();
+        }
+
+        public async Task<List<CategoryResult>> QueryAllCategory()
+        {
+            var categorys = await _db.Category.ToListAsync();
+            return categorys.Where(c => c.Level == 1).Select(c => new CategoryResult {
+                Id = c.Id,
+                CategoryName = c.CategoryName,
+                Level = c.Level,
+                Children = categorys.Where(c2=>c2.ParentId == c.Id).Select(c2=>new CategoryResult {
+                    Id = c2.Id,
+                    CategoryName = c2.CategoryName,
+                    Level = c2.Level,
+                    Children = categorys.Where(c3=>c3.ParentId == c2.Id).Select(c3=>new CategoryResult {
+                        Id = c3.Id,
+                        CategoryName = c3.CategoryName,
+                        Level = c3.Level
+                    }).ToList()
+                }).ToList()
+            }).ToList();
+        }
     }
 }

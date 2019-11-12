@@ -21,6 +21,10 @@ namespace archives.service.dal
         public DbSet<FileStorage> FileStorage { get; set; }
 
         public DbSet<AdminUser> AdminUser { get; set; }
+
+        public DbSet<Project> Project { get; set; }
+
+        public DbSet<Category> Category { get; set; }
     }
 
 }

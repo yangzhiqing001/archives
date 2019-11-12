@@ -9,10 +9,16 @@ namespace archives.service.biz.web
     /// </summary>
     public class BorrowRegisterRequest
     {
+        ///// <summary>
+        ///// 档案Id(唯一值，也就是查询档案返回的Id)
+        ///// </summary>
+        //public List<int> ArchivesId { get; set; }
+
         /// <summary>
-        /// 档案Id(唯一值，也就是查询档案返回的Id)
+        /// 借阅明细
         /// </summary>
-        public List<int> ArchivesId { get; set; }
+        public List<BorrowRegisterDetailRequest> Details { get; set; }
+
         /// <summary>
         /// 借阅人名
         /// </summary>
@@ -52,6 +58,44 @@ namespace archives.service.biz.web
         /// </summary>
         [Required]
         public string SignPhoto { get; set; }
+    }
+
+    public class BorrowRegisterDetailRequest
+    {
+        public int CategoryId1 { get; set; }
+
+        public int CategoryId2 { get; set; }
+
+        public int CategoryId3 { get; set; }
+
+        public int ProjectId { get; set; }
+
+        public string ProjectName { get; set; }
+
+        /// <summary>
+        /// 档案号
+        /// </summary>
+        public string ArchivesNumber { get; set; }
+
+        /// <summary>
+        /// 分类号
+        /// </summary>
+        public string CategoryNumber { get; set; }
+
+        /// <summary>
+        /// 案卷号
+        /// </summary>
+        public string FileNumber { get; set; }
+
+        /// <summary>
+        /// 卷内序号
+        /// </summary>
+        public string OrderNumber { get; set; }
+
+        /// <summary>
+        /// 题名
+        /// </summary>
+        public string Title { get; set; }
     }
 
     /// <summary>

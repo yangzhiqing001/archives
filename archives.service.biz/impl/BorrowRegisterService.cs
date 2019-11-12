@@ -112,29 +112,38 @@ namespace archives.service.biz.impl
             {
                 try
                 {
-                    var archives = await _db.ArchivesInfo.AsNoTracking().Where(c => request.ArchivesId.Contains(c.Id) && !c.Deleted).ToListAsync();
+                    //var archives = await _db.ArchivesInfo.AsNoTracking().Where(c => request.ArchivesId.Contains(c.Id) && !c.Deleted).ToListAsync();
+                    //if (archives.Count != request.ArchivesId.Count)
+                    //{
+                    //    throw new BizException("请求档案数目与数据库可用档案不一致，可能是数据已删除，请重新查询后再提交");
+                    //}
 
-                    if (archives.Count != request.ArchivesId.Count)
-                    {
-                        throw new BizException("请求档案数目与数据库可用档案不一致，可能是数据已删除，请重新查询后再提交");
-                    }
-
-                    var borrowedArchives = archives.Where(c => c.Status == ArchivesStatus.Borrowed);
-                    if (borrowedArchives.Any())
-                    {
-                        throw new BizException($"请求档案：{string.Join(",", borrowedArchives.Select(c => c.ArchivesNumber))} 当前状态为已借阅");
-                    }
+                    //var borrowedArchives = archives.Where(c => c.Status == ArchivesStatus.Borrowed);
+                    //if (borrowedArchives.Any())
+                    //{
+                    //    throw new BizException($"请求档案：{string.Join(",", borrowedArchives.Select(c => c.ArchivesNumber))} 当前状态为已借阅");
+                    //}
 
                     await _db.BorrowRegister.AddAsync(regEntity);
                     await _db.SaveChangesAsync();
 
                     response.Data = new BorrowRegisterResult { BorrowRegisterId = regEntity.Id };
 
-                    await _db.BorrowRegisterDetail.AddRangeAsync(request.ArchivesId.Select(c => new dal.Entity.BorrowRegisterDetail
+                    await _db.BorrowRegisterDetail.AddRangeAsync(request.Details.Select(c => new dal.Entity.BorrowRegisterDetail
                     {
-                        ArchivesId = c,
+                        ArchivesId = 0,
                         BorrowRegisterId = regEntity.Id,
-                        CreateTime = DateTime.Now
+                        CreateTime = DateTime.Now,
+                        ArchivesNumber = c.ArchivesNumber,
+                        CategoryId1 = c.CategoryId1,
+                        CategoryId2 = c.CategoryId2,
+                        CategoryId3 = c.CategoryId3,
+                        FileNumber = c.FileNumber,
+                        CategoryNumber = c.CategoryNumber,
+                        OrderNumber = c.OrderNumber,
+                        ProjectId = c.ProjectId,
+                        ProjectName = c.ProjectName,
+                        Title = c.Title
                     }));
 
                     await _db.SaveChangesAsync();
@@ -181,9 +190,9 @@ namespace archives.service.biz.impl
                             ReturnDate = c.ReturnDate,
                             SignPhoto = c.SignPhoto,
                             Status = c.Status,
-							CreateTime = c.CreateTime,
-							CreateTimeStr = c.CreateTime.ToString("yyyy-MM-dd")
-			            }).ToListAsync();
+                            CreateTime = c.CreateTime,
+                            CreateTimeStr = c.CreateTime.ToString("yyyy-MM-dd")
+                        }).ToListAsync();
 
                 var ids = list.Select(c => c.Id);
 
@@ -266,9 +275,9 @@ namespace archives.service.biz.impl
                         ReturnDateStr = borrowRegister.ReturnDate.ToString("yyyy-MM-dd"),
                         Department = borrowRegister.Department,
                         SignPhoto = borrowRegister.SignPhoto,
-						CreateTime = borrowRegister.CreateTime,
-						CreateTimeStr = borrowRegister.CreateTime.ToString("yyyy-MM-dd"),
-		                Status = borrowRegister.Status
+                        CreateTime = borrowRegister.CreateTime,
+                        CreateTimeStr = borrowRegister.CreateTime.ToString("yyyy-MM-dd"),
+                        Status = borrowRegister.Status
                     },
                     ArchivesList = archivesList
                 };
@@ -324,7 +333,7 @@ namespace archives.service.biz.impl
                         {
                             c.a.ProjectName
                         }).FirstOrDefaultAsync();
-                    ApplicationLog.Info("SMS_171116665."+ borrowRegister.Phone+"."+ borrowRegister.Id);
+                    ApplicationLog.Info("SMS_171116665." + borrowRegister.Phone + "." + borrowRegister.Id);
                     var msgRes = OssHelper.SendSms("SMS_171116665", borrowRegister.Phone, $"{{\"name\":\"{borrowRegister.Borrower}\", \"PtName\":\"{(archivesFirst.ProjectName)}\", \"RDate\":\"{borrowRegister.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
 
                 }

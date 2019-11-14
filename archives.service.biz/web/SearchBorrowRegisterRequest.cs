@@ -92,7 +92,7 @@ namespace archives.service.biz.web
         /// <summary>
         /// 借阅档案列表
         /// </summary>
-        public List<ArchivesSimple> ArchivesList { get; set; }
+        //public List<ArchivesSimple> ArchivesList { get; set; }
 
 
         public string ArchivesStr { get; set; }

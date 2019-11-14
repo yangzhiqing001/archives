@@ -41,23 +41,11 @@ namespace archives.service.biz.impl
 
             var ids = list.Select(c => c.Id);
 
-            var archivesList = await (from brd in _db.BorrowRegisterDetail.AsNoTracking()
-                                      join a in _db.ArchivesInfo.AsNoTracking() on brd.ArchivesId equals a.Id
-                                      where ids.Contains(brd.BorrowRegisterId)
-                                      select new ArchivesSimple
-                                      {
-                                          BorrowRegisterId = brd.BorrowRegisterId,
-                                          ArchivesNumber = a.ArchivesNumber,
-                                          CatalogNumber = a.CatalogNumber,
-                                          CategoryId = a.CategoryId,
-                                          FileNumber = a.FileNumber,
-                                          OrderNumber = a.OrderNumber
-                                      }).ToListAsync();
-
+            var archivesList = await _db.BorrowRegisterDetail.AsNoTracking().Where(brd => ids.Contains(brd.BorrowRegisterId)).ToListAsync();
             list.ForEach(c =>
             {
-                var arlist = archivesList.Where(j => j.BorrowRegisterId == c.Id).ToList();
-                c.ArchivesList = arlist;
+                var arlist = archivesList.Where(j => j.BorrowRegisterId == c.Id);
+                //c.ArchivesList = arlist;
                 c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}/{j.FileNumber}/{j.OrderNumber}"));
                 c.ReturnDateStr = c.ReturnDate.ToString("yyyy-MM-dd");
             });
@@ -199,23 +187,11 @@ namespace archives.service.biz.impl
 
                 var ids = list.Select(c => c.Id);
 
-                var archivesList = await (from brd in _db.BorrowRegisterDetail.AsNoTracking()
-                                          join a in _db.ArchivesInfo.AsNoTracking() on brd.ArchivesId equals a.Id
-                                          where ids.Contains(brd.BorrowRegisterId)
-                                          select new ArchivesSimple
-                                          {
-                                              BorrowRegisterId = brd.BorrowRegisterId,
-                                              ArchivesNumber = a.ArchivesNumber,
-                                              CatalogNumber = a.CatalogNumber,
-                                              CategoryId = a.CategoryId,
-                                              FileNumber = a.FileNumber,
-                                              OrderNumber = a.OrderNumber
-                                          }).ToListAsync();
+                var archivesList = await _db.BorrowRegisterDetail.AsNoTracking().Where(brd => ids.Contains(brd.BorrowRegisterId)).ToListAsync();
 
                 list.ForEach(c =>
                 {
-                    var arlist = archivesList.Where(j => j.BorrowRegisterId == c.Id).ToList();
-                    c.ArchivesList = arlist;
+                    var arlist = archivesList.Where(j => j.BorrowRegisterId == c.Id);
                     c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}/{j.FileNumber}/{j.OrderNumber}"));
                     c.ReturnDateStr = c.ReturnDate.ToString("yyyy-MM-dd");
                 });
@@ -226,7 +202,6 @@ namespace archives.service.biz.impl
                 response.TotalPage = total.GetPages(request.PageSize);
                 response.TotalCount = total;
                 response.Success = true;
-
 
                 //response.Data = list;
                 //response.Success = true;
@@ -254,17 +229,7 @@ namespace archives.service.biz.impl
                 if (borrowRegister == null)
                     throw new BizException("借阅登记不存在");
 
-                var archivesList = await _db.ArchivesInfo.AsNoTracking().Join(_db.BorrowRegisterDetail.AsNoTracking(), a => a.Id, b => b.ArchivesId, (a, b) => new { a, b })
-                    .Where(j => j.b.BorrowRegisterId == borrowRegister.Id).Select(c => new ArchivesSearchResult
-                    {
-                        Id = c.a.Id,
-                        ArchivesNumber = c.a.ArchivesNumber,
-                        CategoryId = c.a.CategoryId,
-                        FileNumber = c.a.FileNumber,
-                        ProjectName = c.a.ProjectName,
-                        Title = c.a.Title,
-                        OrderNumber = c.a.OrderNumber,
-                    }).ToListAsync();
+                var details = await _db.BorrowRegisterDetail.AsNoTracking().Where(c => c.BorrowRegisterId == borrowRegister.Id).ToListAsync();
 
                 response.Data = new GetBorrowDetailResult
                 {
@@ -282,7 +247,24 @@ namespace archives.service.biz.impl
                         CreateTimeStr = borrowRegister.CreateTime.ToString("yyyy-MM-dd"),
                         Status = borrowRegister.Status
                     },
-                    ArchivesList = archivesList
+                    ArchivesList = details.Select(c => new BorrowRegisterDetailSimple
+                    {
+                        Id = c.Id,
+                        ArchivesNumber = c.ArchivesNumber,
+                        CategoryId1 = c.CategoryId1,
+                        CategoryId2 = c.CategoryId2,
+                        CategoryId3 = c.CategoryId3,
+                        CategoryName1 = c.CategoryName1,
+                        CategoryName2 = c.CategoryName2,
+                        CategoryName3 = c.CategoryName3,
+                        CategoryNumber = c.CategoryNumber,
+                        FileNumber = c.FileNumber,
+                        OrderNumber = c.OrderNumber,
+                        ProjectId = c.ProjectId,
+                        ProjectName = c.ProjectName,
+                        Status = ArchivesStatus.Normal,
+                        Title = c.Title
+                    }).ToList(),
                 };
                 response.Success = true;
             }

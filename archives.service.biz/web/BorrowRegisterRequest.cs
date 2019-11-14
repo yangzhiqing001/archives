@@ -64,9 +64,15 @@ namespace archives.service.biz.web
     {
         public int CategoryId1 { get; set; }
 
+        public string CategoryName1 { get; set; }
+
         public int CategoryId2 { get; set; }
 
+        public string CategoryName2 { get; set; }
+
         public int CategoryId3 { get; set; }
+
+        public string CategoryName3 { get; set; }
 
         public int ProjectId { get; set; }
 

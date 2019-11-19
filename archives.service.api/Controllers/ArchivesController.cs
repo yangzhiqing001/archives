@@ -217,5 +217,89 @@ namespace archives.service.api.Controllers
             }
             return response;
         }
+
+        /// <summary>
+        /// 添加项目
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<CommonResponse<string>> AddProject([FromBody]AddProjectRequest request)
+        {
+            var response = new CommonResponse<string>();
+            try
+            {
+                var id = await _archivesService.AddProject(request);
+                response.Data = id.ToString();
+                response.Success = true;
+            }
+            catch
+            {
+                response.Message = "添加项目发生异常";
+            }
+            return response;
+        }
+
+        [HttpPost]
+        public async Task<CommonResponse<string>> DeleteProject([FromBody]DeleteProjectRequest request)
+        {
+            var response = new CommonResponse<string>();
+            try
+            {
+                var id = await _archivesService.DeleteProject(request);
+                response.Data = id.ToString();
+                response.Success = true;
+            }
+            catch(Exception ex)
+            {
+                ApplicationLog.Error("DeleteProject Excetpion", ex);
+                response.Message = "删除项目发生异常";
+            }
+            return response;
+        }
+
+        /// <summary>
+        /// 添加分类
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<CommonResponse<string>> AddCategory([FromBody]AddCategoryRequest request)
+        {
+            var response = new CommonResponse<string>();
+            try
+            {
+                var id = await _archivesService.AddCategory(request);
+                response.Data = id.ToString();
+                response.Success = true;
+            }
+            catch
+            {
+                response.Message = "添加项目发生异常";
+            }
+            return response;
+        }
+
+        /// <summary>
+        /// 删除分类
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<CommonResponse<string>> DeleteCategory([FromBody]DeleteCategoryRequest request)
+        {
+            var response = new CommonResponse<string>();
+            try
+            {
+                var id = await _archivesService.DeleteCategory(request);
+                response.Data = id.ToString();
+                response.Success = true;
+            }
+            catch
+            {
+                response.Message = "删除项目发生异常";
+            }
+            return response;
+        }
     }
 }

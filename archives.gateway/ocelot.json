@@ -585,6 +585,66 @@
         }
       ],
       "UseServiceDiscovery": false
+    },
+    {
+      "DownstreamPathTemplate": "/api/archives/addProject",
+      "UpstreamPathTemplate": "/archives/addProject",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6003
+        }
+      ],
+      "UseServiceDiscovery": false
+    },
+    {
+      "DownstreamPathTemplate": "/api/archives/deleteProject",
+      "UpstreamPathTemplate": "/archives/deleteProject",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6003
+        }
+      ],
+      "UseServiceDiscovery": false
+    },
+    {
+      "DownstreamPathTemplate": "/api/archives/addCategory",
+      "UpstreamPathTemplate": "/archives/addCategory",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6003
+        }
+      ],
+      "UseServiceDiscovery": false
+    },
+    {
+      "DownstreamPathTemplate": "/api/archives/deleteCategory",
+      "UpstreamPathTemplate": "/archives/deleteCategory",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6003
+        }
+      ],
+      "UseServiceDiscovery": false
     }
   ],
     "GlobalConfiguration": {

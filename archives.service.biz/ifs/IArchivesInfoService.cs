@@ -29,5 +29,13 @@ namespace archives.service.biz.ifs
         Task<List<string>> QueryProject(string name);
 
         Task<List<CategoryResult>> QueryAllCategory();
+
+        Task<int> AddProject(AddProjectRequest request);
+
+        Task<int> DeleteProject(DeleteProjectRequest request);
+
+        Task<int> AddCategory(AddCategoryRequest request);
+
+        Task<int> DeleteCategory(DeleteCategoryRequest request);
     }
 }

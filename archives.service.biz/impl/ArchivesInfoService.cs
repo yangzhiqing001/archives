@@ -70,7 +70,7 @@ namespace archives.service.biz.impl
                 }
                 var list = await query.OrderBy(c => c.ArchivesNumber)
                     .Skip(request.PageNumber * request.PageSize)
-                    .Take(request.PageSize)                    
+                    .Take(request.PageSize)
                     .Select(c => new ArchivesSearchResult
                     {
                         Id = c.Id,
@@ -91,7 +91,7 @@ namespace archives.service.biz.impl
                 response.Success = true;
                 response.SEcho = request.SEcho;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Message = "获取案档列表发生异常";
                 ApplicationLog.Error("SearchArchives", ex);
@@ -176,7 +176,7 @@ namespace archives.service.biz.impl
             {
                 response.Message = ex.Message;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Message = "操作发生异常";
                 ApplicationLog.Error("Edit", ex);
@@ -231,7 +231,7 @@ namespace archives.service.biz.impl
                 response.Message = ex.Message;
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Message = "添加档案发生异常";
                 ApplicationLog.Error("Add", ex);
@@ -266,11 +266,11 @@ namespace archives.service.biz.impl
                 response.Data = new ArchivesDeleteResult();
                 response.Success = true;
             }
-            catch(BizException ex)
+            catch (BizException ex)
             {
                 response.Message = ex.Message;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Message = "删除发生异常";
                 ApplicationLog.Error("Delete", ex);
@@ -279,7 +279,8 @@ namespace archives.service.biz.impl
 
         }
 
-        public async Task<CommonResponse<string>> ChangPassword(ChangePsdRequest request) {
+        public async Task<CommonResponse<string>> ChangPassword(ChangePsdRequest request)
+        {
             var response = new CommonResponse<string>();
             try
             {
@@ -315,28 +316,69 @@ namespace archives.service.biz.impl
         public async Task<List<string>> QueryProject(string name)
         {
             if (!string.IsNullOrEmpty(name))
-                return await _db.Project.Where(c => c.ProjectName.Contains(name.Trim())).OrderBy(c => c.ProjectName).Take(20).Select(c=>c.ProjectName).ToListAsync();
+                return await _db.Project.Where(c => c.ProjectName.Contains(name.Trim())).OrderBy(c => c.ProjectName).Take(20).Select(c => c.ProjectName).ToListAsync();
             return new List<string>();
         }
 
         public async Task<List<CategoryResult>> QueryAllCategory()
         {
             var categorys = await _db.Category.ToListAsync();
-            return categorys.Where(c => c.Level == 1).Select(c => new CategoryResult {
+            return categorys.Where(c => c.Level == 1).Select(c => new CategoryResult
+            {
                 Id = c.Id,
                 CategoryName = c.CategoryName,
                 Level = c.Level,
-                Children = categorys.Where(c2=>c2.ParentId == c.Id).Select(c2=>new CategoryResult {
+                Children = categorys.Where(c2 => c2.ParentId == c.Id).Select(c2 => new CategoryResult
+                {
                     Id = c2.Id,
                     CategoryName = c2.CategoryName,
                     Level = c2.Level,
-                    Children = categorys.Where(c3=>c3.ParentId == c2.Id).Select(c3=>new CategoryResult {
+                    Children = categorys.Where(c3 => c3.ParentId == c2.Id).Select(c3 => new CategoryResult
+                    {
                         Id = c3.Id,
                         CategoryName = c3.CategoryName,
                         Level = c3.Level
                     }).ToList()
                 }).ToList()
             }).ToList();
+        }
+
+        public async Task<int> AddProject(AddProjectRequest request)
+        {
+            var project = new Project
+            {
+                ProjectName = request.ProjectName,
+                CreateTime = DateTime.Now,
+                UpdateTime = DateTime.Now
+            };
+            await _db.Project.AddAsync(project);
+            await _db.SaveChangesAsync();
+            return project.Id;
+        }
+
+        public async Task<int> DeleteProject(DeleteProjectRequest request)
+        {
+            return await _db.Database.ExecuteSqlCommandAsync("Delete From Project Where Id={0}", request.ProjectId);
+        }
+
+        public async Task<int> AddCategory(AddCategoryRequest request)
+        {
+            var category = new Category
+            {
+                CategoryName = request.CategoryName,
+                Level = request.Level, 
+                ParentId = request.ParentId,
+                CreateTime = DateTime.Now,
+                UpdateTime = DateTime.Now
+            };
+            await _db.Category.AddAsync(category);
+            await _db.SaveChangesAsync();
+            return category.Id;
+        }
+
+        public async Task<int> DeleteCategory(DeleteCategoryRequest request)
+        {
+            return await _db.Database.ExecuteSqlCommandAsync("Delete From Category Where Id={0}", request.CategoryId);
         }
     }
 }

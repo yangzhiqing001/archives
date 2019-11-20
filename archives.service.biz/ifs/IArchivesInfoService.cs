@@ -37,5 +37,7 @@ namespace archives.service.biz.ifs
         Task<int> AddCategory(AddCategoryRequest request);
 
         Task<int> DeleteCategory(DeleteCategoryRequest request);
+
+        Task<List<GetProjectResult>> GetAllProject();
     }
 }

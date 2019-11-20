@@ -23,6 +23,7 @@
     <Folder Include="Views\Borrow\" />
     <Folder Include="Views\DA\" />
     <Folder Include="Views\User\" />
+    <Folder Include="Views\Data\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\archives.common\archives.common.csproj" />

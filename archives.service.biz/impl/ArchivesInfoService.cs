@@ -127,7 +127,7 @@ namespace archives.service.biz.impl
 
         public async Task<List<string>> QueryAllProject()
         {
-            var list = await _db.ArchivesInfo.AsNoTracking().Where(c => !c.Deleted && c.ProjectName != null && c.ProjectName != string.Empty).OrderByDescending(c => c.Id).Select(c => c.ProjectName).Distinct().ToListAsync();
+            var list = await _db.Project.AsNoTracking().OrderByDescending(c => c.Id).Select(c => c.ProjectName).Distinct().ToListAsync();
             return list;
         }
 
@@ -320,6 +320,13 @@ namespace archives.service.biz.impl
             return new List<string>();
         }
 
+        public async Task<List<GetProjectResult>> GetAllProject()
+        {
+            return await _db.Project.OrderByDescending(c => c.Id).Select(c=> new GetProjectResult {
+                Id = c.Id, Name = c.ProjectName
+            }).ToListAsync();
+        }
+
         public async Task<List<CategoryResult>> QueryAllCategory()
         {
             var categorys = await _db.Category.ToListAsync();
@@ -358,7 +365,11 @@ namespace archives.service.biz.impl
 
         public async Task<int> DeleteProject(DeleteProjectRequest request)
         {
-            return await _db.Database.ExecuteSqlCommandAsync("Delete From Project Where Id={0}", request.ProjectId);
+            var ids = request.ProjectId.Split(",").Select(c => int.Parse(c)).ToList();
+            var projects = await _db.Project.Where(c => ids.Contains(c.Id)).ToListAsync();
+            _db.Project.RemoveRange(projects);
+            return await _db.SaveChangesAsync();
+            //return await _db.Database.ExecuteSqlCommandAsync("Delete From Project Where Id in {0}", request.ProjectId);
         }
 
         public async Task<int> AddCategory(AddCategoryRequest request)

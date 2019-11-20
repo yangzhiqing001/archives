@@ -199,6 +199,26 @@ namespace archives.service.api.Controllers
         }
 
         /// <summary>
+        /// 获取项目名
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<CommonResponse<List<GetProjectResult>>> GetAllProject()
+        {
+            var response = new CommonResponse<List<GetProjectResult>>();
+            try
+            {
+                response.Data = await _archivesService.GetAllProject();
+                response.Success = true;
+            }
+            catch
+            {
+                response.Message = "获取项目名称发生异常";
+            }
+            return response;
+        }
+
+        /// <summary>
         /// 获取项目名（可模糊查找）
         /// </summary>
         /// <returns></returns>

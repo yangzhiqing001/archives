@@ -1,0 +1,375 @@
+﻿@model LoginUserModel
+@{
+    ViewBag.Title = "分类设置";
+}
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-4">
+                <h1>分类设置</h1>
+            </div>
+            <div class="col-sm-8">
+
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content" style="padding-bottom:5px;padding-top:10px">
+    <div class="container-fluid">
+        <!-- SELECT2 EXAMPLE -->
+        <div class="card card-default">
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="input-group col-4">
+                            <input type="text" id="txt1" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" id="btnAdd1" class="btn btn-info btn-flat">添加</button>
+                            </span>
+                        </div>
+                        <div class="input-group col-4">
+                            <input type="text" id="txt2" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" id="btnAdd2" class="btn btn-info btn-flat">添加</button>
+                            </span>
+                        </div>
+                        <div class="input-group col-4">
+                            <input type="text" id="txt3" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" id="btnAdd3" class="btn btn-info btn-flat">添加</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-sm-4">
+                            <label>一级分类</label>
+                            <select multiple="" class="form-control" style="height:300px;" id="selectCategory1">
+                            </select>
+                        </div>
+                        <div class="form-group col-12 col-sm-4">
+                            <label>二级分类</label>
+                            <select multiple="" class="form-control" style="height:300px;" id="selectCategory2">
+                            </select>
+                        </div>
+                        <div class="form-group col-12 col-sm-4">
+                            <label>三级分类</label>
+                            <select multiple="" class="form-control" style="height:300px;" id="selectCategory3">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="button" id="btnDel1" value="删除选中的项目" class="btn btn-success">
+                        </div>
+                        <div class="col-4">
+                            <input type="button" id="btnDel2" value="删除选中的项目" class="btn btn-success">
+                        </div>
+                        <div class="col-4">
+                            <input type="button" id="btnDel3" value="删除选中的项目" class="btn btn-success">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@section PageCss
+    {
+    <link rel="stylesheet" href="~/plugins/jquery-ui/jquery-ui.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" href="~/plugins/toastr/toastr.min.css">
+}
+
+@section PagePlusgins
+    {
+    <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Toastr -->
+    <script src="~/plugins/toastr/toastr.min.js"></script>
+}
+
+@section PageScripts
+{
+    <script>
+    var $selectCategory1 = $("#selectCategory1");
+    var $selectCategory2 = $("#selectCategory2");
+    var $selectCategory3 = $("#selectCategory3");
+    var $txt1 = $("#txt1");
+    var $txt2 = $("#txt2");
+    var $txt3 = $("#txt3");
+    var allCategory = [];
+    function getCategorys() {
+        $.ajax({
+            headers: {
+                Accept: "application/json; charset=utf-8",
+                Authorization: "Bearer @Model.Token"
+            },
+            method: 'get',
+            url: "@Url.Content("~/archives/queryAllCategory")",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            beforeSend: function () {
+                $(".card").loading();
+            },
+            complete: function () {
+                $(".card").loading('stop');
+            },
+            success: function (result) {
+                if (result && result.success) {
+                    $selectCategory1.empty();
+                    allCategory = result.data;
+                    for (var i = 0; i < result.data.length; i++) {
+                        $selectCategory1.append("<option value=" + result.data[i].id + ">" + result.data[i].categoryName + "</option>");
+                    }
+                    if (parseInt(categoryId1) > 0) {
+                        $selectCategory1.val(categoryId1);
+                        $selectCategory1.trigger('change');
+                    }
+                }
+                else {
+                    Toast.fire({
+                        type: 'error',
+                        title: result.message
+                    })
+                }
+            }
+        });
+    }
+    function getCategory2() {
+        category2 = allCategory.find(function (i) {
+            return i.id === parseInt(categoryId1)
+        }).children;
+
+        $selectCategory2.empty();
+        $selectCategory3.empty();
+        for (var i = 0; i < category2.length; i++) {
+            $selectCategory2.append("<option value=" + category2[i].id + ">" + category2[i].categoryName + "</option>");
+        }
+        if (parseInt(categoryId2) > 0) {
+            $selectCategory2.val(categoryId2);
+            $selectCategory2.trigger('change');
+        }
+    }
+
+    function getCategory3() {
+        category3 = category2.find(function (i) {
+            return i.id === parseInt(categoryId2)
+        }).children;
+
+        $selectCategory3.empty();
+        for (var i = 0; i < category3.length; i++) {
+            $selectCategory3.append("<option value=" + category3[i].id + ">" + category3[i].categoryName + "</option>");
+        }
+    }
+    var category2 = [];
+    var category3 = [];
+    var categoryId1 = 0;
+    var categoryId2 = 0;
+    var categoryId3 = 0;
+
+    function addRequest(data) {
+        $.ajax({
+            headers: {
+                Accept: "application/json; charset=utf-8",
+                Authorization: "Bearer @Model.Token"
+            },
+            method: 'POST',
+            url: "@Url.Content("~/archives/addCategory")",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            beforeSend: function () {
+                $(".card").loading();
+            },
+            complete: function () {
+                $(".card").loading('stop');
+            },
+            success: function (result) {
+                if (result && result.success) {
+                    Toast.fire({
+                        type: 'success',
+                        title: '添加成功.'
+                    });
+                    getCategorys();
+                    $txt1.val('');
+                    $txt2.val('');
+                    $txt3.val('');
+                }
+                else {
+                    Toast.fire({
+                        type: 'error',
+                        title: result.message
+                    })
+                }
+            }
+        });
+    }
+
+    function deleteRequest(categoryId, callback) {
+        $.ajax({
+            headers: {
+                Accept: "application/json; charset=utf-8",
+                Authorization: "Bearer @Model.Token"
+            },
+            method: 'post',
+            url: "@Url.Content("~/archives/deleteCategory")",
+            data: JSON.stringify({
+                categoryId: categoryId.join(","),
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            beforeSend: function () {
+                $(".card").loading();
+            },
+            complete: function () {
+                $(".card").loading('stop');
+            },
+            success: function (result) {
+                if (result && result.success) {
+                    Toast.fire({
+                        type: 'success',
+                        title: '删除成功'
+                    })
+                    getCategorys();
+                    callback();
+                }
+                else {
+                    Toast.fire({
+                        type: 'error',
+                        title: result.message
+                    })
+                }
+            }
+        });
+    }
+    $(function () {
+        Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        $selectCategory1.on('change', function () {
+            categoryId1 = this.value;
+            getCategory2();
+        });
+        $selectCategory2.on('change', function () {
+            categoryId2 = this.value;
+            getCategory3();
+        });
+        getCategorys();
+        $("#btnDel3").on("click", function () {
+            var categoryId = $selectCategory3.val();
+            if (categoryId.length === 0) {
+                Toast.fire({
+                    type: 'error',
+                    title: '先选中要删除的第三级项目'
+                })
+                return;
+            }
+
+            deleteRequest(categoryId, function () {
+                categoryId3 = 0;
+            });
+        });
+        $("#btnDel2").on("click", function () {
+            var categoryId = $selectCategory2.val();
+            if (categoryId.length === 0) {
+                Toast.fire({
+                    type: 'error',
+                    title: '先选中要删除的第二级项目'
+                })
+                return;
+            }
+
+            deleteRequest(categoryId, function () {
+                categoryId2 = 0;
+            });
+        });
+        $("#btnDel1").on("click", function () {
+            var categoryId = $selectCategory1.val();
+            if (categoryId.length === 0) {
+                Toast.fire({
+                    type: 'error',
+                    title: '先选中要删除的第一级项目'
+                })
+                return;
+            }
+
+            deleteRequest(categoryId, function () {
+                categoryId1 = 0;
+            });
+        });
+        $("#btnAdd1").on("click", function () {
+            if ($txt1.val() === '') {
+                Toast.fire({
+                    type: 'error',
+                    title: '请输入一级分类名.'
+                });
+                $txt1.focus();
+                return;
+            }
+            addRequest({
+                parentId: 0,
+                level: 1,
+                categoryName: $txt1.val()
+            });
+        });
+
+        $("#btnAdd2").on("click", function () {
+            if ($txt2.val() === '') {
+                Toast.fire({
+                    type: 'error',
+                    title: '请输入二级分类名.'
+                });
+                $txt2.focus();
+                return;
+            }
+            if ($selectCategory1.val().length === 0) {
+                Toast.fire({
+                    type: 'error',
+                    title: '请先选中一级分类.'
+                });
+                return;
+            }
+            addRequest({
+                parentId: categoryId1,
+                level: 2,
+                categoryName: $txt2.val()
+            });
+        });
+
+        $("#btnAdd3").on("click", function () {
+            if ($txt3.val() === '') {
+                Toast.fire({
+                    type: 'error',
+                    title: '请输入三级分类名.'
+                });
+                $txt3.focus();
+                return;
+            }
+            if ($selectCategory2.val().length === 0) {
+                Toast.fire({
+                    type: 'error',
+                    title: '请先选中二级分类.'
+                });
+                return;
+            }
+            addRequest({
+                parentId: categoryId2,
+                level: 3,
+                categoryName: $txt3.val()
+            });
+        });
+    });
+    </script>
+}

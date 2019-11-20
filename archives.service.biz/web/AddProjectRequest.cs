@@ -11,6 +11,6 @@ namespace archives.service.biz.web
 
     public class DeleteProjectRequest
     {
-        public int ProjectId { get; set; }
+        public string ProjectId { get; set; }
     }
 }

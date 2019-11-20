@@ -586,6 +586,22 @@
       ],
       "UseServiceDiscovery": false
     },
+    //获取项目名（可搜索）
+    {
+      "DownstreamPathTemplate": "/api/archives/getAllProject",
+      "UpstreamPathTemplate": "/archives/getAllProject",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6003
+        }
+      ],
+      "UseServiceDiscovery": false
+    },
     {
       "DownstreamPathTemplate": "/api/archives/addProject",
       "UpstreamPathTemplate": "/archives/addProject",

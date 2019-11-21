@@ -316,8 +316,8 @@ namespace archives.service.biz.impl
         public async Task<List<string>> QueryProject(string name)
         {
             if (!string.IsNullOrEmpty(name))
-                return await _db.Project.Where(c => c.ProjectName.Contains(name.Trim())).OrderBy(c => c.ProjectName).Take(20).Select(c => c.ProjectName).ToListAsync();
-            return new List<string>();
+                return await _db.Project.Where(c => c.ProjectName.Contains(name.Trim())).OrderBy(c => c.ProjectName).Select(c => c.ProjectName).ToListAsync();
+            return await _db.Project.Select(c => c.ProjectName).ToListAsync();
         }
 
         public async Task<List<GetProjectResult>> GetAllProject()

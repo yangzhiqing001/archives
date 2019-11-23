@@ -59,6 +59,11 @@ namespace archives.service.dal.Entity
         /// 通知次数
         /// </summary>
         public int? NotifyCount { get; set; }
+
+        /// <summary>
+        /// 归还人
+        /// </summary>
+        public string Receiver { get; set; }
     }
 
     /// <summary>

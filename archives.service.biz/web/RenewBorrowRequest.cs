@@ -29,6 +29,11 @@ namespace archives.service.biz.web
         /// 借阅登记Id(唯一值，也就是查询借阅列表及详情返回的Id)
         /// </summary>
         public int BorrowRegisterId { get; set; }
+
+        /// <summary>
+        /// 归还人
+        /// </summary>
+        public string Receiver { get; set; }
     }
 
     /// <summary>

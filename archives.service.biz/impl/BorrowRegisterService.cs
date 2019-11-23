@@ -36,7 +36,8 @@ namespace archives.service.biz.impl
                         SignPhoto = c.SignPhoto,
                         Status = c.Status,
                         CreateTime = c.CreateTime,
-                        CreateTimeStr = c.CreateTime.ToString("yyyy-MM-dd")
+                        CreateTimeStr = c.CreateTime.ToString("yyyy-MM-dd"),
+                        Receiver = c.Receiver
                     }).ToListAsync();
 
             var ids = list.Select(c => c.Id);
@@ -48,6 +49,7 @@ namespace archives.service.biz.impl
                 //c.ArchivesList = arlist;
                 c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}/{j.FileNumber}/{j.OrderNumber}"));
                 c.ReturnDateStr = c.ReturnDate.ToString("yyyy-MM-dd");
+                c.ProjectName = string.Join(",", arlist.Select(j=>j.ProjectName));
             });
             return list;
         }
@@ -168,6 +170,14 @@ namespace archives.service.biz.impl
                 {
                     query = query.Where(c => c.Phone.Contains(request.Keyword.Trim()) || c.Borrower.Contains(request.Keyword.Trim()) || c.Company.Contains(request.Keyword.Trim()) || c.Department.Contains(request.Keyword.Trim()));
                 }
+                if (request.StartDate.HasValue)
+                {
+                    query = query.Where(c => c.CreateTime > request.StartDate.Value);
+                }
+                if (request.EndDate.HasValue)
+                {
+                    query = query.Where(c => c.CreateTime < request.EndDate.Value.AddDays(1));
+                }
                 var list = await query.OrderBy(c => c.Status).ThenBy(c => c.Id)
                         .Skip(request.PageNumber * request.PageSize)
                         .Take(request.PageSize)
@@ -182,7 +192,8 @@ namespace archives.service.biz.impl
                             SignPhoto = c.SignPhoto,
                             Status = c.Status,
                             CreateTime = c.CreateTime,
-                            CreateTimeStr = c.CreateTime.ToString("yyyy-MM-dd")
+                            CreateTimeStr = c.CreateTime.ToString("yyyy-MM-dd"),
+                            Receiver = c.Receiver,
                         }).ToListAsync();
 
                 var ids = list.Select(c => c.Id);
@@ -194,6 +205,7 @@ namespace archives.service.biz.impl
                     var arlist = archivesList.Where(j => j.BorrowRegisterId == c.Id);
                     c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}/{j.FileNumber}/{j.OrderNumber}"));
                     c.ReturnDateStr = c.ReturnDate.ToString("yyyy-MM-dd");
+                    c.ProjectName = string.Join("，", arlist.Select(j => j.ProjectName));
                 });
 
                 var total = await query.CountAsync();

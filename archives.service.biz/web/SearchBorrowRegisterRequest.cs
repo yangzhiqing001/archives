@@ -14,6 +14,10 @@ namespace archives.service.biz.web
         /// 搜索关键字
         /// </summary>
         public string Keyword { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
     }
 
     public class SearchBorrowRegisterResult
@@ -96,6 +100,10 @@ namespace archives.service.biz.web
 
 
         public string ArchivesStr { get; set; }
+
+        public string Receiver { get; set; }
+
+        public string ProjectName { get; set; }
     }
 
     public class ArchivesSimple

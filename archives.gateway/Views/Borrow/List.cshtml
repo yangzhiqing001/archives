@@ -69,6 +69,8 @@
                     var ds;
                     var sl;
                     var key;
+                    var startDate;
+                    var endDate;
                     for(var i = 0; i < aoData.length; i++)
                     {
                       if(aoData[i].name == 'iDisplayStart')
@@ -86,7 +88,9 @@
                     }
                     aoData.push( {"name": "PageNumber", "value": ds / dl} );
                     aoData.push( {"name": "PageSize", "value": dl} );
-                    aoData.push( {"name": "Keyword", "value": key} );
+                    aoData.push({ "name": "Keyword", "value": key });
+                    //aoData.push({ "name": "StartDate", "value": startDate });
+                    //aoData.push( {"name": "EndDate", "value": endDate} );
                     $.ajax( {
                             headers: {
                                 Accept: "application/json; charset=utf-8",
@@ -112,39 +116,49 @@
 
                     } );
                 },
-                "aoColumns" : [{
-                        "mDataProp" : "borrower",
-                        "sTitle" : "姓名",
-                        "sDefaultContent" : "",
-                        "sClass" : "center"
-                    }, {
-                        "mDataProp" : "phone",
-                        "sTitle" : "手机",
-                        "sDefaultContent" : "",
-                        "sClass" : "center"
-                    }, {
-                        "mDataProp" : "returnDateStr",
-                        "sTitle" : "到期时间",
-                        "sDefaultContent" : "",
-                        "sClass" : "center"
-                    }, {
+                "aoColumns" : [ {
                         "mDataProp" : "createTimeStr",
-                        "sTitle" : "借阅日期",
+                        "sTitle" : "借阅时间",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    },{
+                        "mDataProp" : "department",
+                        "sTitle" : "借阅单位",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    },{
+                        "mDataProp" : "borrower",
+                        "sTitle" : "借阅人",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    }, {
+                        "mDataProp" : "projectName",
+                        "sTitle" : "工程名称",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    },{
+                        "mDataProp" : "archivesStr",
+                        "sTitle" : "借阅条目",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    },  {
+                        "mDataProp" : "returnDateStr",
+                        "sTitle" : "归还日期",
+                        "sDefaultContent" : "",
+                        "sClass" : "center"
+                    }, {
+                        "mDataProp" : "receiver",
+                        "sTitle" : "接收人",
                         "sDefaultContent" : "",
                         "sClass" : "center"
                     }, {
                         "mDataProp" : "statusDesc",
-                        "sTitle" : "状态",
-                        "sDefaultContent" : "",
-                        "sClass" : "center"
-                    }, {
-                        "mDataProp" : "archivesStr",
-                        "sTitle" : "档案号",
+                        "sTitle" : "备注",
                         "sDefaultContent" : "",
                         "sClass" : "center"
                     }],
                     aoColumnDefs: [
-                          { sWidth: "16%", aTargets: [  0,1, 2,3,4,5 ] }
+                          { sWidth: "12%", aTargets: [  0,1, 2,3,4,5,6,7 ] }
                     ]
             });
 

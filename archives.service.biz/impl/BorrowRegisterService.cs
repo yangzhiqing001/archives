@@ -24,7 +24,7 @@ namespace archives.service.biz.impl
         {
             var query = _db.BorrowRegister.AsNoTracking().Where(c => !c.Deleted);
 
-            var list = await query.OrderBy(c => c.Status).ThenBy(c => c.Id)
+            var list = await query.OrderBy(c => c.Status).ThenByDescending(c => c.CreateTime)
                     .Select(c => new SearchBorrowRegisterResult
                     {
                         Id = c.Id,

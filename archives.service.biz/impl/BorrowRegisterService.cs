@@ -310,7 +310,7 @@ namespace archives.service.biz.impl
                 await _db.SaveChangesAsync();
                 response.Success = true;
 
-                var projects = await _db.BorrowRegisterDetail.AsNoTracking().Where(c => c.BorrowRegisterId == borrowRegister.Id).Select(c => c.ProjectName).ToListAsync();
+                var projects = await _db.BorrowRegisterDetail.AsNoTracking().FirstOrDefaultAsync(c => c.BorrowRegisterId == borrowRegister.Id);
                 try
                 {
                     //var archivesFirst = await _db.ArchivesInfo.AsNoTracking().Join(_db.BorrowRegisterDetail.AsNoTracking().Where(j => j.BorrowRegisterId == borrowRegister.Id).Take(1),
@@ -320,7 +320,7 @@ namespace archives.service.biz.impl
                     //        c.a.ProjectName
                     //    }).FirstOrDefaultAsync();
                     ApplicationLog.Info("SMS_171116665." + borrowRegister.Phone + "." + borrowRegister.Id);
-                    var msgRes = OssHelper.SendSms("SMS_171116665", borrowRegister.Phone, $"{{\"name\":\"{borrowRegister.Borrower}\", \"PtName\":\"{(string.Join(",", projects))}\", \"RDate\":\"{borrowRegister.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
+                    var msgRes = OssHelper.SendSms("SMS_171116665", borrowRegister.Phone, $"{{\"name\":\"{borrowRegister.Borrower}\", \"PtName\":\"{(projects?.ProjectName)}\", \"RDate\":\"{borrowRegister.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
 
                 }
                 catch (Exception ex1)
@@ -374,7 +374,7 @@ namespace archives.service.biz.impl
                 borrowRegister.UpdateTime = DateTime.Now;
                 borrowRegister.Status = BorrowRegisterStatus.Returned;
                 borrowRegister.UpdateTime = DateTime.Now;
-
+                borrowRegister.Receiver = request.Receiver;
                 //var archivesList = await _db.ArchivesInfo.Join(_db.BorrowRegisterDetail, a => a.Id, b => b.ArchivesId, (a, b) => new { a, b }).Where(j => j.b.BorrowRegisterId == borrowRegister.Id).Select(c => c.a).ToListAsync();
                 //archivesList.ForEach(a => a.Status = ArchivesStatus.Normal);
                 await _db.SaveChangesAsync();
@@ -449,10 +449,10 @@ namespace archives.service.biz.impl
                     trans.Commit();
                     response.Success = true;
 
-                    var projects = await _db.BorrowRegisterDetail.AsNoTracking().Where(c => c.BorrowRegisterId == borrowRegister.Id).Select(c => c.ProjectName).ToListAsync();
+                    var projects = await _db.BorrowRegisterDetail.AsNoTracking().FirstOrDefaultAsync(c => c.BorrowRegisterId == borrowRegister.Id);
 
                     ApplicationLog.Info("SMS_171116670." + borrowRegister.Phone + "." + borrowRegister.Id);
-                    var msgRes = OssHelper.SendSms("SMS_171116670", borrowRegister.Phone, $"{{\"name\":\"{borrowRegister.Borrower}\", \"PtName\":\"{(string.Join(",", projects))}\", \"RDate\":\"{borrowRegister.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
+                    var msgRes = OssHelper.SendSms("SMS_171116670", borrowRegister.Phone, $"{{\"name\":\"{borrowRegister.Borrower}\", \"PtName\":\"{(projects?.ProjectName)}\", \"RDate\":\"{borrowRegister.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
 
                 }
                 catch (BizException ex)
@@ -497,10 +497,10 @@ namespace archives.service.biz.impl
                 //        c.a.ProjectName,
                 //        c.b.Id
                 //    }).FirstOrDefaultAsync();
-                var projects = await _db.BorrowRegisterDetail.AsNoTracking().Where(c => c.BorrowRegisterId == borrowRegister.Id).Select(c => c.ProjectName).ToListAsync();
+                var projects = await _db.BorrowRegisterDetail.AsNoTracking().FirstOrDefaultAsync(c => c.BorrowRegisterId == borrowRegister.Id);
 
                 ApplicationLog.Info("SMS_171116662." + borrowRegister.Phone + "." + borrowRegister.Id);
-                var msgRes = OssHelper.SendSms("SMS_171116662", borrowRegister.Phone, $"{{\"name\":\"{borrowRegister.Borrower}\", \"PtName\":\"{(string.Join(",", projects))}\", \"RDate\":\"{borrowRegister.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
+                var msgRes = OssHelper.SendSms("SMS_171116662", borrowRegister.Phone, $"{{\"name\":\"{borrowRegister.Borrower}\", \"PtName\":\"{(projects?.ProjectName)}\", \"RDate\":\"{borrowRegister.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
 
                 if (msgRes.Code == "OK")
                 {
@@ -550,10 +550,10 @@ namespace archives.service.biz.impl
                 {
                     list.ForEach(c =>
                     {
-                        var projectName = string.Join(",",projects.Where(a => a.BorrowRegisterId == c.Id));
+                        var project = projects.FirstOrDefault(a => a.BorrowRegisterId == c.Id);
 
                         ApplicationLog.Info("task.SMS_171116662." + c.Phone + "." + c.Id);
-                        var msgRes = OssHelper.SendSms("SMS_171116662", c.Phone, $"{{\"name\":\"{c.Borrower}\", \"PtName\":\"{(projectName)}\", \"RDate\":\"{c.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
+                        var msgRes = OssHelper.SendSms("SMS_171116662", c.Phone, $"{{\"name\":\"{c.Borrower}\", \"PtName\":\"{(project?.ProjectName)}\", \"RDate\":\"{c.ReturnDate.ToString("yyyy-MM-dd")}\" }}");
                         //循环发送短信
                         if (msgRes.Code == "OK")
                         {

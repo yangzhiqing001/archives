@@ -86,7 +86,7 @@ namespace archives.service.biz.web
         /// <summary>
         /// 分类号
         /// </summary>
-        public string CategoryNumber { get; set; }
+        public string CategoryId { get; set; }
 
         /// <summary>
         /// 案卷号

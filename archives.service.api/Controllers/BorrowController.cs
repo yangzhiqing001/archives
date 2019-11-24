@@ -139,11 +139,11 @@ namespace archives.service.api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Export()
+        public async Task<ActionResult> Export(SearchBorrowRegisterRequest request)
         {
             try
             {
-                var list = await _borrowRegisterService.QueryAllBorrowRegisters();
+                var list = await _borrowRegisterService.QueryAllBorrowRegisters(request);
 
                 System.IO.MemoryStream output = new System.IO.MemoryStream();
 

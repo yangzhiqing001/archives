@@ -11,6 +11,16 @@
                 <input type="button" id="btnExport" value="导出Excel" class="btn btn-success float-left">
             </div>
             <div class="col-sm-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="far fa-calendar-alt"></i>
+                        </span>
+                    </div>
+                    <input type="text" class="form-control float-right" id="reservation" placeholder="选择日期范围">
+                    <input type="hidden" id = "startTime" name="startTime" class="form-control" />
+            	    <input type="hidden" id = "endTime" name="endTime" class="form-control" />
+                </div>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -40,7 +50,7 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-
+    <link rel="stylesheet" href="../../plugins/daterangepicker/daterangepicker.css">
 }
 @section PagePlusgins
     {
@@ -49,11 +59,32 @@
     <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <!-- Select2 -->
     <script src="~/plugins/select2/js/select2.full.min.js"></script>
+    <script src="~/plugins/moment/moment.min.js"></script>
+    <script src="~/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
 }
 @section PageScripts
     {
     <script>
         $(function () {
+            $("#startTime").val(moment().subtract(30, "days").format("YYYY-MM-DD"));
+            $("#endTime").val(moment().format("YYYY-MM-DD"))
+            $('#reservation').daterangepicker({
+                startDate: moment().subtract(30, "days"),
+                "locale": {
+                    format: 'YYYY-MM-DD',//日期格式
+                    separator: ' ~ ',
+                    applyLabel: "应用",
+                    cancelLabel: "取消",
+                    resetLabel: "重置",
+                    "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],//汉化处理
+                    "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                }
+            }).on('apply.daterangepicker', function(ev, picker) {
+                $("#startTime").val(picker.startDate.format('YYYY-MM-DD'));
+                $("#endTime").val(picker.endDate.format('YYYY-MM-DD'));
+                $('#daListTable').DataTable().ajax.reload();
+	        });
             $.fn.dataTable.ext.errMode = 'throw';
             $('#daListTable').dataTable({
                 "oLanguage": {
@@ -89,8 +120,8 @@
                     aoData.push( {"name": "PageNumber", "value": ds / dl} );
                     aoData.push( {"name": "PageSize", "value": dl} );
                     aoData.push({ "name": "Keyword", "value": key });
-                    //aoData.push({ "name": "StartDate", "value": startDate });
-                    //aoData.push( {"name": "EndDate", "value": endDate} );
+                    aoData.push({ "name": "StartDate", "value": $("#startTime").val() });
+                    aoData.push({ "name": "EndDate", "value": $("#endTime").val() });
                     $.ajax( {
                             headers: {
                                 Accept: "application/json; charset=utf-8",
@@ -167,11 +198,16 @@
             //});
 
             $('#btnExport').on('click', function () {
+                var aoData = [];
+                aoData.push( {"name": "Keyword", "value": $('.dataTables_filter input').val()} );
+                aoData.push({ "name": "StartDate", "value": $("#startTime").val() });
+                aoData.push({ "name": "EndDate", "value": $("#endTime").val() });
                 $.ajax({
                     headers: {
                         Authorization: "Bearer @Model.Token"
                     },
                     url: '/borrow/export',
+                    data: aoData,
                     method: 'GET',
                     xhrFields: {
                         responseType: 'blob'

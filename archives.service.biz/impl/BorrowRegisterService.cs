@@ -20,9 +20,23 @@ namespace archives.service.biz.impl
             _db = db;
         }
 
-        public async Task<List<SearchBorrowRegisterResult>> QueryAllBorrowRegisters()
+        public async Task<List<SearchBorrowRegisterResult>> QueryAllBorrowRegisters(SearchBorrowRegisterRequest request)
         {
             var query = _db.BorrowRegister.AsNoTracking().Where(c => !c.Deleted);
+            if (!string.IsNullOrEmpty(request.Keyword))
+            {
+                query = query.Where(c => c.Phone.Contains(request.Keyword.Trim()) || c.Borrower.Contains(request.Keyword.Trim()) || c.Company.Contains(request.Keyword.Trim()) || c.Department.Contains(request.Keyword.Trim()));
+            }
+            if (request.StartDate.HasValue)
+            {
+                query = query.Where(c => c.CreateTime > request.StartDate.Value);
+            }
+            if (request.EndDate.HasValue)
+            {
+                query = query.Where(c => c.CreateTime < request.EndDate.Value.AddDays(1));
+            }
+
+            //var query = _db.BorrowRegister.AsNoTracking().Where(c => !c.Deleted);
 
             var list = await query.OrderBy(c => c.Status).ThenByDescending(c => c.CreateTime)
                     .Select(c => new SearchBorrowRegisterResult
@@ -47,7 +61,7 @@ namespace archives.service.biz.impl
             {
                 var arlist = archivesList.Where(j => j.BorrowRegisterId == c.Id);
                 //c.ArchivesList = arlist;
-                c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}/{j.FileNumber}/{j.OrderNumber}"));
+                c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}-{j.CategoryNumber}-{j.FileNumber}-{j.OrderNumber}"));
                 c.ReturnDateStr = c.ReturnDate.ToString("yyyy-MM-dd");
                 c.ProjectName = string.Join(",", arlist.Select(j=>j.ProjectName));
             });
@@ -132,7 +146,7 @@ namespace archives.service.biz.impl
                         CategoryId3 = c.CategoryId3,
                         CategoryName3 = c.CategoryName3,
                         FileNumber = c.FileNumber,
-                        CategoryNumber = c.CategoryNumber,
+                        CategoryNumber = c.CategoryId,
                         OrderNumber = c.OrderNumber,
                         ProjectId = c.ProjectId,
                         ProjectName = c.ProjectName,
@@ -203,7 +217,7 @@ namespace archives.service.biz.impl
                 list.ForEach(c =>
                 {
                     var arlist = archivesList.Where(j => j.BorrowRegisterId == c.Id);
-                    c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}/{j.FileNumber}/{j.OrderNumber}"));
+                    c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}-{j.CategoryNumber}-{j.FileNumber}-{j.OrderNumber}"));
                     c.ReturnDateStr = c.ReturnDate.ToString("yyyy-MM-dd");
                     c.ProjectName = string.Join("，", arlist.Select(j => j.ProjectName));
                 });

@@ -94,7 +94,7 @@ namespace archives.gateway.Controllers
                         };
                     }
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), ap);
-                    return RedirectToAction("manage", "da");
+                    return RedirectToAction("list", "borrow");
                 }
                 catch (Exception x) {
                     return View("Login");

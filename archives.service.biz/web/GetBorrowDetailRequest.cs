@@ -63,6 +63,10 @@ namespace archives.service.biz.web
         /// 分类号
         /// </summary>
         public string CategoryNumber { get; set; }
+        /// <summary>
+        /// 分类号--app用了这个，所以有两个分类号
+        /// </summary>
+        public string CategoryId { get; set; }
 
         /// <summary>
         /// 案卷号

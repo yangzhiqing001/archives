@@ -61,7 +61,7 @@ namespace archives.service.biz.impl
             {
                 var arlist = archivesList.Where(j => j.BorrowRegisterId == c.Id);
                 //c.ArchivesList = arlist;
-                c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}-{j.CategoryNumber}-{j.FileNumber}-{j.OrderNumber}"));
+                c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}/{j.CategoryNumber}/{j.FileNumber}/{j.OrderNumber}"));
                 c.ReturnDateStr = c.ReturnDate.ToString("yyyy-MM-dd");
                 c.ProjectName = string.Join(",", arlist.Select(j=>j.ProjectName));
             });
@@ -217,7 +217,7 @@ namespace archives.service.biz.impl
                 list.ForEach(c =>
                 {
                     var arlist = archivesList.Where(j => j.BorrowRegisterId == c.Id);
-                    c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}-{j.CategoryNumber}-{j.FileNumber}-{j.OrderNumber}"));
+                    c.ArchivesStr = string.Join("，", arlist.Select(j => $"{j.ArchivesNumber}/{j.CategoryNumber}/{j.FileNumber}/{j.OrderNumber}"));
                     c.ReturnDateStr = c.ReturnDate.ToString("yyyy-MM-dd");
                     c.ProjectName = string.Join("，", arlist.Select(j => j.ProjectName));
                 });
@@ -284,6 +284,7 @@ namespace archives.service.biz.impl
                         CategoryName2 = c.CategoryName2,
                         CategoryName3 = c.CategoryName3,
                         CategoryNumber = c.CategoryNumber,
+                        CategoryId = c.CategoryNumber,
                         FileNumber = c.FileNumber,
                         OrderNumber = c.OrderNumber,
                         ProjectId = c.ProjectId ?? 0,

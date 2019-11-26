@@ -148,7 +148,7 @@ namespace archives.service.api.Controllers
                 System.IO.MemoryStream output = new System.IO.MemoryStream();
 
                 System.IO.StreamWriter writer = new System.IO.StreamWriter(output, System.Text.Encoding.UTF8);
-                writer.Write("借阅时间,借阅单位,借阅人,工程名称,借阅条目,归还日期,借阅日期,接收人,备注");
+                writer.Write("借阅时间,借阅单位,借阅人,工程名称,借阅条目,归还日期,接收人,备注");
 
                 writer.WriteLine();
 

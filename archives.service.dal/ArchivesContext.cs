@@ -25,6 +25,8 @@ namespace archives.service.dal
         public DbSet<Project> Project { get; set; }
 
         public DbSet<Category> Category { get; set; }
+
+        public DbSet<Receiver> Receiver { get; set; }
     }
 
 }

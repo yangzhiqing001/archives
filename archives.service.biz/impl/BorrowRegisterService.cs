@@ -22,7 +22,7 @@ namespace archives.service.biz.impl
 
         public async Task<List<SearchBorrowRegisterResult>> QueryAllBorrowRegisters(SearchBorrowRegisterRequest request)
         {
-            var query = _db.BorrowRegister.AsNoTracking().Where(c => !c.Deleted);
+            var query = _db.BorrowRegister.AsNoTracking().Where(c => !c.Deleted).Where(c => c.Status != BorrowRegisterStatus.Registered);
             if (!string.IsNullOrEmpty(request.Keyword))
             {
                 query = query.Where(c => c.Phone.Contains(request.Keyword.Trim()) || c.Borrower.Contains(request.Keyword.Trim()) || c.Company.Contains(request.Keyword.Trim()) || c.Department.Contains(request.Keyword.Trim()));
@@ -35,11 +35,29 @@ namespace archives.service.biz.impl
             {
                 query = query.Where(c => c.CreateTime < request.EndDate.Value.AddDays(1));
             }
-
+            query = query.OrderBy(c => c.CreateTime);
             //var query = _db.BorrowRegister.AsNoTracking().Where(c => !c.Deleted);
-
-            var list = await query.OrderBy(c => c.Status).ThenByDescending(c => c.CreateTime)
-                    .Select(c => new SearchBorrowRegisterResult
+            //if (request.iSortCol_0 == "0") {
+            //    if (request.sSortDir_0 == "asc")
+            //    {
+            //        query = query.OrderBy(c => c.CreateTime);
+            //    }
+            //    else {
+            //        query = query.OrderByDescending(c => c.CreateTime);
+            //    }
+            //}
+            //if (request.iSortCol_0 == "5")
+            //{
+            //    if (request.sSortDir_0 == "asc")
+            //    {
+            //        query = query.OrderBy(c => c.ReturnDate);
+            //    }
+            //    else
+            //    {
+            //        query = query.OrderByDescending(c => c.ReturnDate);
+            //    }
+            //}
+            var list = await query.Select(c => new SearchBorrowRegisterResult
                     {
                         Id = c.Id,
                         Borrower = c.Borrower,
@@ -179,7 +197,7 @@ namespace archives.service.biz.impl
             var response = new CommonSearchResponse<List<SearchBorrowRegisterResult>>();
             try
             {
-                var query = _db.BorrowRegister.AsNoTracking().Where(c => !c.Deleted);
+                var query = _db.BorrowRegister.AsNoTracking().Where(c => !c.Deleted).Where(c => c.Status!=BorrowRegisterStatus.Registered);
                 if (!string.IsNullOrEmpty(request.Keyword))
                 {
                     query = query.Where(c => c.Phone.Contains(request.Keyword.Trim()) || c.Borrower.Contains(request.Keyword.Trim()) || c.Company.Contains(request.Keyword.Trim()) || c.Department.Contains(request.Keyword.Trim()));
@@ -192,8 +210,29 @@ namespace archives.service.biz.impl
                 {
                     query = query.Where(c => c.CreateTime < request.EndDate.Value.AddDays(1));
                 }
-                var list = await query.OrderBy(c => c.Status).ThenBy(c => c.Id)
-                        .Skip(request.PageNumber * request.PageSize)
+                if (request.iSortCol_0 == "0")
+                {
+                    if (request.sSortDir_0 == "asc")
+                    {
+                        query = query.OrderBy(c => c.CreateTime);
+                    }
+                    else
+                    {
+                        query = query.OrderByDescending(c => c.CreateTime);
+                    }
+                }
+                if (request.iSortCol_0 == "5")
+                {
+                    if (request.sSortDir_0 == "asc")
+                    {
+                        query = query.OrderBy(c => c.ReturnDate);
+                    }
+                    else
+                    {
+                        query = query.OrderByDescending(c => c.ReturnDate);
+                    }
+                }
+                var list = await query.Skip(request.PageNumber * request.PageSize)
                         .Take(request.PageSize)
                         .Select(c => new SearchBorrowRegisterResult
                         {
@@ -643,6 +682,12 @@ namespace archives.service.biz.impl
                 ApplicationLog.Error("RenewBorrow", ex);
             }
             return response;
+        }
+
+        public async Task<List<string>> QueryReceiver()
+        {
+            var list = await _db.Receiver.AsNoTracking().Select(c => c.ReceiverName).Distinct().ToListAsync();
+            return list;
         }
     }
 }

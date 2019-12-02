@@ -92,7 +92,7 @@
                 },
                 "bProcessing": true,
                 "bAutoWidth": false,
-                "bSort" : false,
+                "bSort" : true,
                 "bSearchable": true,
                 "bServerSide": true,
                 "sAjaxSource": "@Url.Content("~/borrow/searchBorrowRegister")",
@@ -151,27 +151,32 @@
                         "mDataProp" : "createTimeStr",
                         "sTitle" : "借阅时间",
                         "sDefaultContent" : "",
-                        "sClass" : "center"
+                        "sClass" : "center",
+                        "bSortable": true
                     },{
                         "mDataProp" : "department",
                         "sTitle" : "借阅单位",
                         "sDefaultContent" : "",
-                        "sClass" : "center"
+                        "sClass": "center",
+                        "bSortable": false
                     },{
                         "mDataProp" : "borrower",
                         "sTitle" : "借阅人",
                         "sDefaultContent" : "",
-                        "sClass" : "center"
+                        "sClass" : "center",
+                        "bSortable": false
                     }, {
                         "mDataProp" : "projectName",
                         "sTitle" : "工程名称",
                         "sDefaultContent" : "",
-                        "sClass" : "center"
+                        "sClass" : "center",
+                        "bSortable": false
                     },{
                         "mDataProp" : "archivesStr",
                         "sTitle" : "借阅条目",
                         "sDefaultContent" : "",
-                        "sClass" : "center"
+                        "sClass" : "center",
+                        "bSortable": false
                     },  {
                         "mDataProp" : "returnDateStr",
                         "sTitle" : "归还日期",
@@ -181,12 +186,14 @@
                         "mDataProp" : "receiver",
                         "sTitle" : "接收人",
                         "sDefaultContent" : "",
-                        "sClass" : "center"
+                        "sClass" : "center",
+                        "bSortable": false
                     }, {
                         "mDataProp" : "statusDesc",
                         "sTitle" : "备注",
                         "sDefaultContent" : "",
-                        "sClass" : "center"
+                        "sClass" : "center",
+                        "bSortable": false
                     }],
                     aoColumnDefs: [
                           { sWidth: "12%", aTargets: [  0,1, 2,3,4,5,6,7 ] }

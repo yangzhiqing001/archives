@@ -27,5 +27,7 @@ namespace archives.service.biz.ifs
         Task<CommonResponse<string>> ReturnWarn(ReturnWarnRequest request);
 
         Task<CommonResponse<string>> CloseBorrow(CloseBorrowRequest request);
+
+        Task<List<string>> QueryReceiver();
     }
 }

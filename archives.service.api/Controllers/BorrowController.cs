@@ -177,5 +177,25 @@ namespace archives.service.api.Controllers
                 return Ok(ex.Message);
             }
         }
+
+        /// <summary>
+        /// 获取所有接收人名称
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<CommonResponse<List<string>>> QueryReceiver()
+        {
+            var response = new CommonResponse<List<string>>();
+            try
+            {
+                response.Data = await _borrowRegisterService.QueryReceiver();
+                response.Success = true;
+            }
+            catch
+            {
+                response.Message = "获取接收人发生异常";
+            }
+            return response;
+        }
     }
 }

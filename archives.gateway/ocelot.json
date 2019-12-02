@@ -701,6 +701,29 @@
         "role": "admin"
       },
       "UseServiceDiscovery": false
+    },
+    //获取所有接收人
+    {
+      "DownstreamPathTemplate": "/api/borrow/queryreceiver",
+      "UpstreamPathTemplate": "/borrow/queryreceiver",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6003
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthProviderKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "admin"
+      },
+      "UseServiceDiscovery": false
     }
   ],
     "GlobalConfiguration": {

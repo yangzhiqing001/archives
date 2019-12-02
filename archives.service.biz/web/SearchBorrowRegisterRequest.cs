@@ -18,6 +18,10 @@ namespace archives.service.biz.web
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
+
+        public string iSortCol_0 { get; set; }
+
+        public string sSortDir_0 { get; set; }
     }
 
     public class SearchBorrowRegisterResult

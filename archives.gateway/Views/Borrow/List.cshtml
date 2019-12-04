@@ -120,6 +120,7 @@
                     aoData.push( {"name": "PageNumber", "value": ds / dl} );
                     aoData.push( {"name": "PageSize", "value": dl} );
                     aoData.push({ "name": "Keyword", "value": key });
+                    aoData.push({ "name": "ShowRegistered", "value": false });
                     aoData.push({ "name": "StartDate", "value": $("#startTime").val() });
                     aoData.push({ "name": "EndDate", "value": $("#endTime").val() });
                     $.ajax( {
@@ -189,7 +190,7 @@
                         "sClass" : "center",
                         "bSortable": false
                     }, {
-                        "mDataProp" : "statusDesc",
+                        "mDataProp" : "remark",
                         "sTitle" : "备注",
                         "sDefaultContent" : "",
                         "sClass" : "center",
@@ -209,6 +210,7 @@
                 aoData.push( {"name": "Keyword", "value": $('.dataTables_filter input').val()} );
                 aoData.push({ "name": "StartDate", "value": $("#startTime").val() });
                 aoData.push({ "name": "EndDate", "value": $("#endTime").val() });
+                aoData.push({ "name": "ShowRegistered", "value": false });
                 $.ajax({
                     headers: {
                         Authorization: "Bearer @Model.Token"

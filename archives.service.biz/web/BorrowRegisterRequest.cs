@@ -58,6 +58,11 @@ namespace archives.service.biz.web
         /// </summary>
         [Required]
         public string SignPhoto { get; set; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string Remark { get; set; }
     }
 
     public class BorrowRegisterDetailRequest

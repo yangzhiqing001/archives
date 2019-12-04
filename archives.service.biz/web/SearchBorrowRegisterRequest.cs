@@ -22,6 +22,8 @@ namespace archives.service.biz.web
         public string iSortCol_0 { get; set; }
 
         public string sSortDir_0 { get; set; }
+
+        public bool ShowRegistered { get; set; }
     }
 
     public class SearchBorrowRegisterResult
@@ -69,6 +71,11 @@ namespace archives.service.biz.web
         /// 签名照片
         /// </summary>
         public string SignPhoto { get; set; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string Remark { get; set; }
 
         /// <summary>
         /// 状态 0.正常 1.已登记 2.已借出 3.已延期 4.已归还 5.逾期

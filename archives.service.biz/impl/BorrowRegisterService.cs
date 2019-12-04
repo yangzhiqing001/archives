@@ -69,7 +69,8 @@ namespace archives.service.biz.impl
                         Status = c.Status,
                         CreateTime = c.CreateTime,
                         CreateTimeStr = c.CreateTime.ToString("yyyy-MM-dd"),
-                        Receiver = c.Receiver
+                        Receiver = c.Receiver,
+                        Remark = c.Remark
                     }).ToListAsync();
 
             var ids = list.Select(c => c.Id);
@@ -127,7 +128,8 @@ namespace archives.service.biz.impl
                 CreateTime = DateTime.Now,
                 Deleted = false,
                 UpdateTime = DateTime.Now,
-                ReturnNotified = false
+                ReturnNotified = false,
+                Remark = request.Remark
             };
 
             using (var trans = await _db.Database.BeginTransactionAsync())
@@ -197,7 +199,9 @@ namespace archives.service.biz.impl
             var response = new CommonSearchResponse<List<SearchBorrowRegisterResult>>();
             try
             {
-                var query = _db.BorrowRegister.AsNoTracking().Where(c => !c.Deleted).Where(c => c.Status!=BorrowRegisterStatus.Registered);
+                var query = _db.BorrowRegister.AsNoTracking().Where(c => !c.Deleted);
+                if(!request.ShowRegistered)
+                    query = query.Where(c => c.Status!=BorrowRegisterStatus.Registered);
                 if (!string.IsNullOrEmpty(request.Keyword))
                 {
                     query = query.Where(c => c.Phone.Contains(request.Keyword.Trim()) || c.Borrower.Contains(request.Keyword.Trim()) || c.Company.Contains(request.Keyword.Trim()) || c.Department.Contains(request.Keyword.Trim()));
@@ -221,7 +225,7 @@ namespace archives.service.biz.impl
                         query = query.OrderByDescending(c => c.CreateTime);
                     }
                 }
-                if (request.iSortCol_0 == "5")
+                else if (request.iSortCol_0 == "5")
                 {
                     if (request.sSortDir_0 == "asc")
                     {
@@ -231,6 +235,9 @@ namespace archives.service.biz.impl
                     {
                         query = query.OrderByDescending(c => c.ReturnDate);
                     }
+                }
+                else {
+                    query = query.OrderByDescending(c => c.CreateTime);
                 }
                 var list = await query.Skip(request.PageNumber * request.PageSize)
                         .Take(request.PageSize)
@@ -247,6 +254,7 @@ namespace archives.service.biz.impl
                             CreateTime = c.CreateTime,
                             CreateTimeStr = c.CreateTime.ToString("yyyy-MM-dd"),
                             Receiver = c.Receiver,
+                            Remark = c.Remark
                         }).ToListAsync();
 
                 var ids = list.Select(c => c.Id);
@@ -310,7 +318,8 @@ namespace archives.service.biz.impl
                         SignPhoto = borrowRegister.SignPhoto,
                         CreateTime = borrowRegister.CreateTime,
                         CreateTimeStr = borrowRegister.CreateTime.ToString("yyyy-MM-dd"),
-                        Status = borrowRegister.Status
+                        Status = borrowRegister.Status,
+                        Remark = borrowRegister.Remark
                     },
                     ArchivesList = details.Select(c => new BorrowRegisterDetailSimple
                     {
